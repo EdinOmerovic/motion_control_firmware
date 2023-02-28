@@ -21,7 +21,7 @@ U budućnosti bi bilo pametno da se cijeli algoritam upravljanja vrti na razvojn
 
 Prije korištenja provjerite da li ste povezali biblioteke iz C2000 sa projektom:
 
-![](.\docs\images\libraries.png)
+![](./docs/images/libraries.png)
 
 
 
@@ -29,4 +29,4 @@ Prije korištenja provjerite da li ste povezali biblioteke iz C2000 sa projektom
 
 Podesite predprocesorske direktive:
 
-![](.\docs\images\predefined_symbol.png)
+![](./docs/images/predefined_symbol.png)
