@@ -1,6 +1,6 @@
 
 set(SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src)
-set(LIBS ${CMAKE_CURRENT_SOURCE_DIR}/inc/)
+set(LIBS ${CMAKE_CURRENT_SOURCE_DIR}/inc)
 
 
 add_library(driver ${SOURCES}/control.c
@@ -12,4 +12,4 @@ add_library(driver ${SOURCES}/control.c
 target_include_directories(driver PUBLIC ${LIBS})
 
 
-target_link_libraries(${TARGET} driver)
+target_link_libraries(${TARGET_NAME} driver)

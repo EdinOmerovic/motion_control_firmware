@@ -2,10 +2,10 @@
 
 #include <stdio.h>
 
-// #include "encoder.h"
-// #include "motor.h"
-// #include "trajectory.h"
-// #include "control.h"
+#include "encoder.h"
+#include "motor.h"
+#include "trajectory.h"
+#include "control.h"
 
 #define TIME_STEP 1000 // 1000[ns]
 
@@ -22,10 +22,8 @@ int getCalculationTime(void)
 
 int main()
 {
-    int test; 
-    printf("Hello World");
-    // // **** Instantation ****
-    // Encoder *enc;
+    // **** Instantation ****
+    Encoder *enc;
 
 
     // // **** INITIALIZATION *****
