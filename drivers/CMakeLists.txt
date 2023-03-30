@@ -7,6 +7,8 @@ add_library(driver ${SOURCES}/control.c
     ${SOURCES}/encoder.c
     ${SOURCES}/motor.c
     ${SOURCES}/trajectory.c
+    ${SOURCES}/lp_filter.c
+
 )
 
 target_include_directories(driver PUBLIC ${LIBS})

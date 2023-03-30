@@ -13,5 +13,20 @@
 #ifndef MOTOR_H
 #define MOTOR_H
 
+typedef struct
+{
+    /* data */
+} MotorConf;
+
+
+typedef struct Motor
+{
+    // Function 
+    void (*setPosition)(struct Motor *, int);
+} Motor;
+
+
+void motor_init(Motor  *, MotorConf *);
+
 
 #endif

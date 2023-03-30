@@ -8,5 +8,16 @@
 #ifndef TRAJECTORY_H
 #define TRAJECTORY_H
 
+typedef enum {
+    ANALOG_READ,
+    HARDCODED,
+    FIXED
+} source_e;
+
+void trajectory_init(source_e);
+
+int getTrajectory(void);
+
+int getTrajectory2od(void);
 
 #endif
