@@ -37,5 +37,6 @@ int getTrajectory(void)
 
 int getTrajectory2od(void)
 {
-    
+    // FIXME: napravi da se vraća drugi izvod trajektorije
+    return 0;   
 }

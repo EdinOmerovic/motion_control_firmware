@@ -35,10 +35,10 @@ int main()
 {
     // // **** CONFIGURATION SETUP *****
     // Encoder
+    encoder_init(&enc);
     enc_conf.startingValue = 0;
     enc_conf.scalingParameteres = 0;
     enc_conf.absoluteDimentsions = 0;
-    encoder_init(&enc);
     enc.configure(&enc, &enc_conf);
 
     // Controler
@@ -49,10 +49,14 @@ int main()
     controler_conf.KD = KD_val;
     control_init(&controler_conf);
 
+    // Desired trajectory:
+    // *Hardcoded: suplied using lookup table
+    // *Analog: obtained using analog read
+    // *Fixed: fixed value of the trajectory
     trajectory_init(FIXED);
 
     filter_init(&lp_filter, G_val, 0);
-    
+
     motor_init(&motor, &motor_conf);
 
     // **** Persistant loop variables ****
@@ -64,14 +68,10 @@ int main()
 
         // FIXME: dodaj da se osnovu funkcije može odrediti 2 izvod trajektorije
         // Get the second derivative of the desired trajectory
-        int q2_ref = getTrajectory2od();
+        int q2_ref = getTrajectory2od(); // Za prvi MVP to je 0
 
         // Get current absolute position from encoder
         int q_act = enc.getValue(&enc);
-
-        // Calculate velocity:
-        // v = delta X/ delta T
-        int vel = (q_act - prev_pos) / TIME_STEP;
 
         // Calculate position error
         int error = q_ref - q_act;
@@ -80,6 +80,9 @@ int main()
         int q2_des = q2_ref + pd_control(error);
 
         // Disturbance observer
+        // Calculate velocity:
+        // v = delta X / delta T
+        int vel = (q_act - prev_pos) / TIME_STEP;
         int tau_dis = disturbance_observer1(&lp_filter, vel);
 
         // Calculate tau
@@ -101,7 +104,6 @@ int main()
     return 0;
 }
 
-
 int getCalculationTime(void)
 {
     // Return time spent on:
@@ -111,8 +113,7 @@ int getCalculationTime(void)
     // * Actuator control
 
     // Najlakše bi bilo da nam ovo i nije potrebno
-    // Neka ostane 0 za MVP.
-    return 0;
+    return 0; // Neka ostane 0 za MVP.
 }
 
 void sleep(int time)
