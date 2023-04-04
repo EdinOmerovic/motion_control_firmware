@@ -15,12 +15,14 @@
 
 typedef struct
 {
-    /* data */
+    int tau_offset;
+    int voltage_offset;
 } MotorConf;
 
 
 typedef struct Motor
 {
+    MotorConf *cfg;
     // Function 
     void (*setPosition)(struct Motor *, int);
 } Motor;
