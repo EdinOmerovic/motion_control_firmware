@@ -1,6 +1,6 @@
 #include "lp_filter.h"
 
-void init_filter(LowPassFilter *filter, int alpha, int y0) {
+void filter_init(LowPassFilter *filter, int alpha, int y0) {
     filter->alpha = alpha;
     filter->y_prev = y0;
 }

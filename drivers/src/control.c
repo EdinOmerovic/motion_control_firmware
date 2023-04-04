@@ -1,8 +1,8 @@
 #include "control.h"
 
 
-int prev_error = 0;
 int prev_tau = 0;
+int prev_error = 0;
 ControlerConf global_conf; 
 
 

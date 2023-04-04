@@ -5,8 +5,8 @@
 
 static source_e src_config;
 
-static int trajectory_value;
-static int counter = 0;
+static int trajectory_value; // Used as a return value 
+static int counter = 0; // Used for the lookup table
 
 void trajectory_init(source_e src_conf)
 {

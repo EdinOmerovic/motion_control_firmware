@@ -24,5 +24,8 @@ ${SRC_DIR}/main.c
 # Define the executable and specify which source files it needs
 add_executable(${TARGET_NAME} ${SOURCES})
 
+# Adding the main.h include file
+target_include_directories(${TARGET_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+
 # Add driver subdirectory
 add_subdirectory(${DRIVER_DIR})
