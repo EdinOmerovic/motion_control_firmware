@@ -25,7 +25,12 @@ int _getValue(Encoder *enc)
     // read ENC_POS
     int new_encoder_value; // ret raw ecoder value 
     
-    enc->current_absolute_position = new_encoder_value / enc->enc_confg->scalingFactor;
+    // Overflow and underflow protection
+    if (new_encoder_value >= enc->previous_encoder_value){
+        enc->current_absolute_position += (new_encoder_value - enc->previous_encoder_value) / enc->enc_confg->scalingFactor;
+    }else{
+        enc->current_absolute_position -= (enc->previous_encoder_value - new_encoder_value) / enc->enc_confg->scalingFactor;
+    }
     
     // TODO: check if the estimated position is within ranges. Did we hit overflow?
     
