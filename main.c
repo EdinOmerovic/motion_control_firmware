@@ -37,7 +37,7 @@ int main()
     // Encoder
     encoder_init(&enc);
     enc_conf.startingValue = 0;
-    enc_conf.scalingParameteres = 0;
+    enc_conf.scalingFactor = 1000;
     enc_conf.absoluteDimentsions = 0;
     enc.configure(&enc, &enc_conf);
 
@@ -89,12 +89,11 @@ int main()
         // tau = tau_des + tau_dis
         // tau_des = an*q2_des;
         int tau = AN * q2_des + tau_dis;
-        int q_act_new = enc.getValue(&enc);
 
         // Update disturbance observer
-        disturbance_observer2(tau, q_act_new);
+        disturbance_observer2(tau);
 
-        motor.setPosition(&motor, tau);
+        motor.setTorque(&motor, tau);
 
         // Wait for the descrete timestep. Substract the time spent calculating
         prev_pos = enc.getValue(&enc);

@@ -32,7 +32,7 @@ int disturbance_observer1(LowPassFilter *filter, int vel)
     return apply_filter(filter, value) - global_conf.G*global_conf.An*vel;
 }
 
-int disturbance_observer2(int tau, int q_act)
+int disturbance_observer2(int tau)
 {
     prev_tau = tau;
 

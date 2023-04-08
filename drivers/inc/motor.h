@@ -24,7 +24,7 @@ typedef struct Motor
 {
     MotorConf *cfg;
     // Function 
-    void (*setPosition)(struct Motor *, int);
+    void (*setTorque)(struct Motor *, int);
 } Motor;
 
 

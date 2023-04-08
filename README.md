@@ -24,8 +24,23 @@ We hope that you find this firmware repository helpful in your motion control de
 
 The used trajectory tracking algorithm is described below and implemented in main.c 
 
+![](./docs/images/algorithm_scheme.png)
 
 
 
 
-- [ ] Kompajliranje prvo napravi CMake-om. Potrudi se da se sve prvo kompajlira. Fake-uj vrijednosti povratnih funkcija. 
+
+### Firmware development
+
+To start developing first install the [Texas instruments Code Compose Studio](https://www.ti.com/tool/download/CCSTUDIO/12.2.0) and install [TI C2000 Software development kit.](https://www.ti.com/tool/C2000WARE)  
+
+
+
+After that, just import this project and start playing with it. 
+
+
+
+<u>TODO:</u> 
+
+- [ ] Implementirati dovođene referentne trajektorije korištenjem analognog napona `getTrajector()`
+- [ ] Implementirati računanje vrijednosti drugig izvoda za `getTrajector()`

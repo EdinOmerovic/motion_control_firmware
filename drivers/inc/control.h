@@ -17,6 +17,6 @@ int pd_control(int error);
 
 int disturbance_observer1(LowPassFilter *, int);
 
-int disturbance_observer2(int, int);
+int disturbance_observer2(int);
 
 #endif

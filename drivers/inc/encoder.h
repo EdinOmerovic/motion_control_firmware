@@ -22,7 +22,7 @@
 typedef struct
 {
     // dummy
-    int scalingParameteres;
+    int scalingFactor;
     int absoluteDimentsions;
     int startingValue;
 } EncoderConf;
@@ -34,6 +34,9 @@ typedef struct Encoder
     void (*configure)(struct Encoder *enc, EncoderConf *confg);
     int (*getValue)(struct Encoder *enc);
     void (*setValue)(struct Encoder *enc, int value);
+    // Dynamic variables
+    int previous_encoder_value;
+    int current_absolute_position;
 
 } Encoder;
 
