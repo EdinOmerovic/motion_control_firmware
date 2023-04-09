@@ -19,17 +19,23 @@ Uint16 Interrupt_Count = 0;
 void initEpwm();
 __interrupt void prdTick(void);
 
-// Zadatak:
-// Ukljuci i probaj sve module koji su ti neophodni za rad
+// Integrate ADC
+//
+// Globals
+//
+Uint16 AdcaResult0;
+Uint16 AdcaResult1;
+Uint16 AdcbResult0;
+Uint16 AdcbResult1;
 
-// Ubaciti QEP modul
+void readAnalog();
 
 void main(void)
 {
     InitSysCtrl();
 
     // GPIO
-    //InitGpio();
+    InitGpio();
     //GPIO_SetupPinMux(BLINKY_LED_GPIO, GPIO_MUX_CPU1, 0);
     //GPIO_SetupPinOptions(BLINKY_LED_GPIO, GPIO_OUTPUT, GPIO_PUSHPULL);
     //GPIO_WritePin(BLINKY_LED_GPIO, 1);
@@ -111,8 +117,23 @@ void main(void)
     // Configure DAC
     //
     configureDAC(DAC_NUM);
+
+    //
+    //Configure the ADCs and power them up
+    //
+    ConfigureADC();
+
+    //
+    //Setup the ADCs for software conversions
+    //
+    SetupADCSoftware();
+
     while (1)
     {
+        // Read analog
+        readAnalog();
+
+        // Push to DAC
         DAC_PTR[DAC_NUM]->DACVALS.all = dacval;
         DELAY_US(2);
     }
@@ -155,4 +176,50 @@ __interrupt void prdTick(void)
     //
     PieCtrlRegs.PIEACK.all = PIEACK_GROUP3;
     EPwm1Regs.ETCLR.bit.INT = 1;
+}
+
+void readAnalog()
+{
+    //
+    //convert, wait for completion, and store results
+    //start conversions immediately via software, ADCA
+    //
+    AdcaRegs.ADCSOCFRC1.all = 0x0003; //SOC0 and SOC1
+
+    //
+    //start conversions immediately via software, ADCB
+    //
+    AdcbRegs.ADCSOCFRC1.all = 0x0003; //SOC0 and SOC1
+
+    //
+    //wait for ADCA to complete, then acknowledge flag
+    //
+    while (AdcaRegs.ADCINTFLG.bit.ADCINT1 == 0)
+        ;
+    AdcaRegs.ADCINTFLGCLR.bit.ADCINT1 = 1;
+
+    //
+    //wait for ADCB to complete, then acknowledge flag
+    //
+    while (AdcbRegs.ADCINTFLG.bit.ADCINT1 == 0)
+        ;
+    AdcbRegs.ADCINTFLGCLR.bit.ADCINT1 = 1;
+
+    //
+    //store results
+    //
+    AdcaResult0 = AdcaResultRegs.ADCRESULT0;
+    AdcaResult1 = AdcaResultRegs.ADCRESULT1;
+    AdcbResult0 = AdcbResultRegs.ADCRESULT0;
+    AdcbResult1 = AdcbResultRegs.ADCRESULT1;
+
+    //
+    //at this point, conversion results are stored in
+    //AdcaResult0, AdcaResult1, AdcbResult0, and AdcbResult1
+    //
+
+    //
+    //software breakpoint, hit run again to get updated conversions
+    //
+    asm("   ESTOP0");
 }

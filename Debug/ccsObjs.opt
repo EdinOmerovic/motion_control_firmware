@@ -1,4 +1,5 @@
 "./main.obj"
+"./bsp/F2837xD_Adc.obj"
 "./bsp/F2837xD_CodeStartBranch.obj"
 "./bsp/F2837xD_DefaultISR.obj"
 "./bsp/F2837xD_EPwm.obj"
@@ -10,6 +11,7 @@
 "./bsp/F2837xD_PieVect.obj"
 "./bsp/F2837xD_SysCtrl.obj"
 "./bsp/F2837xD_usDelay.obj"
+"./hal/src/adc_hal.obj"
 "./hal/src/dac_hal.obj"
 "./hal/src/encoder_hal.obj"
 "../2837x_FLASH_lnk_cpu1.cmd"

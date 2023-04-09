@@ -11,6 +11,7 @@ GEN_CMDS__FLAG :=
 
 ORDERED_OBJS += \
 "./main.obj" \
+"./bsp/F2837xD_Adc.obj" \
 "./bsp/F2837xD_CodeStartBranch.obj" \
 "./bsp/F2837xD_DefaultISR.obj" \
 "./bsp/F2837xD_EPwm.obj" \
@@ -22,6 +23,7 @@ ORDERED_OBJS += \
 "./bsp/F2837xD_PieVect.obj" \
 "./bsp/F2837xD_SysCtrl.obj" \
 "./bsp/F2837xD_usDelay.obj" \
+"./hal/src/adc_hal.obj" \
 "./hal/src/dac_hal.obj" \
 "./hal/src/encoder_hal.obj" \
 "../2837x_FLASH_lnk_cpu1.cmd" \
@@ -161,8 +163,8 @@ qepm_extraction.out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 # Other Targets
 clean:
 	-$(RM) $(EXE_OUTPUTS__QUOTED)
-	-$(RM) "main.obj" "bsp\F2837xD_CodeStartBranch.obj" "bsp\F2837xD_DefaultISR.obj" "bsp\F2837xD_EPwm.obj" "bsp\F2837xD_EQep.obj" "bsp\F2837xD_GlobalVariableDefs.obj" "bsp\F2837xD_Gpio.obj" "bsp\F2837xD_Ipc.obj" "bsp\F2837xD_PieCtrl.obj" "bsp\F2837xD_PieVect.obj" "bsp\F2837xD_SysCtrl.obj" "bsp\F2837xD_usDelay.obj" "hal\src\dac_hal.obj" "hal\src\encoder_hal.obj" 
-	-$(RM) "main.d" "bsp\F2837xD_DefaultISR.d" "bsp\F2837xD_EPwm.d" "bsp\F2837xD_EQep.d" "bsp\F2837xD_GlobalVariableDefs.d" "bsp\F2837xD_Gpio.d" "bsp\F2837xD_Ipc.d" "bsp\F2837xD_PieCtrl.d" "bsp\F2837xD_PieVect.d" "bsp\F2837xD_SysCtrl.d" "hal\src\dac_hal.d" "hal\src\encoder_hal.d" 
+	-$(RM) "main.obj" "bsp\F2837xD_Adc.obj" "bsp\F2837xD_CodeStartBranch.obj" "bsp\F2837xD_DefaultISR.obj" "bsp\F2837xD_EPwm.obj" "bsp\F2837xD_EQep.obj" "bsp\F2837xD_GlobalVariableDefs.obj" "bsp\F2837xD_Gpio.obj" "bsp\F2837xD_Ipc.obj" "bsp\F2837xD_PieCtrl.obj" "bsp\F2837xD_PieVect.obj" "bsp\F2837xD_SysCtrl.obj" "bsp\F2837xD_usDelay.obj" "hal\src\adc_hal.obj" "hal\src\dac_hal.obj" "hal\src\encoder_hal.obj" 
+	-$(RM) "main.d" "bsp\F2837xD_Adc.d" "bsp\F2837xD_DefaultISR.d" "bsp\F2837xD_EPwm.d" "bsp\F2837xD_EQep.d" "bsp\F2837xD_GlobalVariableDefs.d" "bsp\F2837xD_Gpio.d" "bsp\F2837xD_Ipc.d" "bsp\F2837xD_PieCtrl.d" "bsp\F2837xD_PieVect.d" "bsp\F2837xD_SysCtrl.d" "hal\src\adc_hal.d" "hal\src\dac_hal.d" "hal\src\encoder_hal.d" 
 	-$(RM) "bsp\F2837xD_CodeStartBranch.d" "bsp\F2837xD_usDelay.d" 
 	-@echo 'Finished clean'
 	-@echo ' '
