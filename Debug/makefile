@@ -22,6 +22,7 @@ ORDERED_OBJS += \
 "./bsp/F2837xD_PieVect.obj" \
 "./bsp/F2837xD_SysCtrl.obj" \
 "./bsp/F2837xD_usDelay.obj" \
+"./hal/src/dac_hal.obj" \
 "./hal/src/encoder_hal.obj" \
 "../2837x_FLASH_lnk_cpu1.cmd" \
 $(GEN_CMDS__FLAG) \
@@ -153,15 +154,15 @@ all: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 qepm_extraction.out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 	@echo 'Building target: "$@"'
 	@echo 'Invoking: C2000 Linker'
-	"C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-c2000_22.6.0.LTS/bin/cl2000" -v28 -ml -mt --cla_support=cla1 --float_support=fpu32 --tmu_support=tmu0 --vcu_support=vcu2 --preinclude="C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/common/include/F2837xD_defaultisr.h" --preinclude="C:/ti/c2000/C2000Ware_4_03_00_00/libraries/math/IQmath/c28/include/IQmathLib.h" --advice:performance=all --define=CPU1 --define=_FLASH --define=_LAUNCHXL_F28379D -g --diag_warning=225 --diag_wrap=off --display_error_number --abi=coffabi -z -m"qepm_extraction.map" --stack_size=0x200 --warn_sections -i"C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-c2000_22.6.0.LTS/lib" -i"C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/common/cmd" -i"C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/headers/cmd" -i"C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-c2000_22.6.0.LTS/include" --reread_libs --diag_wrap=off --display_error_number --xml_link_info="qepm_extraction_linkInfo.xml" --rom_model -o "qepm_extraction.out" $(ORDERED_OBJS)
+	"C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-c2000_22.6.0.LTS/bin/cl2000" -v28 -ml -mt --cla_support=cla1 --float_support=fpu32 --tmu_support=tmu0 --vcu_support=vcu2 --preinclude="C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/common/include/F2837xD_defaultisr.h" --preinclude="C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/headers/include/F2837xD_dac.h" --preinclude="C:/Users/Master/Desktop/ccs_extraction/!qepm_e/hal/inc/dac_hal.h" --preinclude="C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/headers/include/F2837xD_device.h" --preinclude="C:/ti/c2000/C2000Ware_4_03_00_00/libraries/math/IQmath/c28/include/IQmathLib.h" --advice:performance=all --define=CPU1 --define=_FLASH --define=_LAUNCHXL_F28379D -g --diag_warning=225 --diag_wrap=off --display_error_number --abi=coffabi -z -m"qepm_extraction.map" --stack_size=0x200 --warn_sections -i"C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-c2000_22.6.0.LTS/lib" -i"C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/common/cmd" -i"C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/headers/cmd" -i"C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-c2000_22.6.0.LTS/include" --reread_libs --diag_wrap=off --display_error_number --xml_link_info="qepm_extraction_linkInfo.xml" --rom_model -o "qepm_extraction.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: "$@"'
 	@echo ' '
 
 # Other Targets
 clean:
 	-$(RM) $(EXE_OUTPUTS__QUOTED)
-	-$(RM) "main.obj" "bsp\F2837xD_CodeStartBranch.obj" "bsp\F2837xD_DefaultISR.obj" "bsp\F2837xD_EPwm.obj" "bsp\F2837xD_EQep.obj" "bsp\F2837xD_GlobalVariableDefs.obj" "bsp\F2837xD_Gpio.obj" "bsp\F2837xD_Ipc.obj" "bsp\F2837xD_PieCtrl.obj" "bsp\F2837xD_PieVect.obj" "bsp\F2837xD_SysCtrl.obj" "bsp\F2837xD_usDelay.obj" "hal\src\encoder_hal.obj" 
-	-$(RM) "main.d" "bsp\F2837xD_DefaultISR.d" "bsp\F2837xD_EPwm.d" "bsp\F2837xD_EQep.d" "bsp\F2837xD_GlobalVariableDefs.d" "bsp\F2837xD_Gpio.d" "bsp\F2837xD_Ipc.d" "bsp\F2837xD_PieCtrl.d" "bsp\F2837xD_PieVect.d" "bsp\F2837xD_SysCtrl.d" "hal\src\encoder_hal.d" 
+	-$(RM) "main.obj" "bsp\F2837xD_CodeStartBranch.obj" "bsp\F2837xD_DefaultISR.obj" "bsp\F2837xD_EPwm.obj" "bsp\F2837xD_EQep.obj" "bsp\F2837xD_GlobalVariableDefs.obj" "bsp\F2837xD_Gpio.obj" "bsp\F2837xD_Ipc.obj" "bsp\F2837xD_PieCtrl.obj" "bsp\F2837xD_PieVect.obj" "bsp\F2837xD_SysCtrl.obj" "bsp\F2837xD_usDelay.obj" "hal\src\dac_hal.obj" "hal\src\encoder_hal.obj" 
+	-$(RM) "main.d" "bsp\F2837xD_DefaultISR.d" "bsp\F2837xD_EPwm.d" "bsp\F2837xD_EQep.d" "bsp\F2837xD_GlobalVariableDefs.d" "bsp\F2837xD_Gpio.d" "bsp\F2837xD_Ipc.d" "bsp\F2837xD_PieCtrl.d" "bsp\F2837xD_PieVect.d" "bsp\F2837xD_SysCtrl.d" "hal\src\dac_hal.d" "hal\src\encoder_hal.d" 
 	-$(RM) "bsp\F2837xD_CodeStartBranch.d" "bsp\F2837xD_usDelay.d" 
 	-@echo 'Finished clean'
 	-@echo ' '

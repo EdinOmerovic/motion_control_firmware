@@ -1,6 +1,5 @@
 #include "F28x_Project.h"
-#include "F2837xD_Cla_typedefs.h"  // F2837xD CLA Type definitions
-#include "F2837xD_device.h"        // F2837xD Headerfile Include File
+#include "F2837xD_device.h"  // F2837xD CLA Type definitions
 #include "F2837xD_Examples.h"      // F2837xD Examples Include File
 
 // GPIO
@@ -8,9 +7,12 @@
 
 // QEP:
 #include "encoder_hal.h"
+
 POSSPEED qep_posspeed = POSSPEED_DEFAULTS;
 Uint16 Interrupt_Count = 0;
 
+// DAC
+#include "dac_hal.h"
 //
 // Function Prototypes
 //
@@ -103,6 +105,17 @@ void main(void)
     // Enable Global realtime __interrupt DBGM
 
     qep_posspeed.init(&qep_posspeed);
+
+    // DAC
+    //
+    // Configure DAC
+    //
+    configureDAC(DAC_NUM);
+    while (1)
+    {
+        DAC_PTR[DAC_NUM]->DACVALS.all = dacval;
+        DELAY_US(2);
+    }
 }
 
 //

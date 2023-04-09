@@ -1,0 +1,4 @@
+{
+    "cmake.configureOnOpen": true,
+    "make-task-provider.windows.makeExecutable": "C:\\ti\\ccs1220\\ccs\\utils\\bin\\gmake"
+}

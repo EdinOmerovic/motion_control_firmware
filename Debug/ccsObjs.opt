@@ -10,6 +10,7 @@
 "./bsp/F2837xD_PieVect.obj"
 "./bsp/F2837xD_SysCtrl.obj"
 "./bsp/F2837xD_usDelay.obj"
+"./hal/src/dac_hal.obj"
 "./hal/src/encoder_hal.obj"
 "../2837x_FLASH_lnk_cpu1.cmd"
 -llibc.a
