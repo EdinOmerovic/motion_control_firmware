@@ -7,7 +7,7 @@
 // Globals
 //
 volatile static struct DAC_REGS* DAC_PTR[4] = {0x0,&DacaRegs,&DacbRegs,&DaccRegs};
-static Uint16 dacval = 2048;
+//static Uint16 dacval = 2048;
 
 //
 // Defines
@@ -17,7 +17,7 @@ static Uint16 dacval = 2048;
 #define DACA         1
 #define DACB         2
 #define DACC         3
-#define REFERENCE            REFERENCE_VDAC
+#define REFERENCE            REFERENCE_VREF
 #define DAC_NUM                DACA
 
 //

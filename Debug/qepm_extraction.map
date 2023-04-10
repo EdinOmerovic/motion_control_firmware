@@ -1,10 +1,10 @@
 ******************************************************************************
              TMS320C2000 Linker PC v22.6.0                     
 ******************************************************************************
->> Linked Sun Apr  9 22:34:33 2023
+>> Linked Mon Apr 10 14:22:01 2023
 
 OUTPUT FILE NAME:   <qepm_extraction.out>
-ENTRY POINT SYMBOL: "_c_int00"  address: 0008325e
+ENTRY POINT SYMBOL: "_c_int00"  address: 0008325c
 
 
 MEMORY CONFIGURATION
@@ -23,7 +23,7 @@ PAGE 0:
   RAMGS15               0001b000   00001000  00000000  00001000  RWIX
   BEGIN                 00080000   00000002  00000002  00000000  RWIX
   FLASHA                00080002   00001ffe  00000000  00001ffe  RWIX
-  FLASHB                00082000   00002000  000013d0  00000c30  RWIX
+  FLASHB                00082000   00002000  000013ce  00000c32  RWIX
   FLASHC                00084000   00002000  00000000  00002000  RWIX
   FLASHD                00086000   00002000  0000003b  00001fc5  RWIX
   FLASHE                00088000   00008000  00000000  00008000  RWIX
@@ -666,7 +666,7 @@ IQmathTables
 *          0    0001a000    00000b50     
                   0001a000    00000b50     IQmath_fpu32_coff.lib : IQmathTables.obj (IQmathTables)
 
-.text      0    00082058    00001379     
+.text      0    00082058    00001377     
                   00082058    00000585     F2837xD_DefaultISR.obj (.text:retain)
                   000825dd    000004b4     F2837xD_SysCtrl.obj (.text)
                   00082a91    00000244     F2837xD_Gpio.obj (.text)
@@ -676,21 +676,21 @@ IQmathTables
                   00082fe9    00000096     F2837xD_EQep.obj (.text)
                   0008307f    0000008b     adc_hal.obj (.text)
                   0008310a    00000088     rts2800_fpu32.lib : fs_div28.asm.obj (.text)
-                  00083192    00000075     main.obj (.text)
-                  00083207    00000057     main.obj (.text:retain)
-                  0008325e    00000056     rts2800_fpu32.lib : boot28.asm.obj (.text)
-                  000832b4    00000029                       : exit.c.obj (.text)
-                  000832dd    00000028     F2837xD_PieCtrl.obj (.text)
-                  00083305    00000027     dac_hal.obj (.text)
-                  0008332c    00000026     F2837xD_PieVect.obj (.text)
-                  00083352    00000024     rts2800_fpu32.lib : cpy_tbl.c.obj (.text)
-                  00083376    0000001d                       : memcpy.c.obj (.text)
-                  00083393    00000018                       : ll_aox28.asm.obj (.text)
-                  000833ab    00000012                       : args_main.c.obj (.text)
-                  000833bd    00000009                       : _lock.c.obj (.text)
-                  000833c6    00000008     F2837xD_CodeStartBranch.obj (.text)
-                  000833ce    00000002     rts2800_fpu32.lib : pre_init.c.obj (.text)
-                  000833d0    00000001                       : startup.c.obj (.text)
+                  00083192    00000073     main.obj (.text)
+                  00083205    00000057     main.obj (.text:retain)
+                  0008325c    00000056     rts2800_fpu32.lib : boot28.asm.obj (.text)
+                  000832b2    00000029                       : exit.c.obj (.text)
+                  000832db    00000028     F2837xD_PieCtrl.obj (.text)
+                  00083303    00000027     dac_hal.obj (.text)
+                  0008332a    00000026     F2837xD_PieVect.obj (.text)
+                  00083350    00000024     rts2800_fpu32.lib : cpy_tbl.c.obj (.text)
+                  00083374    0000001d                       : memcpy.c.obj (.text)
+                  00083391    00000018                       : ll_aox28.asm.obj (.text)
+                  000833a9    00000012                       : args_main.c.obj (.text)
+                  000833bb    00000009                       : _lock.c.obj (.text)
+                  000833c4    00000008     F2837xD_CodeStartBranch.obj (.text)
+                  000833cc    00000002     rts2800_fpu32.lib : pre_init.c.obj (.text)
+                  000833ce    00000001                       : startup.c.obj (.text)
 
 .ebss      1    0000a800    0000003c     UNINITIALIZED
                   0000a800    00000022     main.obj (.ebss)
@@ -705,9 +705,9 @@ MODULE SUMMARY
        Module                           code   initialized data   uninitialized data
        ------                           ----   ----------------   ------------------
     .\
-       main.obj                         204    50                 42                
+       main.obj                         202    50                 42                
     +--+--------------------------------+------+------------------+--------------------+
-       Total:                           204    50                 42                
+       Total:                           202    50                 42                
                                                                                     
     .\bsp\
        F2837xD_GlobalVariableDefs.obj   0      0                  9854              
@@ -753,12 +753,12 @@ MODULE SUMMARY
                                                                                     
        Stack:                           0      0                  512               
     +--+--------------------------------+------+------------------+--------------------+
-       Grand Total:                     5176   3429               10426             
+       Grand Total:                     5174   3429               10426             
 
 
 LINKER GENERATED MEMRANGE CRC TABLES
 
-_ccs_flash_checksum @ 00000000 records: 16, size/record: 6, table size: 102, algorithm=C28_CHECKSUM_16(ID=13), CRC: 00005fc3
+_ccs_flash_checksum @ 00000000 records: 16, size/record: 6, table size: 102, algorithm=C28_CHECKSUM_16(ID=13), CRC: 0000c185
 	BEGIN: page=0, load addr=00080000, size=00000002
 	FLASHA: page=0, load addr=00080002, size=00001ffe
 	FLASHB: page=0, load addr=00082000, size=00002000
@@ -933,11 +933,12 @@ address     data page           name
 
 00007f00     1fc (00007f00)     _GpioDataRegs
 
-0000a801     2a0 (0000a800)     _Interrupt_Count
-0000a802     2a0 (0000a800)     _AdcaResult0
-0000a803     2a0 (0000a800)     _AdcaResult1
-0000a804     2a0 (0000a800)     _AdcbResult0
-0000a805     2a0 (0000a800)     _AdcbResult1
+0000a800     2a0 (0000a800)     _Interrupt_Count
+0000a801     2a0 (0000a800)     _AdcaResult0
+0000a802     2a0 (0000a800)     _AdcaResult1
+0000a803     2a0 (0000a800)     _AdcbResult0
+0000a804     2a0 (0000a800)     _AdcbResult1
+0000a805     2a0 (0000a800)     _dacval
 0000a806     2a0 (0000a800)     _qep_posspeed
 0000a832     2a0 (0000a800)     ___TI_enable_exit_profile_output
 0000a834     2a0 (0000a800)     ___TI_cleanup_ptr
@@ -1056,11 +1057,11 @@ GLOBAL SYMBOLS: SORTED ALPHABETICALLY BY Name
 page  address   name                                  
 ----  -------   ----                                  
 abs   ffffffff  .text                                 
-0     000832b4  C$$EXIT                               
+0     000832b2  C$$EXIT                               
 0     0008310a  FS$$DIV                               
-0     00083393  LL$$AND                               
-0     0008339b  LL$$OR                                
-0     000833a3  LL$$XOR                               
+0     00083391  LL$$AND                               
+0     00083399  LL$$OR                                
+0     000833a1  LL$$XOR                               
 0     00082116  _ADCA1_ISR                            
 0     00082396  _ADCA2_ISR                            
 0     000823a0  _ADCA3_ISR                            
@@ -1085,12 +1086,12 @@ abs   ffffffff  .text
 1     0005f4c0  _AccessProtectionRegs                 
 0     00082ef9  _AdcSetMode                           
 1     00007400  _AdcaRegs                             
-1     0000a802  _AdcaResult0                          
-1     0000a803  _AdcaResult1                          
+1     0000a801  _AdcaResult0                          
+1     0000a802  _AdcaResult1                          
 1     00000b00  _AdcaResultRegs                       
 1     00007480  _AdcbRegs                             
-1     0000a804  _AdcbResult0                          
-1     0000a805  _AdcbResult1                          
+1     0000a803  _AdcbResult0                          
+1     0000a804  _AdcbResult1                          
 1     00000b20  _AdcbResultRegs                       
 1     00007500  _AdccRegs                             
 1     00000b40  _AdccResultRegs                       
@@ -1227,7 +1228,7 @@ abs   ffffffff  .text
 1     00047000  _Emif1Regs                            
 1     0005f4a0  _Emif2ConfigRegs                      
 1     00047800  _Emif2Regs                            
-0     000832fc  _EnableInterrupts                     
+0     000832fa  _EnableInterrupts                     
 0     00008037  _F28x_usDelay                         
 0     00082580  _FLASH_CORRECTABLE_ERROR_ISR          
 0     00082454  _FPU_OVERFLOW_ISR                     
@@ -1335,12 +1336,12 @@ abs   ffffffff  .text
 0     00008000  _InitFlash                            
 0     00082a91  _InitGpio                             
 0     00082606  _InitPeripheralClocks                 
-0     000832dd  _InitPieCtrl                          
-0     0008332c  _InitPieVectTable                     
+0     000832db  _InitPieCtrl                          
+0     0008332a  _InitPieVectTable                     
 0     000825dd  _InitSysCtrl                          
 0     000826d7  _InitSysPll                           
 1     00007900  _InputXbarRegs                        
-1     0000a801  _Interrupt_Count                      
+1     0000a800  _Interrupt_Count                      
 1     00050000  _IpcRegs                              
 0     00082288  _MCBSPA_RX_ISR                        
 0     00082292  _MCBSPA_TX_ISR                        
@@ -1450,26 +1451,27 @@ abs   ffffffff  ___c_args__
 abs   ffffffff  ___etext__                            
 abs   ffffffff  ___pinit__                            
 abs   ffffffff  ___text__                             
-0     000833ab  __args_main                           
+0     000833a9  __args_main                           
 1     0000a838  __lock                                
-0     000833c5  __nop                                 
-0     000833c1  __register_lock                       
-0     000833bd  __register_unlock                     
+0     000833c3  __nop                                 
+0     000833bf  __register_lock                       
+0     000833bb  __register_unlock                     
 1     00000400  __stack                               
-0     000833d0  __system_post_cinit                   
-0     000833ce  __system_pre_init                     
+0     000833ce  __system_post_cinit                   
+0     000833cc  __system_pre_init                     
 1     0000a83a  __unlock                              
-0     000832b4  _abort                                
-0     0008325e  _c_int00                              
+0     000832b2  _abort                                
+0     0008325c  _c_int00                              
 0     00000000  _ccs_flash_checksum                   
-0     00083305  _configureDAC                         
-0     00083352  _copy_in                              
-0     000832b6  _exit                                 
+0     00083303  _configureDAC                         
+0     00083350  _copy_in                              
+1     0000a805  _dacval                               
+0     000832b4  _exit                                 
 0     00083192  _main                                 
-0     00083376  _memcpy                               
-0     00083207  _prdTick                              
+0     00083374  _memcpy                               
+0     00083205  _prdTick                              
 1     0000a806  _qep_posspeed                         
-0     000831d8  _readAnalog                           
+0     000831d6  _readAnalog                           
 abs   ffffffff  binit                                 
 0     00082000  cinit                                 
 0     00080000  code_start                            
@@ -1742,27 +1744,27 @@ page  address   name
 0     000830af  _SetupADCSoftware                     
 0     0008310a  FS$$DIV                               
 0     00083192  _main                                 
-0     000831d8  _readAnalog                           
-0     00083207  _prdTick                              
-0     0008325e  _c_int00                              
-0     000832b4  C$$EXIT                               
-0     000832b4  _abort                                
-0     000832b6  _exit                                 
-0     000832dd  _InitPieCtrl                          
-0     000832fc  _EnableInterrupts                     
-0     00083305  _configureDAC                         
-0     0008332c  _InitPieVectTable                     
-0     00083352  _copy_in                              
-0     00083376  _memcpy                               
-0     00083393  LL$$AND                               
-0     0008339b  LL$$OR                                
-0     000833a3  LL$$XOR                               
-0     000833ab  __args_main                           
-0     000833bd  __register_unlock                     
-0     000833c1  __register_lock                       
-0     000833c5  __nop                                 
-0     000833ce  __system_pre_init                     
-0     000833d0  __system_post_cinit                   
+0     000831d6  _readAnalog                           
+0     00083205  _prdTick                              
+0     0008325c  _c_int00                              
+0     000832b2  C$$EXIT                               
+0     000832b2  _abort                                
+0     000832b4  _exit                                 
+0     000832db  _InitPieCtrl                          
+0     000832fa  _EnableInterrupts                     
+0     00083303  _configureDAC                         
+0     0008332a  _InitPieVectTable                     
+0     00083350  _copy_in                              
+0     00083374  _memcpy                               
+0     00083391  LL$$AND                               
+0     00083399  LL$$OR                                
+0     000833a1  LL$$XOR                               
+0     000833a9  __args_main                           
+0     000833bb  __register_unlock                     
+0     000833bf  __register_lock                       
+0     000833c3  __nop                                 
+0     000833cc  __system_pre_init                     
+0     000833ce  __system_post_cinit                   
 0     00086000  _RamfuncsLoadStart                    
 0     0008603b  _RamfuncsLoadEnd                      
 0     00090000  _PieVectTableInit                     
@@ -1853,11 +1855,12 @@ page  address   name
 1     00007a80  _OutputXbarRegs                       
 1     00007c00  _GpioCtrlRegs                         
 1     00007f00  _GpioDataRegs                         
-1     0000a801  _Interrupt_Count                      
-1     0000a802  _AdcaResult0                          
-1     0000a803  _AdcaResult1                          
-1     0000a804  _AdcbResult0                          
-1     0000a805  _AdcbResult1                          
+1     0000a800  _Interrupt_Count                      
+1     0000a801  _AdcaResult0                          
+1     0000a802  _AdcaResult1                          
+1     0000a803  _AdcbResult0                          
+1     0000a804  _AdcbResult1                          
+1     0000a805  _dacval                               
 1     0000a806  _qep_posspeed                         
 1     0000a832  ___TI_enable_exit_profile_output      
 1     0000a834  ___TI_cleanup_ptr                     
@@ -1902,4 +1905,4 @@ abs   ffffffff  binit
 abs   ffffffff  etext                                 
 abs   ffffffff  pinit                                 
 
-[420 symbols]
+[421 symbols]

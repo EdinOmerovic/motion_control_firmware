@@ -30,6 +30,13 @@ Uint16 AdcbResult1;
 
 void readAnalog();
 
+
+// TODO: Skontaj kako da na izlazu generišeš napon željenog nivoa.
+// Napravi da enkoder radi u isto vrijeme
+// Napravi da možeš da imaš interrupte na GPIO pinovima
+
+
+Uint16 dacval = 4095; // max 3413
 void main(void)
 {
     InitSysCtrl();
@@ -131,7 +138,7 @@ void main(void)
     while (1)
     {
         // Read analog
-        readAnalog();
+        //readAnalog();
 
         // Push to DAC
         DAC_PTR[DAC_NUM]->DACVALS.all = dacval;
