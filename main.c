@@ -53,6 +53,11 @@ __interrupt void ISR_pb2(void); // Triggered by end-stop 2
 // Naprav da se glavna petlja poziva timiranom interrupt rutinom
 // Podesi da sve jedinice budu odgovarajuce
 
+// NOTE: all values are represented in the follwing units:
+// * lenght = nanometers.
+// * time  = nanoseconds
+// * mass = grams
+
 void main(void)
 {
     // Initialize system and low-level components
@@ -84,10 +89,8 @@ void main(void)
 
     motor_init(&motor, &motor_conf);
 
-    while (1)
-    {
-        // Handle everything in controlLoop(void)
-    }
+    // Handle everything in controlLoop(void)
+    while (1);
 }
 
 // Main control loop

@@ -38,6 +38,8 @@ void encoder_init(Encoder *enc);
 
 void _configure(Encoder *enc, EncoderConf *confg, POSSPEED *module);
 
+
+// Obtain value in absolute values in nanometers
 int _getValue(Encoder *enc);
 
 void _setValue(Encoder *enc, int value);

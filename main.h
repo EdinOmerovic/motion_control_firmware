@@ -8,6 +8,7 @@
 #ifndef MAIN_H_
 #define MAIN_H_
 
+
 #define TIME_STEP 1000 // [ns]
 
 // Control parameters
