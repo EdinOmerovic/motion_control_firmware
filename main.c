@@ -8,7 +8,7 @@
 #include "main.h"
 
 // Hardware abstraction layer stuff
-#include "encoder_hal.h"
+
 #include "dac_hal.h"
 
 // Drivers
@@ -19,7 +19,7 @@
 #include "lp_filter.h"
 
 // Global static values
-POSSPEED qep_posspeed = POSSPEED_DEFAULTS;
+POSSPEED qep_module = POSSPEED_DEFAULTS;
 Uint16 Interrupt_Count = 0;
 Uint16 dacval = 4095;
 int prev_pos = 0;
@@ -29,7 +29,7 @@ int prev_pos = 0;
 Encoder enc;
 EncoderConf enc_conf;
 
-// Controler
+// Controller
 ControlerConf controler_conf;
 
 // Motor
@@ -42,83 +42,21 @@ LowPassFilter lp_filter;
 // Local function definitions
 //__interrupt void prdTick(void);
 __interrupt void controlLoop(void); // Called every N us
-__interrupt void ISR_pb1(void); // Triggered by endstop 1
-__interrupt void ISR_pb2(void); // Triggered by endstop 2
+__interrupt void ISR_pb1(void); // Triggered by end-stop 1
+__interrupt void ISR_pb2(void); // Triggered by end-stop 2
 
-// TODO: Skontaj kako da na izlazu generises napon zeljenog nivoa.
-// Napravi da enkoder radi u isto vrijeme
-// Napravi da mozes da imas interrupte na GPIO pinovima
-// Skaliranje enkoderskih vrijednosti
-
-// Probao sam encoder + dac
-// Nisam probao ADC
+// TODO
+// Prebaci interakcije niskog nivoa unutar drivera
+// Napravi da ti citanje enkodera na overflowuje vrijednost. Koristi samo ENCCOUNT vrijednost, nemoj pametovat
+// State change triggered interrupt on desired GPIO
 // Provjeri na kojem tacno izlazu ti je DACA
 // Naprav da se glavna petlja poziva timiranom interrupt rutinom
+// Podesi da sve jedinice budu odgovarajuce
 
 void main(void)
 {
-    InitSysCtrl();
-
-    // Initialize HAL components
-    // GPIO
-    InitGpio();
-    //GPIO_SetupPinMux(BLINKY_LED_GPIO, GPIO_MUX_CPU1, 0);
-    //GPIO_SetupPinOptions(BLINKY_LED_GPIO, GPIO_OUTPUT, GPIO_PUSHPULL);
-    //GPIO_WritePin(BLINKY_LED_GPIO, 1);
-    // QEP
-    InitEQep1Gpio();
-    //InitEPwm1Gpio();
-    EALLOW;
-    GpioCtrlRegs.GPADIR.bit.GPIO4 = 1; // GPIO4 as output simulates Index signal
-    GpioDataRegs.GPACLEAR.bit.GPIO4 = 1;  // Normally low
-    EDIS;
-    // DAC
-    configureDAC(DAC_NUM);
-    // ADC
-    ConfigureADC(); // configure and power up
-    SetupADCSoftware(); //Setup the ADCs for software conversions
-
-    // Step 3. Clear all __interrupts and initialize PIE vector table:
-    // Disable CPU __interrupts
-    DINT;
-
-    // Initialize the PIE control registers to their default state.
-    // The default state is all PIE __interrupts disabled and flags
-    // are cleared.
-    // This function is found in the F2837xD_PieCtrl.c file.
-    InitPieCtrl();
-
-    // Disable CPU __interrupts and clear all CPU __interrupt flags:
-    IER = 0x0000;
-    IFR = 0x0000;
-
-    // Initialize the PIE vector table with pointers to the shell Interrupt
-    // Service Routines (ISR).
-    // This will populate the entire table, even if the __interrupt
-    // is not used in this example.  This is useful for debug purposes.
-    // The shell ISR routines are found in F2837xD_DefaultIsr.c.
-    // This function is found in F2837xD_PieVect.c.
-    InitPieVectTable();
-
-    // Interrupts that are used in this example are re-mapped to
-    // ISR functions found within this file.
-    EALLOW;
-    // This is needed to write to EALLOW protected registers
-    // PieVectTable.EPWM1_INT = &prdTick;
-    EDIS;
-
-    // Step 5. User specific code, enable __interrupts:
-    // Enable CPU INT1 which is connected to CPU-Timer 0:
-    IER |= M_INT3;
-
-    // Enable TINT0 in the PIE: Group 3 __interrupt 1
-    PieCtrlRegs.PIEIER3.bit.INTx1 = 1;
-
-    // Enable global Interrupts and higher priority real-time debug events:
-    EINT;
-    // Enable Global __interrupt INTM
-    ERTM;
-    // Enable Global realtime __interrupt DBGM
+    // Initialize system and low-level components
+    initSystem();
 
     // Initialization of high level components
     // Encoder
@@ -126,7 +64,7 @@ void main(void)
     enc_conf.startingValue = 0;
     enc_conf.scalingFactor = 1000;
     enc_conf.absoluteDimentsions = 0;
-    enc.configure(&enc, &enc_conf);
+    enc.configure(&enc, &enc_conf, &qep_module);
 
     // Controller
     controler_conf.An = AN;
@@ -146,22 +84,9 @@ void main(void)
 
     motor_init(&motor, &motor_conf);
 
-    // QEP
-    qep_posspeed.init(&qep_posspeed);
-
     while (1)
     {
-        // Read analog
-        //readAnalog();
-
-        // Read encoder value, scale it, and send to analog
-        qep_posspeed.read(&qep_posspeed);
-
-        // Uint16 value = qep_posspeed.theta_mech/SCALER;
-
-        // Push to DAC
-        DAC_PTR[DAC_NUM]->DACVALS.all = qep_posspeed.theta_mech / SCALER;
-        DELAY_US(2);
+        // Handle everything in controlLoop(void)
     }
 }
 
@@ -171,7 +96,7 @@ __interrupt void controlLoop(void)
     // Get the desired trajectory:
     int q_ref = getTrajectory();
 
-    // FIXME: dodaj da se osnovu funkcije može odrediti 2 izvod trajektorije
+    // FIXME:
     // Get the second derivative of the desired trajectory
     int q2_ref = getTrajectory2od(); // Za prvi MVP to je 0
 
@@ -243,4 +168,68 @@ __interrupt void controlLoop(void)
  PieCtrlRegs.PIEACK.all = PIEACK_GROUP3;
  EPwm1Regs.ETCLR.bit.INT = 1;
  }*/
+
+void initSystem(void)
+{
+    InitSysCtrl();
+
+    // Initialize HAL components
+    // GPIO
+    InitGpio();
+    //GPIO_SetupPinMux(BLINKY_LED_GPIO, GPIO_MUX_CPU1, 0);
+    //GPIO_SetupPinOptions(BLINKY_LED_GPIO, GPIO_OUTPUT, GPIO_PUSHPULL);
+    //GPIO_WritePin(BLINKY_LED_GPIO, 1);
+
+    EALLOW;
+    GpioCtrlRegs.GPADIR.bit.GPIO4 = 1; // GPIO4 as output simulates Index signal
+    GpioDataRegs.GPACLEAR.bit.GPIO4 = 1;  // Normally low
+    EDIS;
+    // DAC
+    configureDAC(DAC_NUM);
+    // ADC
+    ConfigureADC(); // configure and power up
+    SetupADCSoftware(); //Setup the ADCs for software conversions
+
+    // Step 3. Clear all __interrupts and initialize PIE vector table:
+    // Disable CPU __interrupts
+    DINT;
+
+    // Initialize the PIE control registers to their default state.
+    // The default state is all PIE __interrupts disabled and flags
+    // are cleared.
+    // This function is found in the F2837xD_PieCtrl.c file.
+    InitPieCtrl();
+
+    // Disable CPU __interrupts and clear all CPU __interrupt flags:
+    IER = 0x0000;
+    IFR = 0x0000;
+
+    // Initialize the PIE vector table with pointers to the shell Interrupt
+    // Service Routines (ISR).
+    // This will populate the entire table, even if the __interrupt
+    // is not used in this example.  This is useful for debug purposes.
+    // The shell ISR routines are found in F2837xD_DefaultIsr.c.
+    // This function is found in F2837xD_PieVect.c.
+    InitPieVectTable();
+
+    // Interrupts that are used in this example are re-mapped to
+    // ISR functions found within this file.
+    EALLOW;
+    // This is needed to write to EALLOW protected registers
+    // PieVectTable.EPWM1_INT = &prdTick;
+    EDIS;
+
+    // Step 5. User specific code, enable __interrupts:
+    // Enable CPU INT1 which is connected to CPU-Timer 0:
+    IER |= M_INT3;
+
+    // Enable TINT0 in the PIE: Group 3 __interrupt 1
+    PieCtrlRegs.PIEIER3.bit.INTx1 = 1;
+
+    // Enable global Interrupts and higher priority real-time debug events:
+    EINT;
+    // Enable Global __interrupt INTM
+    ERTM;
+    // Enable Global realtime __interrupt DBGM
+}
 

@@ -94,48 +94,30 @@ void SetupADCSoftware(void)
 
 void readAnalog()
 {
-    //
     //convert, wait for completion, and store results
     //start conversions immediately via software, ADCA
-    //
     AdcaRegs.ADCSOCFRC1.all = 0x0003; //SOC0 and SOC1
 
-    //
     //start conversions immediately via software, ADCB
-    //
     AdcbRegs.ADCSOCFRC1.all = 0x0003; //SOC0 and SOC1
 
-    //
     //wait for ADCA to complete, then acknowledge flag
-    //
     while (AdcaRegs.ADCINTFLG.bit.ADCINT1 == 0)
         ;
     AdcaRegs.ADCINTFLGCLR.bit.ADCINT1 = 1;
 
-    //
     //wait for ADCB to complete, then acknowledge flag
-    //
     while (AdcbRegs.ADCINTFLG.bit.ADCINT1 == 0)
         ;
     AdcbRegs.ADCINTFLGCLR.bit.ADCINT1 = 1;
 
-    //
     //store results
-    //
     AdcaResult0 = AdcaResultRegs.ADCRESULT0;
     AdcaResult1 = AdcaResultRegs.ADCRESULT1;
     AdcbResult0 = AdcbResultRegs.ADCRESULT0;
     AdcbResult1 = AdcbResultRegs.ADCRESULT1;
 
-    //
-    //at this point, conversion results are stored in
-    //AdcaResult0, AdcaResult1, AdcbResult0, and AdcbResult1
-    //
 
-    //
-    //software breakpoint, hit run again to get updated conversions
-    //
-    asm("   ESTOP0");
 }
 
 

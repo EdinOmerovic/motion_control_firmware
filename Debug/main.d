@@ -72,8 +72,8 @@ main.obj: C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/common/include
 main.obj: C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/common/include/F2837xD_SysCtrl_defines.h
 main.obj: C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/common/include/F2837xD_Upp_defines.h
 main.obj: ../main.h
-main.obj: C:/Users/Master/Desktop/ccs_extraction/!qepm_e/hal/inc/encoder_hal.h
 main.obj: C:/Users/Master/Desktop/ccs_extraction/!qepm_e/drivers/inc/encoder.h
+main.obj: C:/Users/Master/Desktop/ccs_extraction/!qepm_e/hal/inc/encoder_hal.h
 main.obj: C:/Users/Master/Desktop/ccs_extraction/!qepm_e/drivers/inc/motor.h
 main.obj: C:/Users/Master/Desktop/ccs_extraction/!qepm_e/drivers/inc/trajectory.h
 main.obj: C:/Users/Master/Desktop/ccs_extraction/!qepm_e/drivers/inc/control.h
@@ -223,9 +223,9 @@ C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/common/include/F2837xD_U
 
 ../main.h:
 
-C:/Users/Master/Desktop/ccs_extraction/!qepm_e/hal/inc/encoder_hal.h:
-
 C:/Users/Master/Desktop/ccs_extraction/!qepm_e/drivers/inc/encoder.h:
+
+C:/Users/Master/Desktop/ccs_extraction/!qepm_e/hal/inc/encoder_hal.h:
 
 C:/Users/Master/Desktop/ccs_extraction/!qepm_e/drivers/inc/motor.h:
 

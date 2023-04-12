@@ -8,10 +8,6 @@
 #ifndef MAIN_H_
 #define MAIN_H_
 
-
-#define SCALER 100
-
-
 #define TIME_STEP 1000 // [ns]
 
 // Control parameters
@@ -27,6 +23,8 @@
 
 
 // ****** FUNCTION PROTOTYPES ******
+
+void initSystem(void);
 
 int getCalculationTime(void);
 

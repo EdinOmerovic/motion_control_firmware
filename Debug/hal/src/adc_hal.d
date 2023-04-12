@@ -3,11 +3,13 @@
 hal/src/adc_hal.obj: ../hal/src/adc_hal.c
 hal/src/adc_hal.obj: C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/common/include/F2837xD_defaultisr.h
 hal/src/adc_hal.obj: C:/Users/Master/Desktop/ccs_extraction/!qepm_e/drivers/inc/encoder.h
-hal/src/adc_hal.obj: C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/headers/include/F2837xD_dac.h
-hal/src/adc_hal.obj: C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/headers/include/F2837xD_device.h
-hal/src/adc_hal.obj: C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-c2000_22.6.0.LTS/include/assert.h
+hal/src/adc_hal.obj: C:/Users/Master/Desktop/ccs_extraction/!qepm_e/hal/inc/encoder_hal.h
+hal/src/adc_hal.obj: C:/ti/c2000/C2000Ware_4_03_00_00/libraries/math/IQmath/c28/include/IQmathLib.h
+hal/src/adc_hal.obj: C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-c2000_22.6.0.LTS/include/limits.h
 hal/src/adc_hal.obj: C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-c2000_22.6.0.LTS/include/_ti_config.h
 hal/src/adc_hal.obj: C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-c2000_22.6.0.LTS/include/linkage.h
+hal/src/adc_hal.obj: C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/headers/include/F2837xD_device.h
+hal/src/adc_hal.obj: C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-c2000_22.6.0.LTS/include/assert.h
 hal/src/adc_hal.obj: C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-c2000_22.6.0.LTS/include/stdarg.h
 hal/src/adc_hal.obj: C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-c2000_22.6.0.LTS/include/sys/_types.h
 hal/src/adc_hal.obj: C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-c2000_22.6.0.LTS/include/sys/cdefs.h
@@ -27,6 +29,7 @@ hal/src/adc_hal.obj: C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/hea
 hal/src/adc_hal.obj: C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/headers/include/F2837xD_cmpss.h
 hal/src/adc_hal.obj: C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/headers/include/F2837xD_cputimer.h
 hal/src/adc_hal.obj: C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/headers/include/F2837xD_dac.h
+hal/src/adc_hal.obj: C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/headers/include/F2837xD_device.h
 hal/src/adc_hal.obj: C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/headers/include/F2837xD_dcsm.h
 hal/src/adc_hal.obj: C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/headers/include/F2837xD_dma.h
 hal/src/adc_hal.obj: C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/headers/include/F2837xD_ecap.h
@@ -54,8 +57,6 @@ hal/src/adc_hal.obj: C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/hea
 hal/src/adc_hal.obj: C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/headers/include/F2837xD_xint.h
 hal/src/adc_hal.obj: C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/headers/include/F2837xD_can.h
 hal/src/adc_hal.obj: C:/Users/Master/Desktop/ccs_extraction/!qepm_e/hal/inc/dac_hal.h
-hal/src/adc_hal.obj: C:/ti/c2000/C2000Ware_4_03_00_00/libraries/math/IQmath/c28/include/IQmathLib.h
-hal/src/adc_hal.obj: C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-c2000_22.6.0.LTS/include/limits.h
 hal/src/adc_hal.obj: C:/Users/Master/Desktop/ccs_extraction/!qepm_e/hal/inc/adc_hal.h
 hal/src/adc_hal.obj: C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/common/include/F28x_Project.h
 hal/src/adc_hal.obj: C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/common/include/F2837xD_Cla_typedefs.h
@@ -80,15 +81,19 @@ C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/common/include/F2837xD_d
 
 C:/Users/Master/Desktop/ccs_extraction/!qepm_e/drivers/inc/encoder.h:
 
-C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/headers/include/F2837xD_dac.h:
+C:/Users/Master/Desktop/ccs_extraction/!qepm_e/hal/inc/encoder_hal.h:
 
-C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/headers/include/F2837xD_device.h:
+C:/ti/c2000/C2000Ware_4_03_00_00/libraries/math/IQmath/c28/include/IQmathLib.h:
 
-C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-c2000_22.6.0.LTS/include/assert.h:
+C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-c2000_22.6.0.LTS/include/limits.h:
 
 C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-c2000_22.6.0.LTS/include/_ti_config.h:
 
 C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-c2000_22.6.0.LTS/include/linkage.h:
+
+C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/headers/include/F2837xD_device.h:
+
+C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-c2000_22.6.0.LTS/include/assert.h:
 
 C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-c2000_22.6.0.LTS/include/stdarg.h:
 
@@ -127,6 +132,8 @@ C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/headers/include/F2837xD_
 C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/headers/include/F2837xD_cputimer.h:
 
 C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/headers/include/F2837xD_dac.h:
+
+C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/headers/include/F2837xD_device.h:
 
 C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/headers/include/F2837xD_dcsm.h:
 
@@ -181,10 +188,6 @@ C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/headers/include/F2837xD_
 C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/headers/include/F2837xD_can.h:
 
 C:/Users/Master/Desktop/ccs_extraction/!qepm_e/hal/inc/dac_hal.h:
-
-C:/ti/c2000/C2000Ware_4_03_00_00/libraries/math/IQmath/c28/include/IQmathLib.h:
-
-C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-c2000_22.6.0.LTS/include/limits.h:
 
 C:/Users/Master/Desktop/ccs_extraction/!qepm_e/hal/inc/adc_hal.h:
 

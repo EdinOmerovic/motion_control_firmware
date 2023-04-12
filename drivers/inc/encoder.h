@@ -7,10 +7,9 @@
  *
  *
  */
-
-
 #ifndef ENCODER_H
 #define ENCODER_H
+#include "encoder_hal.h"
 
 typedef struct
 {
@@ -24,18 +23,20 @@ typedef struct Encoder
 {
     EncoderConf *enc_confg;
     // Function pointer table
-    void (*configure)(struct Encoder *enc, EncoderConf *confg);
+    void (*configure)(struct Encoder *enc, EncoderConf *confg, POSSPEED *module);
     int (*getValue)(struct Encoder *enc);
     void (*setValue)(struct Encoder *enc, int value);
     // Dynamic variables
     int previous_encoder_value;
     int current_absolute_position;
+    // QEP module
+    POSSPEED_handle module;
 
 } Encoder;
 
 void encoder_init(Encoder *enc);
 
-void _configure(Encoder *enc, EncoderConf *confg);
+void _configure(Encoder *enc, EncoderConf *confg, POSSPEED *module);
 
 int _getValue(Encoder *enc);
 
