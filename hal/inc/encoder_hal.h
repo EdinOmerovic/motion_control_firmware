@@ -58,11 +58,12 @@
 //
 // Defines
 //
-#define POSSPEED_DEFAULTS {0x0, 0x0,0x0,0x0,0x0,16776,2,0,0x0,\
+#define POSSPEED_DEFAULTS {0x0, 0x0,0x0,0x0,0x0,10000,2,0,0x0,\
                            250,0,6000,0,\
                            0,0,0,\
                            (void (*)(long))POSSPEED_Init,\
-                           (void (*)(long))POSSPEED_Calc }
+                           (void (*)(long))POSSPEED_Calc,\
+                           (Uint16 (*)(long))POSSPEED_Read}
 
 //
 // Globals
@@ -94,6 +95,7 @@ typedef struct {int theta_elec;         // Output: Motor Electrical angle (Q15)
                                         // independently with global Q
                 void (*init)();         // Pointer to the init funcion
                 void (*calc)();         // Pointer to the calc funtion
+                Uint16 (*read)();
                 }  POSSPEED;
 
 typedef POSSPEED *POSSPEED_handle;
@@ -103,6 +105,8 @@ typedef POSSPEED *POSSPEED_handle;
 //
 void POSSPEED_Init(void);
 void POSSPEED_Calc(POSSPEED_handle);
+
+Uint16 POSSPEED_Read(POSSPEED_handle);
 
 #endif //  __POSSPEED__
 

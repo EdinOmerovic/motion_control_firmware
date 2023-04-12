@@ -2,6 +2,7 @@
 
 hal/src/encoder_hal.obj: ../hal/src/encoder_hal.c
 hal/src/encoder_hal.obj: C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/common/include/F2837xD_defaultisr.h
+hal/src/encoder_hal.obj: C:/Users/Master/Desktop/ccs_extraction/!qepm_e/drivers/inc/encoder.h
 hal/src/encoder_hal.obj: C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/headers/include/F2837xD_dac.h
 hal/src/encoder_hal.obj: C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/headers/include/F2837xD_device.h
 hal/src/encoder_hal.obj: C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-c2000_22.6.0.LTS/include/assert.h
@@ -76,6 +77,8 @@ hal/src/encoder_hal.obj: C:/Users/Master/Desktop/ccs_extraction/!qepm_e/hal/inc/
 ../hal/src/encoder_hal.c:
 
 C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/common/include/F2837xD_defaultisr.h:
+
+C:/Users/Master/Desktop/ccs_extraction/!qepm_e/drivers/inc/encoder.h:
 
 C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/headers/include/F2837xD_dac.h:
 

@@ -152,6 +152,7 @@ void POSSPEED_Init(void)
 //
 void POSSPEED_Calc(POSSPEED *p)
 {
+    /*
     long tmp;
     unsigned int pos16bval, temp1;
     _iq Tmp1, newp, oldp;
@@ -314,8 +315,38 @@ void POSSPEED_Calc(POSSPEED *p)
         EQep1Regs.QEPSTS.all = 0x88; // Clear Unit position event flag
                                      // Clear overflow error flag
     }
+    */
 }
 
+Uint16 POSSPEED_Read(POSSPEED *p)
+{
+    long tmp;
+    unsigned int pos16bval, temp1;
+
+    //
+    // Position calculation - mechanical and electrical motor angle
+    //
+    p->DirectionQep = EQep1Regs.QEPSTS.bit.QDF;  // Motor direction:
+                                                 // 0=CCW/reverse, 1=CW/forward
+
+    pos16bval = (unsigned int) EQep1Regs.QPOSCNT; // capture position once
+                                                  // per QA/QB period
+
+    p->theta_raw = pos16bval + p->cal_angle;      // raw theta = current pos. +
+                                                  // ang. offset from QA
+
+    //
+    // The following lines calculate
+    // p->theta_mech ~= QPOSCNT/mech_scaler [current cnt/(total cnt in 1 rev.)]
+    // where mech_scaler = 4000 cnts/revolution
+    //
+    tmp = (long) ((long) p->theta_raw * (long) p->mech_scaler);  // Q0*Q26 = Q26
+    tmp &= 0x03FFF000;
+    p->theta_mech = (int) (tmp >> 11);                          // Q26 -> Q15
+    p->theta_mech &= 0x7FFF;
+
+    return pos16bval;
+}
 //
 // End of file
 //
