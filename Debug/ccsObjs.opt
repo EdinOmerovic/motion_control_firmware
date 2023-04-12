@@ -1,6 +1,7 @@
 "./main.obj"
 "./bsp/F2837xD_Adc.obj"
 "./bsp/F2837xD_CodeStartBranch.obj"
+"./bsp/F2837xD_CpuTimers.obj"
 "./bsp/F2837xD_DefaultISR.obj"
 "./bsp/F2837xD_EPwm.obj"
 "./bsp/F2837xD_EQep.obj"

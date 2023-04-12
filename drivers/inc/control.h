@@ -4,19 +4,19 @@
 
 typedef struct
 {
-    int KP;
-    int KI;
-    int KD;
-    int G;
-    int An;
+    Uint32 KP;
+    Uint32 KI;
+    Uint32 KD;
+    Uint32 G;
+    Uint32 An;
 } ControlerConf;
 
 void control_init(ControlerConf *);
 
-int pd_control(int error);
+Uint32 pd_control(int error);
 
-int disturbance_observer1(LowPassFilter *, int);
+Uint32 disturbance_observer1(LowPassFilter *, int);
 
-int disturbance_observer2(int);
+void disturbance_observer2(int);
 
 #endif

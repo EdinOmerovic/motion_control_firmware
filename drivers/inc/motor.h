@@ -15,8 +15,9 @@
 
 typedef struct
 {
-    int tau_offset;
-    int voltage_offset;
+    Uint32 tau_offset;
+    Uint32 voltage_offset;
+    Uint32 scaler;
 } MotorConf;
 
 

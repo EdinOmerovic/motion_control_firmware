@@ -13,6 +13,7 @@ ORDERED_OBJS += \
 "./main.obj" \
 "./bsp/F2837xD_Adc.obj" \
 "./bsp/F2837xD_CodeStartBranch.obj" \
+"./bsp/F2837xD_CpuTimers.obj" \
 "./bsp/F2837xD_DefaultISR.obj" \
 "./bsp/F2837xD_EPwm.obj" \
 "./bsp/F2837xD_EQep.obj" \
@@ -170,8 +171,8 @@ qepm_extraction.out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 # Other Targets
 clean:
 	-$(RM) $(EXE_OUTPUTS__QUOTED)
-	-$(RM) "main.obj" "bsp\F2837xD_Adc.obj" "bsp\F2837xD_CodeStartBranch.obj" "bsp\F2837xD_DefaultISR.obj" "bsp\F2837xD_EPwm.obj" "bsp\F2837xD_EQep.obj" "bsp\F2837xD_GlobalVariableDefs.obj" "bsp\F2837xD_Gpio.obj" "bsp\F2837xD_Ipc.obj" "bsp\F2837xD_PieCtrl.obj" "bsp\F2837xD_PieVect.obj" "bsp\F2837xD_SysCtrl.obj" "bsp\F2837xD_usDelay.obj" "drivers\src\control.obj" "drivers\src\encoder.obj" "drivers\src\lp_filter.obj" "drivers\src\motor.obj" "drivers\src\trajectory.obj" "hal\src\adc_hal.obj" "hal\src\dac_hal.obj" "hal\src\encoder_hal.obj" 
-	-$(RM) "main.d" "bsp\F2837xD_Adc.d" "bsp\F2837xD_DefaultISR.d" "bsp\F2837xD_EPwm.d" "bsp\F2837xD_EQep.d" "bsp\F2837xD_GlobalVariableDefs.d" "bsp\F2837xD_Gpio.d" "bsp\F2837xD_Ipc.d" "bsp\F2837xD_PieCtrl.d" "bsp\F2837xD_PieVect.d" "bsp\F2837xD_SysCtrl.d" "drivers\src\control.d" "drivers\src\encoder.d" "drivers\src\lp_filter.d" "drivers\src\motor.d" "drivers\src\trajectory.d" "hal\src\adc_hal.d" "hal\src\dac_hal.d" "hal\src\encoder_hal.d" 
+	-$(RM) "main.obj" "bsp\F2837xD_Adc.obj" "bsp\F2837xD_CodeStartBranch.obj" "bsp\F2837xD_CpuTimers.obj" "bsp\F2837xD_DefaultISR.obj" "bsp\F2837xD_EPwm.obj" "bsp\F2837xD_EQep.obj" "bsp\F2837xD_GlobalVariableDefs.obj" "bsp\F2837xD_Gpio.obj" "bsp\F2837xD_Ipc.obj" "bsp\F2837xD_PieCtrl.obj" "bsp\F2837xD_PieVect.obj" "bsp\F2837xD_SysCtrl.obj" "bsp\F2837xD_usDelay.obj" "drivers\src\control.obj" "drivers\src\encoder.obj" "drivers\src\lp_filter.obj" "drivers\src\motor.obj" "drivers\src\trajectory.obj" "hal\src\adc_hal.obj" "hal\src\dac_hal.obj" "hal\src\encoder_hal.obj" 
+	-$(RM) "main.d" "bsp\F2837xD_Adc.d" "bsp\F2837xD_CpuTimers.d" "bsp\F2837xD_DefaultISR.d" "bsp\F2837xD_EPwm.d" "bsp\F2837xD_EQep.d" "bsp\F2837xD_GlobalVariableDefs.d" "bsp\F2837xD_Gpio.d" "bsp\F2837xD_Ipc.d" "bsp\F2837xD_PieCtrl.d" "bsp\F2837xD_PieVect.d" "bsp\F2837xD_SysCtrl.d" "drivers\src\control.d" "drivers\src\encoder.d" "drivers\src\lp_filter.d" "drivers\src\motor.d" "drivers\src\trajectory.d" "hal\src\adc_hal.d" "hal\src\dac_hal.d" "hal\src\encoder_hal.d" 
 	-$(RM) "bsp\F2837xD_CodeStartBranch.d" "bsp\F2837xD_usDelay.d" 
 	-@echo 'Finished clean'
 	-@echo ' '

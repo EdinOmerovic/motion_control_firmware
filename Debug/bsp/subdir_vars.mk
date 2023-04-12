@@ -11,6 +11,7 @@ C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/common/source/F2837xD_us
 
 C_SRCS += \
 C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/common/source/F2837xD_Adc.c \
+C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/common/source/F2837xD_CpuTimers.c \
 C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/common/source/F2837xD_DefaultISR.c \
 C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/common/source/F2837xD_EPwm.c \
 C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/common/source/F2837xD_EQep.c \
@@ -23,6 +24,7 @@ C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/common/source/F2837xD_Sy
 
 C_DEPS += \
 ./bsp/F2837xD_Adc.d \
+./bsp/F2837xD_CpuTimers.d \
 ./bsp/F2837xD_DefaultISR.d \
 ./bsp/F2837xD_EPwm.d \
 ./bsp/F2837xD_EQep.d \
@@ -36,6 +38,7 @@ C_DEPS += \
 OBJS += \
 ./bsp/F2837xD_Adc.obj \
 ./bsp/F2837xD_CodeStartBranch.obj \
+./bsp/F2837xD_CpuTimers.obj \
 ./bsp/F2837xD_DefaultISR.obj \
 ./bsp/F2837xD_EPwm.obj \
 ./bsp/F2837xD_EQep.obj \
@@ -54,6 +57,7 @@ ASM_DEPS += \
 OBJS__QUOTED += \
 "bsp\F2837xD_Adc.obj" \
 "bsp\F2837xD_CodeStartBranch.obj" \
+"bsp\F2837xD_CpuTimers.obj" \
 "bsp\F2837xD_DefaultISR.obj" \
 "bsp\F2837xD_EPwm.obj" \
 "bsp\F2837xD_EQep.obj" \
@@ -67,6 +71,7 @@ OBJS__QUOTED += \
 
 C_DEPS__QUOTED += \
 "bsp\F2837xD_Adc.d" \
+"bsp\F2837xD_CpuTimers.d" \
 "bsp\F2837xD_DefaultISR.d" \
 "bsp\F2837xD_EPwm.d" \
 "bsp\F2837xD_EQep.d" \
@@ -83,6 +88,7 @@ ASM_DEPS__QUOTED += \
 
 C_SRCS__QUOTED += \
 "C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/common/source/F2837xD_Adc.c" \
+"C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/common/source/F2837xD_CpuTimers.c" \
 "C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/common/source/F2837xD_DefaultISR.c" \
 "C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/common/source/F2837xD_EPwm.c" \
 "C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/common/source/F2837xD_EQep.c" \

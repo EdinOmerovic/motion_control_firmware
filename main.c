@@ -87,24 +87,30 @@ void main(void)
 
     filter_init(&lp_filter, G_val, 0);
 
+    motor_conf.scaler = 1;
+    motor_conf.tau_offset = 0;
+    motor_conf.voltage_offset = 0;
     motor_init(&motor, &motor_conf);
 
+    CpuTimer0Regs.TCR.bit.TSS = 0; // Start the timer
+
     // Handle everything in controlLoop(void)
-    while (1);
+    while (1)
+        ;
 }
 
 // Main control loop
 __interrupt void controlLoop(void)
 {
     // Get the desired trajectory:
-    int q_ref = getTrajectory();
+    Uint32 q_ref = getTrajectory();
 
     // FIXME:
     // Get the second derivative of the desired trajectory
-    int q2_ref = getTrajectory2od(); // Za prvi MVP to je 0
+    Uint32 q2_ref = getTrajectory2od(); // Za prvi MVP to je 0
 
-    // Get current absolute position from encoder
-    int q_act = enc.getValue(&enc);
+    // Get current absolute position from encoder (in nanometers)
+    Uint32 q_act = enc.getValue(&enc);
 
     // Calculate position error
     int error = q_ref - q_act;
@@ -131,46 +137,11 @@ __interrupt void controlLoop(void)
     // Wait for the descrete timestep. Substract the time spent calculating
     prev_pos = enc.getValue(&enc);
 
+    // Acknowledge this __interrupt to receive more __interrupts from group 1
+    PieCtrlRegs.PIEACK.all = PIEACK_GROUP3;
+    CpuTimer0Regs.TCR.bit.TIF = 1; // Clear the timer interrupt flag
+
 }
-
-//
-// prdTick - EPWM1 Interrupts once every 4 QCLK counts (one period)
-//
-/*__interrupt void prdTick(void)
- {
- Uint16 i;
-
- //
- // Position and Speed measurement
- //
- qep_posspeed.calc(&qep_posspeed);
-
- //
- // Control loop code for position control & Speed control
- //
- Interrupt_Count++;
-
- //
- // Every 1000 __interrupts(4000 QCLK counts or 1 rev.)
- //
- if (Interrupt_Count == 1000)
- {
- EALLOW;
- GpioDataRegs.GPASET.bit.GPIO4 = 1; // Pulse Index signal  (1 pulse/rev.)
- for (i = 0; i < 700; i++)
- {
- }
- GpioDataRegs.GPACLEAR.bit.GPIO4 = 1;
- Interrupt_Count = 0;               // Reset count
- EDIS;
- }
-
- //
- // Acknowledge this __interrupt to receive more __interrupts from group 1
- //
- PieCtrlRegs.PIEACK.all = PIEACK_GROUP3;
- EPwm1Regs.ETCLR.bit.INT = 1;
- }*/
 
 void initSystem(void)
 {
@@ -220,14 +191,44 @@ void initSystem(void)
     EALLOW;
     // This is needed to write to EALLOW protected registers
     // PieVectTable.EPWM1_INT = &prdTick;
+    PieVectTable.TIMER0_INT = &controlLoop;
     EDIS;
+
+    // Step 4. Initialize the Device Peripheral.
+    InitCpuTimers();   // For this example, only initialize the Cpu Timers
+
+    // Configure CPU-Timer 0 to __interrupt every 500 milliseconds:
+    // 60MHz CPU Freq, 50 millisecond Period (in uSeconds)
+    ConfigCpuTimer(&CpuTimer0, 60, 500000);
+
+    // To ensure precise timing, use write-only instructions to write to the entire
+    // register. Therefore, if any of the configuration bits are changed in
+    // ConfigCpuTimer and InitCpuTimers (in F2837xD_cputimervars.h), the below
+    // settings must also be updated.
+    CpuTimer0Regs.TCR.all = 0x4001;
+
+    // Step 5. User specific code, enable __interrupts:
+    // Configure GPIO34 as a GPIO output pin
+    //EALLOW;
+    //GpioCtrlRegs.GPBMUX1.bit.GPIO34 = 0;
+    //GpioCtrlRegs.GPBDIR.bit.GPIO34 = 1;
+    //EDIS;
+
+    // Enable CPU INT1 which is connected to CPU-Timer 0:
+    IER |= M_INT1;
+
+    // Enable TINT0 in the PIE: Group 1 __interrupt 7
+    PieCtrlRegs.PIEIER1.bit.INTx7 = 1;
+
+    // Enable global Interrupts and higher priority real-time debug events:
+    EINT;
+    // Enable Global __interrupt INTM
+    ERTM;
+    // Enable Global realtime __interrupt DBGM
 
     // Step 5. User specific code, enable __interrupts:
     // Enable CPU INT1 which is connected to CPU-Timer 0:
     IER |= M_INT3;
-
-    // Enable TINT0 in the PIE: Group 3 __interrupt 1
-    PieCtrlRegs.PIEIER3.bit.INTx1 = 1;
 
     // Enable global Interrupts and higher priority real-time debug events:
     EINT;
