@@ -1,15 +1,8 @@
 // Code Composer Project related stuff
 #include "F28x_Project.h"
-#include "F2837xD_device.h"  // F2837xD CLA Type definitions
-#include "F2837xD_Examples.h"      // F2837xD Examples Include File
 
 // Contains project level configuration
-// Project defines
 #include "main.h"
-
-// Hardware abstraction layer stuff
-
-#include "dac_hal.h"
 
 // Drivers
 #include "encoder.h"
@@ -27,7 +20,7 @@ int prev_pos = 0;
 // **** INSTATATION ****
 // Encoder
 Encoder enc;
-EncoderConf enc_conf;
+
 
 // Controller
 ControlerConf controler_conf;
@@ -44,9 +37,9 @@ LowPassFilter lp_filter;
 __interrupt void controlLoop(void); // Called every N us
 __interrupt void ISR_pb1(void); // Triggered by end-stop 1
 __interrupt void ISR_pb2(void); // Triggered by end-stop 2
+void initSystem(void);
 
 // TODO
-// Prebaci interakcije niskog nivoa unutar drivera
 // Napravi da ti citanje enkodera na overflowuje vrijednost. Koristi samo ENCCOUNT vrijednost, nemoj pametovat
 // State change triggered interrupt on desired GPIO
 // Provjeri na kojem tacno izlazu ti je DACA
@@ -55,7 +48,7 @@ __interrupt void ISR_pb2(void); // Triggered by end-stop 2
 
 // NOTE: all values are represented in the follwing units:
 // * lenght = micrometers.
-// * time  = nanoseconds
+// * time  = microseconds
 // * mass = grams
 
 void main(void)
@@ -66,9 +59,11 @@ void main(void)
     // Initialization of high level components
     // Encoder
     encoder_init(&enc);
-    enc_conf.startingValue = 0;
-    enc_conf.scalingFactor = 100; // To get values in micrometers
-    enc_conf.absoluteDimentsions = 0;
+
+    EncoderConf enc_conf = {
+                            .scalingFactor=100, // to get micrometers
+                            .startingValue = 0
+    };
     enc.configure(&enc, &enc_conf, &qep_module);
 
     // Controller
@@ -90,6 +85,7 @@ void main(void)
     motor_conf.scaler = 1;
     motor_conf.tau_offset = 0;
     motor_conf.voltage_offset = 0;
+
     motor_init(&motor, &motor_conf);
 
     EALLOW;
@@ -112,7 +108,7 @@ __interrupt void controlLoop(void)
     // Get the second derivative of the desired trajectory
     Uint32 q2_ref = getTrajectory2od(); // Za prvi MVP to je 0
 
-    // Get current absolute position from encoder (in nanometers)
+    // Get current absolute position from encoder (in micrometers)
     Uint32 q_act = enc.getValue(&enc);
 
     // Calculate position error
@@ -198,7 +194,7 @@ void initSystem(void)
     InitCpuTimers();   // For this example, only initialize the Cpu Timers
 
     // Configure CPU-Timer 0 to __interrupt
-    ConfigCpuTimer(&CpuTimer0, 200, TIME_STEP/1000);
+    ConfigCpuTimer(&CpuTimer0, 200, TIME_STEP);
 
     // To ensure precise timing, use write-only instructions to write to the entire
     // register. Therefore, if any of the configuration bits are changed in

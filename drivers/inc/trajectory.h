@@ -7,6 +7,7 @@
 
 #ifndef TRAJECTORY_H
 #define TRAJECTORY_H
+#include "adc_hal.h"
 
 typedef enum {
     ANALOG_READ,

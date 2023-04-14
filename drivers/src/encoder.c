@@ -2,6 +2,9 @@
 
 #define STARTING_VALUE 0
 
+// Defiend in F2837xD_EQep.c file
+extern InitEQep1Gpio(void);
+
 void encoder_init(Encoder *enc)
 {
     enc->configure = _configure;
@@ -15,10 +18,10 @@ void encoder_init(Encoder *enc)
 void _configure(Encoder *enc, EncoderConf *confg, POSSPEED *module)
 {
     enc->enc_confg = confg;    
-    enc->previous_encoder_value = STARTING_VALUE;
-    enc->current_absolute_position = confg->startingValue;
-    enc->module = module;
+    enc->previous_encoder_value = (confg->startingValue/confg->scalingFactor);
+    enc->current_absolute_position = enc->previous_encoder_value;
     // QEP
+    enc->module = module;
     enc->module->init(enc->module);
 }
 

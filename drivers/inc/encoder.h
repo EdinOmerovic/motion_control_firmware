@@ -13,10 +13,8 @@
 
 typedef struct
 {
-    // dummy
-    Uint32 scalingFactor;
-    Uint32 absoluteDimentsions;
-    Uint32 startingValue;
+    const Uint32 scalingFactor;
+    const Uint32 startingValue;
 } EncoderConf;
 
 typedef struct Encoder

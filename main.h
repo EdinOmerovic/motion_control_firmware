@@ -9,7 +9,7 @@
 #define MAIN_H_
 
 // Should be bigger than 1000 for now
-#define TIME_STEP 1000000 // [ns]
+#define TIME_STEP 1000 // [us]
 
 #define BLINKY_LED_GPIO 31
 
@@ -21,21 +21,8 @@
 #define AN 1    // Manipulator inertia, mass
 #define G_val 1 // filter parameters
 // Absolute value of the possition when touching endstop 2
-#define ENDSTOP2_VALUE 83500000 // 8.35cm
+#define ENDSTOP2_VALUE 83500// 8.35cm
 
-
-
-// ****** FUNCTION PROTOTYPES ******
-
-void initSystem(void);
-
-int getCalculationTime(void);
-
-void sleep(int time);
-
-void ISR_pb1(void);
-
-void ISR_pb2(void);
 
 
 #endif /* MAIN_H_ */

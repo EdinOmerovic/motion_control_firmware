@@ -58,6 +58,7 @@ drivers/src/trajectory.obj: C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f283
 drivers/src/trajectory.obj: C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/headers/include/F2837xD_can.h
 drivers/src/trajectory.obj: C:/Users/Master/Desktop/ccs_extraction/!qepm_e/hal/inc/dac_hal.h
 drivers/src/trajectory.obj: C:/Users/Master/Desktop/ccs_extraction/!qepm_e/drivers/inc/trajectory.h
+drivers/src/trajectory.obj: C:/Users/Master/Desktop/ccs_extraction/!qepm_e/hal/inc/adc_hal.h
 drivers/src/trajectory.obj: C:/Users/Master/Desktop/ccs_extraction/!qepm_e/drivers/inc/trajectory_lut.h
 
 ../drivers/src/trajectory.c:
@@ -175,6 +176,8 @@ C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/headers/include/F2837xD_
 C:/Users/Master/Desktop/ccs_extraction/!qepm_e/hal/inc/dac_hal.h:
 
 C:/Users/Master/Desktop/ccs_extraction/!qepm_e/drivers/inc/trajectory.h:
+
+C:/Users/Master/Desktop/ccs_extraction/!qepm_e/hal/inc/adc_hal.h:
 
 C:/Users/Master/Desktop/ccs_extraction/!qepm_e/drivers/inc/trajectory_lut.h:
 
