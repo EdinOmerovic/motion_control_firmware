@@ -1,3 +1,8 @@
+// NOTE: all values are represented in the follwing units:
+// * lenght = micrometers.
+// * time  = microseconds
+// * mass = grams
+
 // Code Composer Project related stuff
 #include "F28x_Project.h"
 
@@ -13,21 +18,17 @@
 
 // Global static values
 POSSPEED qep_module = POSSPEED_DEFAULTS;
-Uint16 Interrupt_Count = 0;
-Uint16 dacval = 4095;
-int prev_pos = 0;
+Uint32 prev_pos = 0;
 
 // **** INSTATATION ****
 // Encoder
 Encoder enc;
-
 
 // Controller
 ControlerConf controler_conf;
 
 // Motor
 Motor motor;
-MotorConf motor_conf;
 
 // LP filter
 LowPassFilter lp_filter;
@@ -40,19 +41,12 @@ __interrupt void ISR_pb2(void); // Triggered by end-stop 2
 void initSystem(void);
 
 // TODO
-// Napravi da ti citanje enkodera na overflowuje vrijednost. Koristi samo ENCCOUNT vrijednost, nemoj pametovat
-// State change triggered interrupt on desired GPIO
 // Provjeri na kojem tacno izlazu ti je DACA
 // Naprav da se glavna petlja poziva timiranom interrupt rutinom
 // Podesi da sve jedinice budu odgovarajuce
 
-// NOTE: all values are represented in the follwing units:
-// * lenght = micrometers.
-// * time  = microseconds
-// * mass = grams
-
 void main(void)
-  {
+{
     // Initialize system and low-level components
     initSystem();
 
@@ -60,10 +54,9 @@ void main(void)
     // Encoder
     encoder_init(&enc);
 
-    EncoderConf enc_conf = {
-                            .scalingFactor=100, // to get micrometers
-                            .startingValue = 0
-    };
+    // scaling factor = 100 to get micrometers
+    // starting value should be determined by autohoming: ENDSTOP1_VALUE
+    EncoderConf enc_conf = { .scalingFactor = 100, .startingValue = 0 };
     enc.configure(&enc, &enc_conf, &qep_module);
 
     // Controller
@@ -82,10 +75,8 @@ void main(void)
 
     filter_init(&lp_filter, G_val, 0);
 
-    motor_conf.scaler = 1;
-    motor_conf.tau_offset = 0;
-    motor_conf.voltage_offset = 0;
 
+    MotorConf motor_conf = {.scaler = 1, .tau_offset = 0, .voltage_offset = 0};
     motor_init(&motor, &motor_conf);
 
     EALLOW;
@@ -93,7 +84,7 @@ void main(void)
     EDIS;
 
     // Handle everything in controlLoop(void)
-    for(;;);
+    for (;;);
 }
 
 // Main control loop
@@ -120,7 +111,7 @@ __interrupt void controlLoop(void)
     // Disturbance observer
     // Calculate velocity:
     // v = delta X / delta T
-    int vel = (q_act - prev_pos) / TIME_STEP;
+    int vel = (q_act - prev_pos) / TIME_STEP; // in um/us
     int tau_dis = disturbance_observer1(&lp_filter, vel);
 
     // Calculate tau
@@ -133,7 +124,6 @@ __interrupt void controlLoop(void)
 
     motor.setTorque(&motor, tau);
 
-    // Wait for the descrete timestep. Substract the time spent calculating
     prev_pos = enc.getValue(&enc);
 
     // Acknowledge this __interrupt to receive more __interrupts from group 1
@@ -146,6 +136,24 @@ __interrupt void controlLoop(void)
 
 }
 
+__interrupt void ISR_pb1(void)
+{
+    enc.setValue(&enc, 0);
+
+    // Additionally cut all power to the motor driver
+    // Acknowledge this interrupt to get more from group 1
+    PieCtrlRegs.PIEACK.all = PIEACK_GROUP1;
+}
+__interrupt void ISR_pb2(void)
+{
+
+    enc.setValue(&enc, ENDSTOP2_VALUE);
+    // Acknowledge this interrupt to get more from group 1
+    PieCtrlRegs.PIEACK.all = PIEACK_GROUP1;
+
+}
+
+// Setup the GPIO interrupt
 void initSystem(void)
 {
     InitSysCtrl();
@@ -153,8 +161,52 @@ void initSystem(void)
     // Initialize HAL components
     // GPIO
     InitGpio();
+    // Blue led
     GPIO_SetupPinMux(BLINKY_LED_GPIO, GPIO_MUX_CPU1, 0);
     GPIO_SetupPinOptions(BLINKY_LED_GPIO, GPIO_OUTPUT, GPIO_PUSHPULL);
+
+//    EALLOW;
+//    GpioDataRegs.GPASET.bit.GPIO30 = 1;         // Load the output latch
+//    GpioCtrlRegs.GPAMUX2.bit.GPIO30 = 0;        // GPIO
+//    GpioCtrlRegs.GPADIR.bit.GPIO30 = 1;         // output
+//
+//    GpioDataRegs.GPACLEAR.bit.GPIO31 = 1;       // Load the output latch
+//    GpioCtrlRegs.GPAMUX2.bit.GPIO31 = 0;        // GPIO
+//    GpioCtrlRegs.GPADIR.bit.GPIO31 = 1;         // output
+//    EDIS;
+
+    //
+    // GPIO0 and GPIO1 are inputs
+    //
+    EALLOW;
+    GpioCtrlRegs.GPAMUX1.bit.GPIO0 = 0;         // GPIO
+    GpioCtrlRegs.GPADIR.bit.GPIO0 = 0;          // input
+    GpioCtrlRegs.GPAQSEL1.bit.GPIO0 = 0;        // XINT1 Synch to SYSCLKOUT only
+
+    GpioCtrlRegs.GPAMUX1.bit.GPIO1 = 0;         // GPIO
+    GpioCtrlRegs.GPADIR.bit.GPIO1 = 0;          // input
+    GpioCtrlRegs.GPAQSEL1.bit.GPIO1 = 0;        // XINT2 Qual using 6 samples
+    //GpioCtrlRegs.GPACTRL.bit.QUALPRD0 = 0xFF;   // Each sampling window
+    // is 510*SYSCLKOUT
+    EDIS;
+
+    //
+    // GPIO0 is XINT1, GPIO1 is XINT2
+    //
+    GPIO_SetupXINT1Gpio(0);
+    GPIO_SetupXINT2Gpio(1);
+
+    //
+    // Configure XINT1
+    //
+    XintRegs.XINT1CR.bit.POLARITY = 0;          // Falling edge interrupt
+    XintRegs.XINT2CR.bit.POLARITY = 0;          // Falling edge interrupt
+
+    //
+    // Enable XINT1 and XINT2
+    //
+    XintRegs.XINT1CR.bit.ENABLE = 1;            // Enable XINT1
+    XintRegs.XINT2CR.bit.ENABLE = 1;            // Enable XINT2
 
     // DAC
     configureDAC(DAC_NUM);
@@ -189,6 +241,8 @@ void initSystem(void)
     // Interrupts that are used in this example are re-mapped to
     // ISR functions found within this file.
     PieVectTable.TIMER0_INT = &controlLoop;
+    PieVectTable.XINT1_INT = &ISR_pb1;
+    PieVectTable.XINT2_INT = &ISR_pb2;
 
     // Step 4. Initialize the Device Peripheral.
     InitCpuTimers();   // For this example, only initialize the Cpu Timers
@@ -202,12 +256,14 @@ void initSystem(void)
     // settings must also be updated.
     CpuTimer0Regs.TCR.all = 0x4001;
 
-    // Enable CPU INT1 which is connected to CPU-Timer 0:
-    IER |= M_INT1;
-
     // Enable TINT0 in the PIE: Group 1 __interrupt 7
     PieCtrlRegs.PIEIER1.bit.INTx7 = 1;
+    PieCtrlRegs.PIECTRL.bit.ENPIE = 1;          // Enable the PIE block
+    PieCtrlRegs.PIEIER1.bit.INTx4 = 1;          // Enable PIE Group 1 INT4
+    PieCtrlRegs.PIEIER1.bit.INTx5 = 1;          // Enable PIE Group 1 INT5
 
+    // Enable CPU INT1 which is connected to CPU-Timer 0:
+    IER |= M_INT1;
     // Disable write protection
     EDIS;
     // Enable global Interrupts and higher priority real-time debug events:

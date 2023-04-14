@@ -20,7 +20,9 @@
 
 #define AN 1    // Manipulator inertia, mass
 #define G_val 1 // filter parameters
+
 // Absolute value of the possition when touching endstop 2
+#define ENDSTOP1_VALUE 0
 #define ENDSTOP2_VALUE 83500// 8.35cm
 
 
