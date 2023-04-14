@@ -54,12 +54,12 @@ __interrupt void ISR_pb2(void); // Triggered by end-stop 2
 // Podesi da sve jedinice budu odgovarajuce
 
 // NOTE: all values are represented in the follwing units:
-// * lenght = nanometers.
+// * lenght = micrometers.
 // * time  = nanoseconds
 // * mass = grams
 
 void main(void)
-{
+  {
     // Initialize system and low-level components
     initSystem();
 
@@ -67,7 +67,7 @@ void main(void)
     // Encoder
     encoder_init(&enc);
     enc_conf.startingValue = 0;
-    enc_conf.scalingFactor = 1000;
+    enc_conf.scalingFactor = 100; // To get values in micrometers
     enc_conf.absoluteDimentsions = 0;
     enc.configure(&enc, &enc_conf, &qep_module);
 
@@ -92,16 +92,19 @@ void main(void)
     motor_conf.voltage_offset = 0;
     motor_init(&motor, &motor_conf);
 
+    EALLOW;
     CpuTimer0Regs.TCR.bit.TSS = 0; // Start the timer
+    EDIS;
 
     // Handle everything in controlLoop(void)
-    while (1)
-        ;
+    for(;;);
 }
 
 // Main control loop
 __interrupt void controlLoop(void)
 {
+    // Diode used for debugging
+    GPIO_WritePin(BLINKY_LED_GPIO, 1);
     // Get the desired trajectory:
     Uint32 q_ref = getTrajectory();
 
@@ -138,8 +141,12 @@ __interrupt void controlLoop(void)
     prev_pos = enc.getValue(&enc);
 
     // Acknowledge this __interrupt to receive more __interrupts from group 1
-    PieCtrlRegs.PIEACK.all = PIEACK_GROUP3;
-    CpuTimer0Regs.TCR.bit.TIF = 1; // Clear the timer interrupt flag
+    CpuTimer0.InterruptCount++;
+    PieCtrlRegs.PIEACK.all = PIEACK_GROUP1;
+    //CpuTimer0Regs.TCR.bit.TIF = 1; // Clear the timer interrupt flag
+
+    // Diode used for debugging
+    GPIO_WritePin(BLINKY_LED_GPIO, 0);
 
 }
 
@@ -150,14 +157,9 @@ void initSystem(void)
     // Initialize HAL components
     // GPIO
     InitGpio();
-    //GPIO_SetupPinMux(BLINKY_LED_GPIO, GPIO_MUX_CPU1, 0);
-    //GPIO_SetupPinOptions(BLINKY_LED_GPIO, GPIO_OUTPUT, GPIO_PUSHPULL);
-    //GPIO_WritePin(BLINKY_LED_GPIO, 1);
+    GPIO_SetupPinMux(BLINKY_LED_GPIO, GPIO_MUX_CPU1, 0);
+    GPIO_SetupPinOptions(BLINKY_LED_GPIO, GPIO_OUTPUT, GPIO_PUSHPULL);
 
-    EALLOW;
-    GpioCtrlRegs.GPADIR.bit.GPIO4 = 1; // GPIO4 as output simulates Index signal
-    GpioDataRegs.GPACLEAR.bit.GPIO4 = 1;  // Normally low
-    EDIS;
     // DAC
     configureDAC(DAC_NUM);
     // ADC
@@ -186,20 +188,17 @@ void initSystem(void)
     // This function is found in F2837xD_PieVect.c.
     InitPieVectTable();
 
+    // This is needed to write to EALLOW protected registers
+    EALLOW;
     // Interrupts that are used in this example are re-mapped to
     // ISR functions found within this file.
-    EALLOW;
-    // This is needed to write to EALLOW protected registers
-    // PieVectTable.EPWM1_INT = &prdTick;
     PieVectTable.TIMER0_INT = &controlLoop;
-    EDIS;
 
     // Step 4. Initialize the Device Peripheral.
     InitCpuTimers();   // For this example, only initialize the Cpu Timers
 
-    // Configure CPU-Timer 0 to __interrupt every 500 milliseconds:
-    // 60MHz CPU Freq, 50 millisecond Period (in uSeconds)
-    ConfigCpuTimer(&CpuTimer0, 60, 500000);
+    // Configure CPU-Timer 0 to __interrupt
+    ConfigCpuTimer(&CpuTimer0, 200, TIME_STEP/1000);
 
     // To ensure precise timing, use write-only instructions to write to the entire
     // register. Therefore, if any of the configuration bits are changed in
@@ -207,29 +206,14 @@ void initSystem(void)
     // settings must also be updated.
     CpuTimer0Regs.TCR.all = 0x4001;
 
-    // Step 5. User specific code, enable __interrupts:
-    // Configure GPIO34 as a GPIO output pin
-    //EALLOW;
-    //GpioCtrlRegs.GPBMUX1.bit.GPIO34 = 0;
-    //GpioCtrlRegs.GPBDIR.bit.GPIO34 = 1;
-    //EDIS;
-
     // Enable CPU INT1 which is connected to CPU-Timer 0:
     IER |= M_INT1;
 
     // Enable TINT0 in the PIE: Group 1 __interrupt 7
     PieCtrlRegs.PIEIER1.bit.INTx7 = 1;
 
-    // Enable global Interrupts and higher priority real-time debug events:
-    EINT;
-    // Enable Global __interrupt INTM
-    ERTM;
-    // Enable Global realtime __interrupt DBGM
-
-    // Step 5. User specific code, enable __interrupts:
-    // Enable CPU INT1 which is connected to CPU-Timer 0:
-    IER |= M_INT3;
-
+    // Disable write protection
+    EDIS;
     // Enable global Interrupts and higher priority real-time debug events:
     EINT;
     // Enable Global __interrupt INTM

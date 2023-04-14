@@ -24,7 +24,7 @@ void _configure(Encoder *enc, EncoderConf *confg, POSSPEED *module)
 
 
 // Get absolute position in nanometers
-int _getValue(Encoder *enc)
+Uint32 _getValue(Encoder *enc)
 {
     // read the counter value from the quadratic encode module
     Uint32 new_encoder_value = enc->module->read(enc->module);
@@ -36,6 +36,7 @@ int _getValue(Encoder *enc)
         enc->current_absolute_position -= (enc->previous_encoder_value - new_encoder_value) / enc->enc_confg->scalingFactor;
     }
     
+    // Napravi da se ne moze biti negativna vrijednost
     // TODO: check if the estimated position is within ranges. Did we hit overflow?
     
     enc->previous_encoder_value = new_encoder_value;
@@ -43,7 +44,7 @@ int _getValue(Encoder *enc)
     return enc->current_absolute_position;
 }
 
-void _setValue(Encoder *enc, int value)
+void _setValue(Encoder *enc, Uint32 value)
 {
     enc->current_absolute_position = value;
 }

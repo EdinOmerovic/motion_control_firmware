@@ -14,9 +14,9 @@
 typedef struct
 {
     // dummy
-    int scalingFactor;
-    int absoluteDimentsions;
-    int startingValue;
+    Uint32 scalingFactor;
+    Uint32 absoluteDimentsions;
+    Uint32 startingValue;
 } EncoderConf;
 
 typedef struct Encoder
@@ -24,11 +24,11 @@ typedef struct Encoder
     EncoderConf *enc_confg;
     // Function pointer table
     void (*configure)(struct Encoder *enc, EncoderConf *confg, POSSPEED *module);
-    int (*getValue)(struct Encoder *enc);
-    void (*setValue)(struct Encoder *enc, int value);
+    Uint32 (*getValue)(struct Encoder *enc);
+    void (*setValue)(struct Encoder *enc, Uint32 value);
     // Dynamic variables
-    int previous_encoder_value;
-    int current_absolute_position;
+    Uint32 previous_encoder_value;
+    Uint32 current_absolute_position;
     // QEP module
     POSSPEED_handle module;
 
@@ -40,7 +40,7 @@ void _configure(Encoder *enc, EncoderConf *confg, POSSPEED *module);
 
 
 // Obtain value in absolute values in nanometers
-int _getValue(Encoder *enc);
+Uint32 _getValue(Encoder *enc);
 
-void _setValue(Encoder *enc, int value);
+void _setValue(Encoder *enc, Uint32 value);
 #endif
