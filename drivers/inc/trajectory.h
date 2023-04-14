@@ -17,8 +17,8 @@ typedef enum {
 
 void trajectory_init(source_e);
 
-int getTrajectory(void);
+Uint32 getTrajectory(void);
 
-int getTrajectory2od(void);
+Uint32 getTrajectory2od(void);
 
 #endif

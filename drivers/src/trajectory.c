@@ -9,8 +9,8 @@
 
 static source_e src_config;
 
-static int trajectory_value; // Used as a return value
-static int counter = 0;      // Used for the lookup table
+static Uint32 trajectory_value; // Used as a return value
+static Uint32 counter = 0;      // Used for the lookup table
 
 // int buffer[BUFFER_SIZE]; // Use for derivative buffer. 
 
@@ -38,7 +38,7 @@ void trajectory_init(source_e src_conf)
     }
 }
 
-int getTrajectory(void)
+Uint32 getTrajectory(void)
 {
     switch (src_config)
     {
@@ -60,7 +60,7 @@ int getTrajectory(void)
     return trajectory_value;
 }
 
-int getTrajectory2od(void)
+Uint32 getTrajectory2od(void)
 {
     if (src_config == FIXED){
         return 0; 

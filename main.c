@@ -103,21 +103,21 @@ __interrupt void controlLoop(void)
     Uint32 q_act = enc.getValue(&enc);
 
     // Calculate position error
-    int error = q_ref - q_act;
+    signed long error = q_ref - q_act;
 
     // Calculate second derivative of q desired
-    int q2_des = q2_ref + pd_control(error);
+    signed long q2_des = q2_ref + pd_control(error);
 
     // Disturbance observer
     // Calculate velocity:
     // v = delta X / delta T
-    int vel = (q_act - prev_pos) / TIME_STEP; // in um/us
-    int tau_dis = disturbance_observer1(&lp_filter, vel);
+    signed long vel = (q_act - prev_pos) / TIME_STEP; // in um/us
+    signed long tau_dis = disturbance_observer1(&lp_filter, vel);
 
     // Calculate tau
     // tau = tau_des + tau_dis
     // tau_des = an*q2_des;
-    int tau = AN * q2_des + tau_dis;
+    signed long tau = AN * q2_des + tau_dis;
 
     // Update disturbance observer
     disturbance_observer2(tau);
@@ -165,19 +165,7 @@ void initSystem(void)
     GPIO_SetupPinMux(BLINKY_LED_GPIO, GPIO_MUX_CPU1, 0);
     GPIO_SetupPinOptions(BLINKY_LED_GPIO, GPIO_OUTPUT, GPIO_PUSHPULL);
 
-//    EALLOW;
-//    GpioDataRegs.GPASET.bit.GPIO30 = 1;         // Load the output latch
-//    GpioCtrlRegs.GPAMUX2.bit.GPIO30 = 0;        // GPIO
-//    GpioCtrlRegs.GPADIR.bit.GPIO30 = 1;         // output
-//
-//    GpioDataRegs.GPACLEAR.bit.GPIO31 = 1;       // Load the output latch
-//    GpioCtrlRegs.GPAMUX2.bit.GPIO31 = 0;        // GPIO
-//    GpioCtrlRegs.GPADIR.bit.GPIO31 = 1;         // output
-//    EDIS;
-
-    //
     // GPIO0 and GPIO1 are inputs
-    //
     EALLOW;
     GpioCtrlRegs.GPAMUX1.bit.GPIO0 = 0;         // GPIO
     GpioCtrlRegs.GPADIR.bit.GPIO0 = 0;          // input
@@ -186,25 +174,17 @@ void initSystem(void)
     GpioCtrlRegs.GPAMUX1.bit.GPIO1 = 0;         // GPIO
     GpioCtrlRegs.GPADIR.bit.GPIO1 = 0;          // input
     GpioCtrlRegs.GPAQSEL1.bit.GPIO1 = 0;        // XINT2 Qual using 6 samples
-    //GpioCtrlRegs.GPACTRL.bit.QUALPRD0 = 0xFF;   // Each sampling window
-    // is 510*SYSCLKOUT
     EDIS;
 
-    //
     // GPIO0 is XINT1, GPIO1 is XINT2
-    //
     GPIO_SetupXINT1Gpio(0);
     GPIO_SetupXINT2Gpio(1);
 
-    //
     // Configure XINT1
-    //
     XintRegs.XINT1CR.bit.POLARITY = 0;          // Falling edge interrupt
     XintRegs.XINT2CR.bit.POLARITY = 0;          // Falling edge interrupt
 
-    //
     // Enable XINT1 and XINT2
-    //
     XintRegs.XINT1CR.bit.ENABLE = 1;            // Enable XINT1
     XintRegs.XINT2CR.bit.ENABLE = 1;            // Enable XINT2
 
