@@ -31,5 +31,6 @@ typedef struct Motor
 
 void motor_init(Motor  *, MotorConf *);
 
+Uint32 map(signed long, signed long, signed long, Uint32, Uint32);
 
 #endif

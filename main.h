@@ -11,6 +11,8 @@
 // Should be bigger than 1000 for now
 #define TIME_STEP 1000 // [us]
 
+
+#define LOOP_CLOCK_GPIO 32
 #define BLINKY_LED_GPIO 31
 
 // Control parameters

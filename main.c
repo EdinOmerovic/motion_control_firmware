@@ -24,9 +24,6 @@ Uint32 prev_pos = 0;
 // Encoder
 Encoder enc;
 
-// Controller
-ControlerConf controler_conf;
-
 // Motor
 Motor motor;
 
@@ -42,7 +39,6 @@ void initSystem(void);
 
 // TODO
 // Provjeri na kojem tacno izlazu ti je DACA
-// Naprav da se glavna petlja poziva timiranom interrupt rutinom
 // Podesi da sve jedinice budu odgovarajuce
 
 void main(void)
@@ -51,36 +47,49 @@ void main(void)
     initSystem();
 
     // Initialization of high level components
-    // Encoder
+    // *** Encoder ***
     encoder_init(&enc);
 
     // scaling factor = 100 to get micrometers
-    // starting value should be determined by autohoming: ENDSTOP1_VALUE
+    // starting value should be determined by auto-homing: ENDSTOP1_VALUE
     EncoderConf enc_conf = { .scalingFactor = 100, .startingValue = 0 };
     enc.configure(&enc, &enc_conf, &qep_module);
 
-    // Controller
-    controler_conf.An = AN;
-    controler_conf.G = G_val;
-    controler_conf.KP = KP_val;
-    controler_conf.KI = KI_val;
-    controler_conf.KD = KD_val;
+    // *** Controller ***
+    ControlerConf controler_conf = { .An = AN,
+                                     .G = G_val,
+                                     .KP = KP_val,
+                                     .KI = KI_val,
+                                     .KD = KD_val,
+    };
+
     control_init(&controler_conf);
 
-    // Desired trajectory:
+    // *** Trajectory ***
+
     // *Hardcoded: supplied using lookup table
     // *Analog: obtained using analog read
     // *Fixed: fixed value of the trajectory
-    trajectory_init(FIXED);
 
+    // Ovdje je takoder potrebno specificirati koje su dimenzije sistema
+    trajectory_init(ANALOG_READ);
+
+
+
+    // *** Motor ***
+    MotorConf motor_conf = { .scaler = 1, .tau_offset = 0, .voltage_offset = 0 };
+    motor_init(&motor, &motor_conf);
+
+    // *** Filter ***
     filter_init(&lp_filter, G_val, 0);
 
 
-    MotorConf motor_conf = {.scaler = 1, .tau_offset = 0, .voltage_offset = 0};
-    motor_init(&motor, &motor_conf);
+    // ******* END of initialization of high level components
 
-    EALLOW;
-    CpuTimer0Regs.TCR.bit.TSS = 0; // Start the timer
+    // Start the TIMER0 - controlToop trigger
+    CpuTimer0Regs.TCR.bit.TSS = 0;
+
+    // Enable protection for writing to protected registers
     EDIS;
 
     // Handle everything in controlLoop(void)
@@ -91,15 +100,16 @@ void main(void)
 __interrupt void controlLoop(void)
 {
     // Diode used for debugging
-    GPIO_WritePin(BLINKY_LED_GPIO, 1);
+    GPIO_WritePin(LOOP_CLOCK_GPIO, 1);
+
     // Get the desired trajectory:
     Uint32 q_ref = getTrajectory();
 
-    // FIXME:
     // Get the second derivative of the desired trajectory
-    Uint32 q2_ref = getTrajectory2od(); // Za prvi MVP to je 0
+    Uint32 q2_ref = getTrajectory2od(); // FIXME: Za prvi MVP to je 0
 
     // Get current absolute position from encoder (in micrometers)
+    // The position is ranging form 0 to ENDSTOP2_VALUE
     Uint32 q_act = enc.getValue(&enc);
 
     // Calculate position error
@@ -132,15 +142,15 @@ __interrupt void controlLoop(void)
     //CpuTimer0Regs.TCR.bit.TIF = 1; // Clear the timer interrupt flag
 
     // Diode used for debugging
-    GPIO_WritePin(BLINKY_LED_GPIO, 0);
+    GPIO_WritePin(LOOP_CLOCK_GPIO, 0);
 
 }
 
 __interrupt void ISR_pb1(void)
 {
     enc.setValue(&enc, 0);
-
     // Additionally cut all power to the motor driver
+
     // Acknowledge this interrupt to get more from group 1
     PieCtrlRegs.PIEACK.all = PIEACK_GROUP1;
 }
@@ -148,25 +158,55 @@ __interrupt void ISR_pb2(void)
 {
 
     enc.setValue(&enc, ENDSTOP2_VALUE);
+
     // Acknowledge this interrupt to get more from group 1
     PieCtrlRegs.PIEACK.all = PIEACK_GROUP1;
-
 }
 
 // Setup the GPIO interrupt
 void initSystem(void)
 {
+    // *** Preconfiguration ***
+    // Clear all __interrupts and initialize PIE vector table:
+    IFR = 0x0000;
+    // Disable CPU __interrupts
+    DINT;
+    // This is needed to write to EALLOW protected registers
+    EALLOW;
+
+
+    // **** Initialize bare-minimum embedded system ****
     InitSysCtrl();
 
-    // Initialize HAL components
-    // GPIO
-    InitGpio();
-    // Blue led
-    GPIO_SetupPinMux(BLINKY_LED_GPIO, GPIO_MUX_CPU1, 0);
-    GPIO_SetupPinOptions(BLINKY_LED_GPIO, GPIO_OUTPUT, GPIO_PUSHPULL);
 
-    // GPIO0 and GPIO1 are inputs
-    EALLOW;
+
+    // *** Initialize peripheral vector interrupt table
+    // Initialize the PIE control registers to their default state.
+    // The default state is all PIE __interrupts disabled and flags are cleared.
+    InitPieCtrl();
+
+
+    // Initialize the PIE vector table with pointers to the shell Interrupt
+    // Service Routines (ISR).
+    // This will populate the entire table, even if the __interrupt
+    // is not used in this example.  This is useful for debug purposes.
+    // The shell ISR routines are found in F2837xD_DefaultIsr.c.
+    // This function is found in F2837xD_PieVect.c.
+    InitPieVectTable();
+
+
+    // **** Initialize HAL components ****
+
+    // *** GPIO ****
+    InitGpio();
+
+    // * LOOP_CLOCK_GPIO (default GPIO32) - used for loop signaling
+    // Just a regular output
+    GPIO_SetupPinMux(LOOP_CLOCK_GPIO, GPIO_MUX_CPU1, 0);
+    GPIO_SetupPinOptions(LOOP_CLOCK_GPIO, GPIO_OUTPUT, GPIO_PUSHPULL);
+
+    // * (ENDSTOP1 and ENSTOP2) GPIO0 and GPIO1 are inputs, triggering interrupt routine
+    // FIXME: create a function for setting up the inputs like this
     GpioCtrlRegs.GPAMUX1.bit.GPIO0 = 0;         // GPIO
     GpioCtrlRegs.GPADIR.bit.GPIO0 = 0;          // input
     GpioCtrlRegs.GPAQSEL1.bit.GPIO0 = 0;        // XINT1 Synch to SYSCLKOUT only
@@ -174,7 +214,6 @@ void initSystem(void)
     GpioCtrlRegs.GPAMUX1.bit.GPIO1 = 0;         // GPIO
     GpioCtrlRegs.GPADIR.bit.GPIO1 = 0;          // input
     GpioCtrlRegs.GPAQSEL1.bit.GPIO1 = 0;        // XINT2 Qual using 6 samples
-    EDIS;
 
     // GPIO0 is XINT1, GPIO1 is XINT2
     GPIO_SetupXINT1Gpio(0);
@@ -188,45 +227,15 @@ void initSystem(void)
     XintRegs.XINT1CR.bit.ENABLE = 1;            // Enable XINT1
     XintRegs.XINT2CR.bit.ENABLE = 1;            // Enable XINT2
 
-    // DAC
-    configureDAC(DAC_NUM);
-    // ADC
-    ConfigureADC(); // configure and power up
-    SetupADCSoftware(); //Setup the ADCs for software conversions
 
-    // Step 3. Clear all __interrupts and initialize PIE vector table:
-    // Disable CPU __interrupts
-    DINT;
+    // TODO provjeri da li je ovome mjesto ovdje
+    PieCtrlRegs.PIEIER1.bit.INTx4 = 1;          // Enable PIE Group 1 INT4
+    PieCtrlRegs.PIEIER1.bit.INTx5 = 1;          // Enable PIE Group 1 INT5
 
-    // Initialize the PIE control registers to their default state.
-    // The default state is all PIE __interrupts disabled and flags
-    // are cleared.
-    // This function is found in the F2837xD_PieCtrl.c file.
-    InitPieCtrl();
+    // **** Initialize other CPU components ****
 
-    // Disable CPU __interrupts and clear all CPU __interrupt flags:
-    IER = 0x0000;
-    IFR = 0x0000;
-
-    // Initialize the PIE vector table with pointers to the shell Interrupt
-    // Service Routines (ISR).
-    // This will populate the entire table, even if the __interrupt
-    // is not used in this example.  This is useful for debug purposes.
-    // The shell ISR routines are found in F2837xD_DefaultIsr.c.
-    // This function is found in F2837xD_PieVect.c.
-    InitPieVectTable();
-
-    // This is needed to write to EALLOW protected registers
-    EALLOW;
-    // Interrupts that are used in this example are re-mapped to
-    // ISR functions found within this file.
-    PieVectTable.TIMER0_INT = &controlLoop;
-    PieVectTable.XINT1_INT = &ISR_pb1;
-    PieVectTable.XINT2_INT = &ISR_pb2;
-
-    // Step 4. Initialize the Device Peripheral.
-    InitCpuTimers();   // For this example, only initialize the Cpu Timers
-
+    // *** Timers ***
+    InitCpuTimers();
     // Configure CPU-Timer 0 to __interrupt
     ConfigCpuTimer(&CpuTimer0, 200, TIME_STEP);
 
@@ -235,21 +244,32 @@ void initSystem(void)
     // ConfigCpuTimer and InitCpuTimers (in F2837xD_cputimervars.h), the below
     // settings must also be updated.
     CpuTimer0Regs.TCR.all = 0x4001;
-
     // Enable TINT0 in the PIE: Group 1 __interrupt 7
     PieCtrlRegs.PIEIER1.bit.INTx7 = 1;
-    PieCtrlRegs.PIECTRL.bit.ENPIE = 1;          // Enable the PIE block
-    PieCtrlRegs.PIEIER1.bit.INTx4 = 1;          // Enable PIE Group 1 INT4
-    PieCtrlRegs.PIEIER1.bit.INTx5 = 1;          // Enable PIE Group 1 INT5
-
     // Enable CPU INT1 which is connected to CPU-Timer 0:
     IER |= M_INT1;
+
+    // *** DAC ***
+    configureDAC(DAC_NUM);
+
+    // *** ADC ***
+    ConfigureADC();
+
+    // Remap ISR functions to user interrupts.
+    EALLOW;
+    PieVectTable.TIMER0_INT = &controlLoop;
+    PieVectTable.XINT1_INT = &ISR_pb1;
+    PieVectTable.XINT2_INT = &ISR_pb2;
+
+    // Set peripheral interrupt enable
+    PieCtrlRegs.PIECTRL.bit.ENPIE = 1;
+
+    // *** Postconfiguration ***
     // Disable write protection
     EDIS;
-    // Enable global Interrupts and higher priority real-time debug events:
-    EINT;
     // Enable Global __interrupt INTM
+    EINT;
+    // Enable global Interrupts and higher priority real-time debug events:
     ERTM;
-    // Enable Global realtime __interrupt DBGM
 }
 

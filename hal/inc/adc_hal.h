@@ -14,7 +14,7 @@
 void ConfigureADC(void);
 void SetupADCSoftware(void);
 
-void readAnalog();
+Uint16 readAnalog();
 
 
 #endif /* HAL_INC_ADC_HAL_H_ */

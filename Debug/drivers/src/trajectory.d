@@ -60,6 +60,8 @@ drivers/src/trajectory.obj: C:/Users/Master/Desktop/ccs_extraction/!qepm_e/hal/i
 drivers/src/trajectory.obj: C:/Users/Master/Desktop/ccs_extraction/!qepm_e/drivers/inc/trajectory.h
 drivers/src/trajectory.obj: C:/Users/Master/Desktop/ccs_extraction/!qepm_e/hal/inc/adc_hal.h
 drivers/src/trajectory.obj: C:/Users/Master/Desktop/ccs_extraction/!qepm_e/drivers/inc/trajectory_lut.h
+drivers/src/trajectory.obj: C:/Users/Master/Desktop/ccs_extraction/!qepm_e/drivers/inc/motor.h
+drivers/src/trajectory.obj: C:/Users/Master/Desktop/ccs_extraction/!qepm_e/main.h
 
 ../drivers/src/trajectory.c:
 
@@ -180,4 +182,8 @@ C:/Users/Master/Desktop/ccs_extraction/!qepm_e/drivers/inc/trajectory.h:
 C:/Users/Master/Desktop/ccs_extraction/!qepm_e/hal/inc/adc_hal.h:
 
 C:/Users/Master/Desktop/ccs_extraction/!qepm_e/drivers/inc/trajectory_lut.h:
+
+C:/Users/Master/Desktop/ccs_extraction/!qepm_e/drivers/inc/motor.h:
+
+C:/Users/Master/Desktop/ccs_extraction/!qepm_e/main.h:
 

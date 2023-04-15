@@ -6,7 +6,7 @@
 #define RANGE_OUT_MIN 0
 #define RANGE_OUT_MAX 4095
 
-int map(signed long x, signed long in_min, signed long in_max, signed long out_min, signed long out_max)
+Uint32 map(signed long x, signed long in_min, signed long in_max, Uint32 out_min, Uint32 out_max)
 {
     return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
