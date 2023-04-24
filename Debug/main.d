@@ -79,7 +79,6 @@ main.obj: C:/Users/Master/Desktop/ccs_extraction/!qepm_e/drivers/inc/motor.h
 main.obj: C:/Users/Master/Desktop/ccs_extraction/!qepm_e/drivers/inc/trajectory.h
 main.obj: C:/Users/Master/Desktop/ccs_extraction/!qepm_e/hal/inc/adc_hal.h
 main.obj: C:/Users/Master/Desktop/ccs_extraction/!qepm_e/drivers/inc/control.h
-main.obj: C:/Users/Master/Desktop/ccs_extraction/!qepm_e/drivers/inc/lp_filter.h
 
 ../main.c:
 
@@ -238,6 +237,4 @@ C:/Users/Master/Desktop/ccs_extraction/!qepm_e/drivers/inc/trajectory.h:
 C:/Users/Master/Desktop/ccs_extraction/!qepm_e/hal/inc/adc_hal.h:
 
 C:/Users/Master/Desktop/ccs_extraction/!qepm_e/drivers/inc/control.h:
-
-C:/Users/Master/Desktop/ccs_extraction/!qepm_e/drivers/inc/lp_filter.h:
 

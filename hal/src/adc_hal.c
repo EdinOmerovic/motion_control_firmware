@@ -2,10 +2,6 @@
 #include "adc_hal.h"
 #include "F2837xD_sysctrl.h"
 
-// Globals
-static Uint16 AdcaResult0;
-
-
 #define EX_ADC_RESOLUTION 16
 
 void ConfigADC()
@@ -74,8 +70,7 @@ Uint16 readAnalog()
     while(AdcaRegs.ADCINTFLG.bit.ADCINT1 == 0);
     AdcaRegs.ADCINTFLGCLR.bit.ADCINT1 = 1;
 
-    AdcaResult0 = AdcaResultRegs.ADCRESULT0;
-    return AdcaResult0;
+    return AdcaResultRegs.ADCRESULT0;
 }
 
 

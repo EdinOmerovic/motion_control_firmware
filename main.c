@@ -1,6 +1,6 @@
-// NOTE: all values are represented in the follwing units:
-// * lenght = micrometers.
-// * time  = microseconds
+// NOTE: all values are represented in the following units:
+// * lenght = micrometers [us]
+// * time  = microseconds [us]
 // * mass = grams
 
 // Code Composer Project related stuff
@@ -14,11 +14,9 @@
 #include "motor.h"
 #include "trajectory.h"
 #include "control.h"
-#include "lp_filter.h"
 
 // Global static values
 POSSPEED qep_module = POSSPEED_DEFAULTS;
-Uint32 prev_pos = 0;
 
 // **** INSTATATION ****
 // Encoder
@@ -27,16 +25,13 @@ Encoder enc;
 // Motor
 Motor motor;
 
-// LP filter
-LowPassFilter lp_filter;
-
 // Local function definitions
 //__interrupt void prdTick(void);
  //__interrupt void controlLoop(void); // Called every N us
+void initSystem(void);
 void controlLoop(void);
 __interrupt void ISR_pb1(void); // Triggered by end-stop 1
 __interrupt void ISR_pb2(void); // Triggered by end-stop 2
-void initSystem(void);
 
 // TODO
 // Provjeri na kojem tacno izlazu ti je DACA
@@ -50,7 +45,6 @@ void main(void)
     // Initialization of high level components
     // *** Encoder ***
     encoder_init(&enc);
-
     // scaling factor = 100 to get micrometers
     // starting value should be determined by auto-homing: ENDSTOP1_VALUE
     EncoderConf enc_conf = { .scalingFactor = 100, .startingValue = 0 };
@@ -67,34 +61,28 @@ void main(void)
     control_init(&controler_conf);
 
     // *** Trajectory ***
-
     // *Hardcoded: supplied using lookup table
     // *Analog: obtained using analog read
     // *Fixed: fixed value of the trajectory
-
     // Ovdje je takoder potrebno specificirati koje su dimenzije sistema
     trajectory_init(ANALOG_READ);
-
 
 
     // *** Motor ***
     MotorConf motor_conf = { .scaler = 1, .tau_offset = 0, .voltage_offset = 0 };
     motor_init(&motor, &motor_conf);
 
-    // *** Filter ***
-    filter_init(&lp_filter, G_val, 0);
 
 
     // ******* END of initialization of high level components
 
     // Start the TIMER0 - controlToop trigger
-    CpuTimer0Regs.TCR.bit.TSS = 0;
+    //CpuTimer0Regs.TCR.bit.TSS = 0;
 
     // Enable protection for writing to protected registers
     EDIS;
 
-    // Handle everything in controlLoop(void)
-    for (;;)
+    while(1)
     {
         controlLoop();
         DELAY_US((TIME_STEP - PROCESSING_TIME));
@@ -103,8 +91,9 @@ void main(void)
 
 
 // Main control loop
-Uint32 q_ref, q_act;
-signed long q2_ref, error, q2_des, vel, tau_dis, tau;
+static Uint32 prev_pos = 0;
+static Uint32 q_ref, q_act;
+static signed long q2_ref, error, q2_des, vel, tau_dis, tau;
 void controlLoop(void)
 {
     // Diode used for debugging
@@ -114,7 +103,7 @@ void controlLoop(void)
     q_ref = getTrajectory();
 
     // Get the second derivative of the desired trajectory
-    q2_ref = getTrajectory2od(); // FIXME: Za prvi MVP to je 0
+    q2_ref = getTrajectory2od();
 
     // Get current absolute position from encoder (in micrometers)
     // The position is ranging form 0 to ENDSTOP2_VALUE
@@ -129,8 +118,8 @@ void controlLoop(void)
     // Disturbance observer
     // Calculate velocity:
     // v = delta X / delta T
-    vel = (q_act - prev_pos) / TIME_STEP; // in um/us
-    tau_dis = disturbance_observer1(&lp_filter, vel);
+    vel = (q_act - prev_pos) / TIME_STEP; // in m/s
+    tau_dis = disturbance_observer1(vel);
 
     // Calculate tau
     // tau = tau_des + tau_dis
@@ -145,8 +134,8 @@ void controlLoop(void)
     prev_pos = q_act;
 
     // Acknowledge this __interrupt to receive more __interrupts from group 1
-    CpuTimer0.InterruptCount++;
-    PieCtrlRegs.PIEACK.all = PIEACK_GROUP1;
+    //CpuTimer0.InterruptCount++;
+    //PieCtrlRegs.PIEACK.all = PIEACK_GROUP1;
     //CpuTimer0Regs.TCR.bit.TIF = 1; // Clear the timer interrupt flag
 
     // Diode used for debugging

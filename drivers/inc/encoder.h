@@ -25,7 +25,6 @@ typedef struct Encoder
     Uint32 (*getValue)(struct Encoder *enc);
     void (*setValue)(struct Encoder *enc, Uint32 value);
     // Dynamic variables
-    Uint32 previous_encoder_value;
     Uint32 current_absolute_position;
     // QEP module
     POSSPEED_handle module;

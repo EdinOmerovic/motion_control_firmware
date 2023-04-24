@@ -1,6 +1,5 @@
 #ifndef CONTROL_H
 #define CONTROL_H
-#include "lp_filter.h"
 
 typedef struct
 {
@@ -13,9 +12,9 @@ typedef struct
 
 void control_init(ControlerConf *);
 
-Uint32 pd_control(int error);
+signed long pd_control(signed long);
 
-signed long disturbance_observer1(LowPassFilter *, signed long);
+signed long disturbance_observer1(signed long);
 
 void disturbance_observer2(signed long);
 

@@ -14,21 +14,28 @@
 // POSSPEED_Init - Initialize EQEP1 configuration
 void POSSPEED_Init(void)
 {
-    // TODO: dodaj vrijednost koja se nece lako overflowoat
-    EQep1Regs.QUPRD = 2000000;            // Unit Timer for 100Hz at 200 MHz
-                                          // SYSCLKOUT
-    EQep1Regs.QDECCTL.bit.QSRC = 00;      // QEP quadrature count mode
+    // TODO: speed calculation can be done using encoder data
+     //EQep1Regs.QUPRD = 2000000;            // Unit Timer for 100Hz at 200 MHz
+
+    // QEP quadrature count mode
+    EQep1Regs.QDECCTL.bit.QSRC = 00;
+
     EQep1Regs.QEPCTL.bit.FREE_SOFT = 2;
     EQep1Regs.QEPCTL.bit.PCRM = 01;       // PCRM=00 mode - QPOSCNT reset on maximum event
+    EQep1Regs.QEPCTL.bit.QCLM = 0;        // Latch on CPU read
+
+    // Initial counter value, set to middle.
     EQep1Regs.QPOSINIT = ENC_INIT_VALUE;
-    EQep1Regs.QEPCTL.bit.SWI = 1;
-    //EQep1Regs.QEPCTL.bit.UTE = 1;         // Unit Timeout Enable
-    EQep1Regs.QEPCTL.bit.QCLM = 1;        // Latch on unit time out
     EQep1Regs.QPOSMAX = 0xffffffff;
+    // Software enable
+    EQep1Regs.QEPCTL.bit.SWI = 1;
+
+
     EQep1Regs.QEPCTL.bit.QPEN = 1;        // QEP enable
-    EQep1Regs.QCAPCTL.bit.UPPS = 5;       // 1/32 for unit position
-    EQep1Regs.QCAPCTL.bit.CCPS = 6;       // 1/64 for CAP clock
-    EQep1Regs.QCAPCTL.bit.CEN = 1;        // QEP Capture Enable
+   // Used for velocity calculation
+     //EQep1Regs.QCAPCTL.bit.UPPS = 5;       // 1/32 for unit position
+     //EQep1Regs.QCAPCTL.bit.CCPS = 6;       // 1/64 for CAP clock
+     //EQep1Regs.QCAPCTL.bit.CEN = 1;        // QEP Capture Enable
 
 }
 

@@ -1,10 +1,10 @@
 ******************************************************************************
              TMS320C2000 Linker PC v22.6.0                     
 ******************************************************************************
->> Linked Mon Apr 24 15:11:43 2023
+>> Linked Mon Apr 24 18:54:34 2023
 
 OUTPUT FILE NAME:   <qepm_extraction.out>
-ENTRY POINT SYMBOL: "_c_int00"  address: 0008312f
+ENTRY POINT SYMBOL: "_c_int00"  address: 0008311d
 
 
 MEMORY CONFIGURATION
@@ -23,7 +23,7 @@ PAGE 0:
   RAMGS15               0001b000   00001000  00000000  00001000  RWIX
   BEGIN                 00080000   00000002  00000002  00000000  RWIX
   FLASHA                00080002   00001ffe  00000000  00001ffe  RWIX
-  FLASHB                00082000   00002000  00001407  00000bf9  RWIX
+  FLASHB                00082000   00002000  000013ea  00000c16  RWIX
   FLASHC                00084000   00002000  00000000  00002000  RWIX
   FLASHD                00086000   00002000  0000003b  00001fc5  RWIX
   FLASHE                00088000   00008000  00000000  00008000  RWIX
@@ -127,7 +127,7 @@ PAGE 1:
   OUTPUTXBAR            00007a80   00000040  00000040  00000000  RWIX
   GPIOCTRL              00007c00   00000180  00000180  00000000  RWIX
   GPIODATA              00007f00   00000030  00000030  00000000  RWIX
-  RAMLS5                0000a800   00000800  0000007f  00000781  RWIX
+  RAMLS5                0000a800   00000800  0000007c  00000784  RWIX
   RAMD1                 0000b800   00000800  00000000  00000800  RWIX
   RAMGS0                0000c000   00001000  00000000  00001000  RWIX
   RAMGS1                0000d000   00001000  00000000  00001000  RWIX
@@ -665,58 +665,57 @@ RomWaitStateRegsFile
 *          1    0005f540    00000002     UNINITIALIZED
                   0005f540    00000002     F2837xD_GlobalVariableDefs.obj (RomWaitStateRegsFile)
 
-.text      0    00082054    000013b4     
+.text      0    00082054    00001397     
                   00082054    00000585     F2837xD_DefaultISR.obj (.text:retain)
                   000825d9    000004b4     F2837xD_SysCtrl.obj (.text)
                   00082a8d    00000244     F2837xD_Gpio.obj (.text)
                   00082cd1    000000f0     F2837xD_Adc.obj (.text)
-                  00082dc1    000000eb     main.obj (.text)
-                  00082eac    00000096     F2837xD_EQep.obj (.text)
-                  00082f42    00000088     rts2800_fpu32.lib : fs_div28.asm.obj (.text)
-                  00082fca    0000007f     encoder.obj (.text)
-                  00083049    00000078     trajectory.obj (.text)
-                  000830c1    0000006e     main.obj (.text:retain)
-                  0008312f    00000056     rts2800_fpu32.lib : boot28.asm.obj (.text)
-                  00083185    00000051     adc_hal.obj (.text)
-                  000831d6    0000004b     control.obj (.text)
-                  00083221    00000043     encoder_hal.obj (.text)
-                  00083264    0000003f     motor.obj (.text)
-                  000832a3    0000002a     rts2800_fpu32.lib : l_div28.asm.obj (.text)
-                  000832cd    00000029                       : exit.c.obj (.text)
-                  000832f6    00000028     F2837xD_PieCtrl.obj (.text)
-                  0008331e    00000027     dac_hal.obj (.text)
-                  00083345    00000026     F2837xD_PieVect.obj (.text)
-                  0008336b    00000024     rts2800_fpu32.lib : cpy_tbl.c.obj (.text)
-                  0008338f    0000001e     lp_filter.obj (.text)
-                  000833ad    0000001d     rts2800_fpu32.lib : memcpy.c.obj (.text)
-                  000833ca    00000018                       : ll_aox28.asm.obj (.text)
-                  000833e2    00000012                       : args_main.c.obj (.text)
-                  000833f4    00000009                       : _lock.c.obj (.text)
-                  000833fd    00000008     F2837xD_CodeStartBranch.obj (.text)
-                  00083405    00000002     rts2800_fpu32.lib : pre_init.c.obj (.text)
-                  00083407    00000001                       : startup.c.obj (.text)
+                  00082dc1    000000d5     main.obj (.text)
+                  00082e96    00000096     F2837xD_EQep.obj (.text)
+                  00082f2c    00000088     rts2800_fpu32.lib : fs_div28.asm.obj (.text)
+                  00082fb4    00000083     encoder.obj (.text)
+                  00083037    00000078     trajectory.obj (.text)
+                  000830af    0000006e     main.obj (.text:retain)
+                  0008311d    00000056     rts2800_fpu32.lib : boot28.asm.obj (.text)
+                  00083173    00000050     control.obj (.text)
+                  000831c3    0000004e     adc_hal.obj (.text)
+                  00083211    0000003f     motor.obj (.text)
+                  00083250    00000036     encoder_hal.obj (.text)
+                  00083286    0000002a     rts2800_fpu32.lib : l_div28.asm.obj (.text)
+                  000832b0    00000029                       : exit.c.obj (.text)
+                  000832d9    00000028     F2837xD_PieCtrl.obj (.text)
+                  00083301    00000027     dac_hal.obj (.text)
+                  00083328    00000026     F2837xD_PieVect.obj (.text)
+                  0008334e    00000024     rts2800_fpu32.lib : cpy_tbl.c.obj (.text)
+                  00083372    0000001e     lp_filter.obj (.text)
+                  00083390    0000001d     rts2800_fpu32.lib : memcpy.c.obj (.text)
+                  000833ad    00000018                       : ll_aox28.asm.obj (.text)
+                  000833c5    00000012                       : args_main.c.obj (.text)
+                  000833d7    00000009                       : _lock.c.obj (.text)
+                  000833e0    00000008     F2837xD_CodeStartBranch.obj (.text)
+                  000833e8    00000002     rts2800_fpu32.lib : pre_init.c.obj (.text)
+                  000833ea    00000001                       : startup.c.obj (.text)
 
-.ebss      1    0000a800    0000007f     UNINITIALIZED
-                  0000a800    00000034     main.obj (.ebss)
-                  0000a834    00000008     dac_hal.obj (.ebss:_DAC_PTR)
-                  0000a83c    00000004     trajectory.obj (.ebss)
+.ebss      1    0000a800    0000007c     UNINITIALIZED
+                  0000a800    0000002e     main.obj (.ebss)
+                  0000a82e    00000012     control.obj (.ebss)
                   0000a840    00000018     F2837xD_CpuTimers.obj (.ebss)
-                  0000a858    0000000e     control.obj (.ebss)
-                  0000a866    00000008     motor.obj (.ebss:_DAC_PTR)
-                  0000a86e    00000006     trajectory.obj (.ebss:_previous_trajectory_value_buffer)
-                  0000a874    00000006     rts2800_fpu32.lib : exit.c.obj (.ebss)
-                  0000a87a    00000002                       : _lock.c.obj (.ebss:__lock)
-                  0000a87c    00000002                       : _lock.c.obj (.ebss:__unlock)
-                  0000a87e    00000001     adc_hal.obj (.ebss)
+                  0000a858    00000008     dac_hal.obj (.ebss:_DAC_PTR)
+                  0000a860    00000008     motor.obj (.ebss:_DAC_PTR)
+                  0000a868    00000006     trajectory.obj (.ebss:_previous_trajectory_value_buffer)
+                  0000a86e    00000006     rts2800_fpu32.lib : exit.c.obj (.ebss)
+                  0000a874    00000004     trajectory.obj (.ebss)
+                  0000a878    00000002     rts2800_fpu32.lib : _lock.c.obj (.ebss:__lock)
+                  0000a87a    00000002                       : _lock.c.obj (.ebss:__unlock)
 
 MODULE SUMMARY
 
        Module                           code   initialized data   uninitialized data
        ------                           ----   ----------------   ------------------
     .\
-       main.obj                         345    40                 52                
+       main.obj                         323    40                 46                
     +--+--------------------------------+------+------------------+--------------------+
-       Total:                           345    40                 52                
+       Total:                           323    40                 46                
                                                                                     
     .\bsp\
        F2837xD_GlobalVariableDefs.obj   0      0                  9854              
@@ -735,19 +734,19 @@ MODULE SUMMARY
                                                                                     
     .\drivers\src\
        trajectory.obj                   120    195                10                
-       encoder.obj                      127    0                  0                 
-       control.obj                      75     10                 14                
+       encoder.obj                      131    0                  0                 
+       control.obj                      80     10                 18                
        motor.obj                        63     11                 8                 
        lp_filter.obj                    30     0                  0                 
     +--+--------------------------------+------+------------------+--------------------+
-       Total:                           415    216                32                
+       Total:                           424    216                36                
                                                                                     
     .\hal\src\
-       adc_hal.obj                      81     0                  1                 
-       encoder_hal.obj                  67     0                  0                 
+       adc_hal.obj                      78     0                  0                 
        dac_hal.obj                      39     11                 8                 
+       encoder_hal.obj                  54     0                  0                 
     +--+--------------------------------+------+------------------+--------------------+
-       Total:                           187    11                 9                 
+       Total:                           171    11                 8                 
                                                                                     
     C:\ti\ccs1220\ccs\tools\compiler\ti-cgt-c2000_22.6.0.LTS\lib\rts2800_fpu32.lib
        fs_div28.asm.obj                 136    0                  0                 
@@ -766,12 +765,12 @@ MODULE SUMMARY
                                                                                     
        Stack:                           0      0                  512               
     +--+--------------------------------+------+------------------+--------------------+
-       Grand Total:                     5164   739                10493             
+       Grand Total:                     5135   739                10490             
 
 
 LINKER GENERATED MEMRANGE CRC TABLES
 
-_ccs_flash_checksum @ 00000000 records: 16, size/record: 6, table size: 102, algorithm=C28_CHECKSUM_16(ID=13), CRC: 00008257
+_ccs_flash_checksum @ 00000000 records: 16, size/record: 6, table size: 102, algorithm=C28_CHECKSUM_16(ID=13), CRC: 000065fa
 	BEGIN: page=0, load addr=00080000, size=00000002
 	FLASHA: page=0, load addr=00080002, size=00001ffe
 	FLASHB: page=0, load addr=00082000, size=00002000
@@ -946,31 +945,19 @@ address     data page           name
 
 00007f00     1fc (00007f00)     _GpioDataRegs
 
-0000a800     2a0 (0000a800)     _prev_pos
-0000a802     2a0 (0000a800)     _q_ref
-0000a804     2a0 (0000a800)     _q_act
-0000a806     2a0 (0000a800)     _q2_ref
-0000a808     2a0 (0000a800)     _error
-0000a80a     2a0 (0000a800)     _q2_des
-0000a80c     2a0 (0000a800)     _vel
-0000a80e     2a0 (0000a800)     _tau_dis
-0000a810     2a0 (0000a800)     _tau
 0000a812     2a0 (0000a800)     _motor
-0000a816     2a0 (0000a800)     _lp_filter
-0000a81a     2a0 (0000a800)     _qep_module
-0000a826     2a0 (0000a800)     _enc
+0000a816     2a0 (0000a800)     _qep_module
+0000a822     2a0 (0000a800)     _enc
+0000a836     2a0 (0000a800)     _global_conf
 
 0000a840     2a1 (0000a840)     _CpuTimer0
 0000a848     2a1 (0000a840)     _CpuTimer1
 0000a850     2a1 (0000a840)     _CpuTimer2
-0000a858     2a1 (0000a840)     _prev_tau
-0000a85a     2a1 (0000a840)     _prev_error
-0000a85c     2a1 (0000a840)     _global_conf
-0000a874     2a1 (0000a840)     ___TI_enable_exit_profile_output
-0000a876     2a1 (0000a840)     ___TI_cleanup_ptr
-0000a878     2a1 (0000a840)     ___TI_dtors_ptr
-0000a87a     2a1 (0000a840)     __lock
-0000a87c     2a1 (0000a840)     __unlock
+0000a86e     2a1 (0000a840)     ___TI_enable_exit_profile_output
+0000a870     2a1 (0000a840)     ___TI_cleanup_ptr
+0000a872     2a1 (0000a840)     ___TI_dtors_ptr
+0000a878     2a1 (0000a840)     __lock
+0000a87a     2a1 (0000a840)     __unlock
 
 00047000    11c0 (00047000)     _Emif1Regs
 
@@ -1021,15 +1008,15 @@ GLOBAL SYMBOLS: SORTED ALPHABETICALLY BY Name
 page  address   name                                  
 ----  -------   ----                                  
 abs   ffffffff  .text                                 
-0     000832cd  C$$EXIT                               
-0     00082f42  FS$$DIV                               
-0     000832a3  L$$DIV                                
-0     000832b2  L$$MOD                                
-0     000833ca  LL$$AND                               
-0     000833d2  LL$$OR                                
-0     000833da  LL$$XOR                               
-0     000832c0  UL$$DIV                               
-0     000832c7  UL$$MOD                               
+0     000832b0  C$$EXIT                               
+0     00082f2c  FS$$DIV                               
+0     00083286  L$$DIV                                
+0     00083295  L$$MOD                                
+0     000833ad  LL$$AND                               
+0     000833b5  LL$$OR                                
+0     000833bd  LL$$XOR                               
+0     000832a3  UL$$DIV                               
+0     000832aa  UL$$MOD                               
 0     00082112  _ADCA1_ISR                            
 0     00082392  _ADCA2_ISR                            
 0     0008239c  _ADCA3_ISR                            
@@ -1105,8 +1092,8 @@ abs   ffffffff  .text
 1     00005d20  _Cmpss6Regs                           
 1     00005d40  _Cmpss7Regs                           
 1     00005d60  _Cmpss8Regs                           
-0     00083185  _ConfigADC                            
-0     000831c2  _ConfigureADC                         
+0     000831c3  _ConfigADC                            
+0     00083200  _ConfigureADC                         
 0     00082a70  _ConfigureTMXAnalogTrim               
 1     0005d300  _CpuSysRegs                           
 1     0000a840  _CpuTimer0                            
@@ -1196,7 +1183,7 @@ abs   ffffffff  .text
 1     00047000  _Emif1Regs                            
 1     0005f4a0  _Emif2ConfigRegs                      
 1     00047800  _Emif2Regs                            
-0     00083315  _EnableInterrupts                     
+0     000832f8  _EnableInterrupts                     
 0     00008037  _F28x_usDelay                         
 0     0008257c  _FLASH_CORRECTABLE_ERROR_ISR          
 0     00082450  _FPU_OVERFLOW_ISR                     
@@ -1234,19 +1221,19 @@ abs   ffffffff  .text
 0     0008246e  _IPC1_ISR                             
 0     00082478  _IPC2_ISR                             
 0     00082482  _IPC3_ISR                             
-0     000830c1  _ISR_pb1                              
-0     000830f7  _ISR_pb2                              
+0     000830af  _ISR_pb1                              
+0     000830e5  _ISR_pb2                              
 0     000828c2  _InitAuxPll                           
-0     00082eac  _InitEQep                             
-0     00082eb4  _InitEQep1Gpio                        
-0     00082ede  _InitEQep2Gpio                        
-0     00082f04  _InitEQep3Gpio                        
-0     00082ead  _InitEQepGpio                         
+0     00082e96  _InitEQep                             
+0     00082e9e  _InitEQep1Gpio                        
+0     00082ec8  _InitEQep2Gpio                        
+0     00082eee  _InitEQep3Gpio                        
+0     00082e97  _InitEQepGpio                         
 0     00008000  _InitFlash                            
 0     00082a8d  _InitGpio                             
 0     00082602  _InitPeripheralClocks                 
-0     000832f6  _InitPieCtrl                          
-0     00083345  _InitPieVectTable                     
+0     000832d9  _InitPieCtrl                          
+0     00083328  _InitPieVectTable                     
 0     000825d9  _InitSysCtrl                          
 0     000826d3  _InitSysPll                           
 1     00007900  _InputXbarRegs                        
@@ -1264,8 +1251,8 @@ abs   ffffffff  .text
 1     00007060  _NmiIntruptRegs                       
 1     00007a80  _OutputXbarRegs                       
 0     000825b8  _PIE_RESERVED_ISR                     
-0     00083221  _POSSPEED_Init                        
-0     0008324a  _POSSPEED_Read                        
+0     00083250  _POSSPEED_Init                        
+0     0008326c  _POSSPEED_Read                        
 1     00000ce0  _PieCtrlRegs                          
 1     00000d00  _PieVectTable                         
 0     00090000  _PieVectTableInit                     
@@ -1345,9 +1332,9 @@ abs   0000003b  _RamfuncsRunSize
 1     00000600  __STACK_END                           
 abs   00000200  __STACK_SIZE                          
 0     00000000  __TI_MEMRANGE_CRC__ccs_flash_checksum 
-1     0000a876  ___TI_cleanup_ptr                     
-1     0000a878  ___TI_dtors_ptr                       
-1     0000a874  ___TI_enable_exit_profile_output      
+1     0000a870  ___TI_cleanup_ptr                     
+1     0000a872  ___TI_dtors_ptr                       
+1     0000a86e  ___TI_enable_exit_profile_output      
 abs   ffffffff  ___TI_pprof_out_hndl                  
 abs   ffffffff  ___TI_prof_data_size                  
 abs   ffffffff  ___TI_prof_data_start                 
@@ -1357,60 +1344,49 @@ abs   ffffffff  ___c_args__
 abs   ffffffff  ___etext__                            
 abs   ffffffff  ___pinit__                            
 abs   ffffffff  ___text__                             
-0     000833e2  __args_main                           
-0     00082fdc  __configure                           
-0     00082ffc  __getValue                            
-1     0000a87a  __lock                                
-0     000833fc  __nop                                 
-0     00083054  __obtainTrajectoryValue               
-0     000833f8  __register_lock                       
-0     000833f4  __register_unlock                     
-0     0008327a  __setTorque                           
-0     0008303f  __setValue                            
+0     000833c5  __args_main                           
+0     00082fc6  __configure                           
+0     00083002  __getValue                            
+1     0000a878  __lock                                
+0     000833df  __nop                                 
+0     00083042  __obtainTrajectoryValue               
+0     000833db  __register_lock                       
+0     000833d7  __register_unlock                     
+0     00083227  __setTorque                           
+0     0008302d  __setValue                            
 1     00000400  __stack                               
-0     00083407  __system_post_cinit                   
-0     00083405  __system_pre_init                     
-1     0000a87c  __unlock                              
-0     000832cd  _abort                                
-0     0008339b  _apply_filter                         
-0     0008312f  _c_int00                              
+0     000833ea  __system_post_cinit                   
+0     000833e8  __system_pre_init                     
+1     0000a87a  __unlock                              
+0     000832b0  _abort                                
+0     0008337e  _apply_filter                         
+0     0008311d  _c_int00                              
 0     00000000  _ccs_flash_checksum                   
-0     0008331e  _configureDAC                         
-0     00082e0c  _controlLoop                          
-0     000831d6  _control_init                         
-0     0008336b  _copy_in                              
-0     00083200  _disturbance_observer1                
-0     0008321a  _disturbance_observer2                
-1     0000a826  _enc                                  
-0     00082fca  _encoder_init                         
-1     0000a808  _error                                
-0     000832cf  _exit                                 
-0     0008338f  _filter_init                          
-0     000830a2  _getTrajectory                        
-0     000830af  _getTrajectory2od                     
-1     0000a85c  _global_conf                          
-0     00082e5a  _initSystem                           
-1     0000a816  _lp_filter                            
+0     00083301  _configureDAC                         
+0     00082e02  _controlLoop                          
+0     00083173  _control_init                         
+0     0008334e  _copy_in                              
+0     000831a1  _disturbance_observer1                
+0     000831bc  _disturbance_observer2                
+1     0000a822  _enc                                  
+0     00082fb4  _encoder_init                         
+0     000832b2  _exit                                 
+0     00083372  _filter_init                          
+0     00083090  _getTrajectory                        
+0     0008309d  _getTrajectory2od                     
+1     0000a836  _global_conf                          
+0     00082e44  _initSystem                           
 0     00082dc1  _main                                 
-0     00083264  _map                                  
-0     000833ad  _memcpy                               
+0     00083211  _map                                  
+0     00083390  _memcpy                               
 1     0000a812  _motor                                
-0     00083298  _motor_init                           
-0     000831e9  _pd_control                           
-1     0000a85a  _prev_error                           
-1     0000a800  _prev_pos                             
-1     0000a858  _prev_tau                             
-0     00083086  _push_back_fixed_size_array           
-1     0000a80a  _q2_des                               
-1     0000a806  _q2_ref                               
-1     0000a804  _q_act                                
-1     0000a802  _q_ref                                
-1     0000a81a  _qep_module                           
-0     000831c5  _readAnalog                           
-1     0000a810  _tau                                  
-1     0000a80e  _tau_dis                              
-0     00083049  _trajectory_init                      
-1     0000a80c  _vel                                  
+0     00083245  _motor_init                           
+0     0008318d  _pd_control                           
+0     00083074  _push_back_fixed_size_array           
+1     0000a816  _qep_module                           
+0     00083203  _readAnalog                           
+0     00082fe4  _saturated_add                        
+0     00083037  _trajectory_init                      
 abs   ffffffff  binit                                 
 0     00082000  cinit                                 
 0     00080000  code_start                            
@@ -1611,62 +1587,63 @@ page  address   name
 0     00082cd1  _AdcSetMode                           
 0     00082d87  _CalAdcINL                            
 0     00082dc1  _main                                 
-0     00082e0c  _controlLoop                          
-0     00082e5a  _initSystem                           
-0     00082eac  _InitEQep                             
-0     00082ead  _InitEQepGpio                         
-0     00082eb4  _InitEQep1Gpio                        
-0     00082ede  _InitEQep2Gpio                        
-0     00082f04  _InitEQep3Gpio                        
-0     00082f42  FS$$DIV                               
-0     00082fca  _encoder_init                         
-0     00082fdc  __configure                           
-0     00082ffc  __getValue                            
-0     0008303f  __setValue                            
-0     00083049  _trajectory_init                      
-0     00083054  __obtainTrajectoryValue               
-0     00083086  _push_back_fixed_size_array           
-0     000830a2  _getTrajectory                        
-0     000830af  _getTrajectory2od                     
-0     000830c1  _ISR_pb1                              
-0     000830f7  _ISR_pb2                              
-0     0008312f  _c_int00                              
-0     00083185  _ConfigADC                            
-0     000831c2  _ConfigureADC                         
-0     000831c5  _readAnalog                           
-0     000831d6  _control_init                         
-0     000831e9  _pd_control                           
-0     00083200  _disturbance_observer1                
-0     0008321a  _disturbance_observer2                
-0     00083221  _POSSPEED_Init                        
-0     0008324a  _POSSPEED_Read                        
-0     00083264  _map                                  
-0     0008327a  __setTorque                           
-0     00083298  _motor_init                           
-0     000832a3  L$$DIV                                
-0     000832b2  L$$MOD                                
-0     000832c0  UL$$DIV                               
-0     000832c7  UL$$MOD                               
-0     000832cd  C$$EXIT                               
-0     000832cd  _abort                                
-0     000832cf  _exit                                 
-0     000832f6  _InitPieCtrl                          
-0     00083315  _EnableInterrupts                     
-0     0008331e  _configureDAC                         
-0     00083345  _InitPieVectTable                     
-0     0008336b  _copy_in                              
-0     0008338f  _filter_init                          
-0     0008339b  _apply_filter                         
-0     000833ad  _memcpy                               
-0     000833ca  LL$$AND                               
-0     000833d2  LL$$OR                                
-0     000833da  LL$$XOR                               
-0     000833e2  __args_main                           
-0     000833f4  __register_unlock                     
-0     000833f8  __register_lock                       
-0     000833fc  __nop                                 
-0     00083405  __system_pre_init                     
-0     00083407  __system_post_cinit                   
+0     00082e02  _controlLoop                          
+0     00082e44  _initSystem                           
+0     00082e96  _InitEQep                             
+0     00082e97  _InitEQepGpio                         
+0     00082e9e  _InitEQep1Gpio                        
+0     00082ec8  _InitEQep2Gpio                        
+0     00082eee  _InitEQep3Gpio                        
+0     00082f2c  FS$$DIV                               
+0     00082fb4  _encoder_init                         
+0     00082fc6  __configure                           
+0     00082fe4  _saturated_add                        
+0     00083002  __getValue                            
+0     0008302d  __setValue                            
+0     00083037  _trajectory_init                      
+0     00083042  __obtainTrajectoryValue               
+0     00083074  _push_back_fixed_size_array           
+0     00083090  _getTrajectory                        
+0     0008309d  _getTrajectory2od                     
+0     000830af  _ISR_pb1                              
+0     000830e5  _ISR_pb2                              
+0     0008311d  _c_int00                              
+0     00083173  _control_init                         
+0     0008318d  _pd_control                           
+0     000831a1  _disturbance_observer1                
+0     000831bc  _disturbance_observer2                
+0     000831c3  _ConfigADC                            
+0     00083200  _ConfigureADC                         
+0     00083203  _readAnalog                           
+0     00083211  _map                                  
+0     00083227  __setTorque                           
+0     00083245  _motor_init                           
+0     00083250  _POSSPEED_Init                        
+0     0008326c  _POSSPEED_Read                        
+0     00083286  L$$DIV                                
+0     00083295  L$$MOD                                
+0     000832a3  UL$$DIV                               
+0     000832aa  UL$$MOD                               
+0     000832b0  C$$EXIT                               
+0     000832b0  _abort                                
+0     000832b2  _exit                                 
+0     000832d9  _InitPieCtrl                          
+0     000832f8  _EnableInterrupts                     
+0     00083301  _configureDAC                         
+0     00083328  _InitPieVectTable                     
+0     0008334e  _copy_in                              
+0     00083372  _filter_init                          
+0     0008337e  _apply_filter                         
+0     00083390  _memcpy                               
+0     000833ad  LL$$AND                               
+0     000833b5  LL$$OR                                
+0     000833bd  LL$$XOR                               
+0     000833c5  __args_main                           
+0     000833d7  __register_unlock                     
+0     000833db  __register_lock                       
+0     000833df  __nop                                 
+0     000833e8  __system_pre_init                     
+0     000833ea  __system_post_cinit                   
 0     00086000  _RamfuncsLoadStart                    
 0     0008603b  _RamfuncsLoadEnd                      
 0     00090000  _PieVectTableInit                     
@@ -1757,30 +1734,18 @@ page  address   name
 1     00007a80  _OutputXbarRegs                       
 1     00007c00  _GpioCtrlRegs                         
 1     00007f00  _GpioDataRegs                         
-1     0000a800  _prev_pos                             
-1     0000a802  _q_ref                                
-1     0000a804  _q_act                                
-1     0000a806  _q2_ref                               
-1     0000a808  _error                                
-1     0000a80a  _q2_des                               
-1     0000a80c  _vel                                  
-1     0000a80e  _tau_dis                              
-1     0000a810  _tau                                  
 1     0000a812  _motor                                
-1     0000a816  _lp_filter                            
-1     0000a81a  _qep_module                           
-1     0000a826  _enc                                  
+1     0000a816  _qep_module                           
+1     0000a822  _enc                                  
+1     0000a836  _global_conf                          
 1     0000a840  _CpuTimer0                            
 1     0000a848  _CpuTimer1                            
 1     0000a850  _CpuTimer2                            
-1     0000a858  _prev_tau                             
-1     0000a85a  _prev_error                           
-1     0000a85c  _global_conf                          
-1     0000a874  ___TI_enable_exit_profile_output      
-1     0000a876  ___TI_cleanup_ptr                     
-1     0000a878  ___TI_dtors_ptr                       
-1     0000a87a  __lock                                
-1     0000a87c  __unlock                              
+1     0000a86e  ___TI_enable_exit_profile_output      
+1     0000a870  ___TI_cleanup_ptr                     
+1     0000a872  ___TI_dtors_ptr                       
+1     0000a878  __lock                                
+1     0000a87a  __unlock                              
 1     00047000  _Emif1Regs                            
 1     00047800  _Emif2Regs                            
 1     00048000  _CanaRegs                             
@@ -1819,4 +1784,4 @@ abs   ffffffff  binit
 abs   ffffffff  etext                                 
 abs   ffffffff  pinit                                 
 
-[396 symbols]
+[385 symbols]
