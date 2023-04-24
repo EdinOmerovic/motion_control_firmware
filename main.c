@@ -32,7 +32,8 @@ LowPassFilter lp_filter;
 
 // Local function definitions
 //__interrupt void prdTick(void);
-__interrupt void controlLoop(void); // Called every N us
+ //__interrupt void controlLoop(void); // Called every N us
+void controlLoop(void);
 __interrupt void ISR_pb1(void); // Triggered by end-stop 1
 __interrupt void ISR_pb2(void); // Triggered by end-stop 2
 void initSystem(void);
@@ -93,48 +94,55 @@ void main(void)
     EDIS;
 
     // Handle everything in controlLoop(void)
-    for (;;);
+    for (;;)
+    {
+        controlLoop();
+        DELAY_US((TIME_STEP - PROCESSING_TIME));
+    }
 }
 
+
 // Main control loop
-__interrupt void controlLoop(void)
+Uint32 q_ref, q_act;
+signed long q2_ref, error, q2_des, vel, tau_dis, tau;
+void controlLoop(void)
 {
     // Diode used for debugging
     GPIO_WritePin(LOOP_CLOCK_GPIO, 1);
 
     // Get the desired trajectory:
-    Uint32 q_ref = getTrajectory();
+    q_ref = getTrajectory();
 
     // Get the second derivative of the desired trajectory
-    Uint32 q2_ref = getTrajectory2od(); // FIXME: Za prvi MVP to je 0
+    q2_ref = getTrajectory2od(); // FIXME: Za prvi MVP to je 0
 
     // Get current absolute position from encoder (in micrometers)
     // The position is ranging form 0 to ENDSTOP2_VALUE
-    Uint32 q_act = enc.getValue(&enc);
+    q_act = enc.getValue(&enc);
 
     // Calculate position error
-    signed long error = q_ref - q_act;
+    error = q_ref - q_act;
 
     // Calculate second derivative of q desired
-    signed long q2_des = q2_ref + pd_control(error);
+    q2_des = q2_ref + pd_control(error);
 
     // Disturbance observer
     // Calculate velocity:
     // v = delta X / delta T
-    signed long vel = (q_act - prev_pos) / TIME_STEP; // in um/us
-    signed long tau_dis = disturbance_observer1(&lp_filter, vel);
+    vel = (q_act - prev_pos) / TIME_STEP; // in um/us
+    tau_dis = disturbance_observer1(&lp_filter, vel);
 
     // Calculate tau
     // tau = tau_des + tau_dis
     // tau_des = an*q2_des;
-    signed long tau = AN * q2_des + tau_dis;
+    tau = AN * q2_des + tau_dis;
 
     // Update disturbance observer
     disturbance_observer2(tau);
 
     motor.setTorque(&motor, tau);
 
-    prev_pos = enc.getValue(&enc);
+    prev_pos = q_act;
 
     // Acknowledge this __interrupt to receive more __interrupts from group 1
     CpuTimer0.InterruptCount++;
@@ -235,19 +243,19 @@ void initSystem(void)
     // **** Initialize other CPU components ****
 
     // *** Timers ***
-    InitCpuTimers();
+     //InitCpuTimers();
     // Configure CPU-Timer 0 to __interrupt
-    ConfigCpuTimer(&CpuTimer0, 200, TIME_STEP);
+     //ConfigCpuTimer(&CpuTimer0, 200, TIME_STEP);
 
     // To ensure precise timing, use write-only instructions to write to the entire
     // register. Therefore, if any of the configuration bits are changed in
     // ConfigCpuTimer and InitCpuTimers (in F2837xD_cputimervars.h), the below
     // settings must also be updated.
-    CpuTimer0Regs.TCR.all = 0x4001;
+     //CpuTimer0Regs.TCR.all = 0x4001;
     // Enable TINT0 in the PIE: Group 1 __interrupt 7
-    PieCtrlRegs.PIEIER1.bit.INTx7 = 1;
+     //PieCtrlRegs.PIEIER1.bit.INTx7 = 1;
     // Enable CPU INT1 which is connected to CPU-Timer 0:
-    IER |= M_INT1;
+     //IER |= M_INT1;
 
     // *** DAC ***
     configureDAC(DAC_NUM);
@@ -257,7 +265,7 @@ void initSystem(void)
 
     // Remap ISR functions to user interrupts.
     EALLOW;
-    PieVectTable.TIMER0_INT = &controlLoop;
+    //PieVectTable.TIMER0_INT = &controlLoop;
     PieVectTable.XINT1_INT = &ISR_pb1;
     PieVectTable.XINT2_INT = &ISR_pb2;
 

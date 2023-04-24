@@ -1,8 +1,8 @@
 #include "control.h"
 
 
-int prev_tau = 0;
-int prev_error = 0;
+signed long prev_tau = 0;
+signed long prev_error = 0;
 ControlerConf global_conf; 
 
 
@@ -26,13 +26,13 @@ Uint32 pd_control(int error)
 }
 
 
-Uint32 disturbance_observer1(LowPassFilter *filter, int vel)
+signed long disturbance_observer1(LowPassFilter *filter, signed long vel)
 {
-    int value = prev_tau + global_conf.G*global_conf.An*vel;
+    signed long value = prev_tau + global_conf.G*global_conf.An*vel;
     return apply_filter(filter, value) - global_conf.G*global_conf.An*vel;
 }
 
-void disturbance_observer2(int tau)
+void disturbance_observer2(signed long tau)
 {
     prev_tau = tau;
 

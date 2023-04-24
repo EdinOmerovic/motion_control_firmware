@@ -92,5 +92,6 @@ Uint32 getTrajectory(void)
 // It would be nice if we had a general derivative block to use.
 signed long getTrajectory2od(void)
 {
-    return (previous_trajectory_value_buffer[0] - 2*previous_trajectory_value_buffer[1] + previous_trajectory_value_buffer[2])/TIME_STEP*TIME_STEP;
+    signed long finite_diff = previous_trajectory_value_buffer[0] - 2*previous_trajectory_value_buffer[1] + previous_trajectory_value_buffer[2];
+    return finite_diff/(TIME_STEP*TIME_STEP);
 }

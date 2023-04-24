@@ -10,6 +10,7 @@
 
 // Should be bigger than 1000 for now
 #define TIME_STEP 1000 // [us]
+#define PROCESSING_TIME 6
 
 
 #define LOOP_CLOCK_GPIO 32

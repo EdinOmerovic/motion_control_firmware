@@ -15,11 +15,11 @@
 
 #include "IQmathLib.h"
 #include "F2837xD_device.h"
-
+#define ENC_INIT_VALUE 0x80000002
 //
 // Defines
 //
-#define POSSPEED_DEFAULTS {0x0, 0x0, 1, 0,\
+#define POSSPEED_DEFAULTS {ENC_INIT_VALUE, ENC_INIT_VALUE, 1, 0,\
                            (void (*)(long))POSSPEED_Init,\
                            (Uint32 (*)(long))POSSPEED_Read}
 

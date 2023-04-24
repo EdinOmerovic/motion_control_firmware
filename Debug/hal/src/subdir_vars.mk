@@ -31,7 +31,6 @@ C_DEPS__QUOTED += \
 "hal\src\encoder_hal.d" 
 
 C_SRCS__QUOTED += \
-"../hal/src/adc_hal.c" \
 "../hal/src/encoder_hal.c" 
 
 

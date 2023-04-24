@@ -4,7 +4,7 @@ MEMORY
 
    BOOT_RSVD        : origin = 0x000002, length = 0x0001AE     /* Part of M0, BOOT rom will use this for stack */
    RAMM0            : origin = 0x0001B0, length = 0x000250
-   RAMM1            : origin = 0x000400, length = 0x000400     /* on-chip RAM block M1 */
+   RAMM1            : origin = 0x000400, length = 0x000800     /* on-chip RAM block M1 */
    RAMD0            : origin = 0x00C000, length = 0x000800
    RAMD1            : origin = 0x00C800, length = 0x000800
    RAMLS0           : origin = 0x008000, length = 0x000800

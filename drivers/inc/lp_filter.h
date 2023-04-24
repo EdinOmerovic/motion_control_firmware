@@ -2,11 +2,11 @@
 #define LOW_PASS_FILTER_H_
 
 typedef struct {
-    int alpha;
-    int y_prev;
+    signed long alpha;
+    signed long y_prev;
 } LowPassFilter;
 
 void filter_init(LowPassFilter *filter, int alpha, int y0);
-int apply_filter(LowPassFilter *filter, int x);
+signed long apply_filter(LowPassFilter *filter, signed long x);
 
 #endif /* LOW_PASS_FILTER_H_ */

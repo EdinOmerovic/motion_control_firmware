@@ -15,8 +15,8 @@ void control_init(ControlerConf *);
 
 Uint32 pd_control(int error);
 
-Uint32 disturbance_observer1(LowPassFilter *, int);
+signed long disturbance_observer1(LowPassFilter *, signed long);
 
-void disturbance_observer2(int);
+void disturbance_observer2(signed long);
 
 #endif

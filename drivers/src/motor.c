@@ -8,7 +8,7 @@
 
 Uint32 map(signed long x, signed long in_min, signed long in_max, Uint32 out_min, Uint32 out_max)
 {
-    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+    return ((x - in_min) * (out_max - out_min)) / (in_max - in_min) + out_min;
 }
 
 void _setTorque(Motor *motor, signed long torque)

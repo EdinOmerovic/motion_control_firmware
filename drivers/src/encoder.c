@@ -3,7 +3,7 @@
 #define STARTING_VALUE 0
 
 // Defiend in F2837xD_EQep.c file
-extern InitEQep1Gpio(void);
+//extern InitEQep1Gpio(void);
 
 void encoder_init(Encoder *enc)
 {
@@ -18,7 +18,7 @@ void encoder_init(Encoder *enc)
 void _configure(Encoder *enc, EncoderConf *confg, POSSPEED *module)
 {
     enc->enc_confg = confg;    
-    enc->previous_encoder_value = (confg->startingValue/confg->scalingFactor);
+    //enc->previous_encoder_value = (confg->startingValue/confg->scalingFactor);
     enc->current_absolute_position = enc->previous_encoder_value;
     // QEP
     enc->module = module;
@@ -33,16 +33,16 @@ Uint32 _getValue(Encoder *enc)
     Uint32 new_encoder_value = enc->module->read(enc->module);
     
     // Overflow and underflow protection
-    if (new_encoder_value >= enc->previous_encoder_value){
-        enc->current_absolute_position += (new_encoder_value - enc->previous_encoder_value) / enc->enc_confg->scalingFactor;
+    if (new_encoder_value >= enc->module->previous_value){
+        enc->current_absolute_position += (new_encoder_value - enc->module->previous_value) / enc->enc_confg->scalingFactor;
     }else{
-        enc->current_absolute_position -= (enc->previous_encoder_value - new_encoder_value) / enc->enc_confg->scalingFactor;
+        enc->current_absolute_position -= (enc->module->previous_value - new_encoder_value) / enc->enc_confg->scalingFactor;
     }
     
     // Napravi da se ne moze biti negativna vrijednost
     // TODO: check if the estimated position is within ranges. Did we hit overflow?
     
-    enc->previous_encoder_value = new_encoder_value;
+    //enc->previous_encoder_value = new_encoder_value;
 
     return enc->current_absolute_position;
 }
