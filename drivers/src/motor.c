@@ -1,8 +1,8 @@
 #include "motor.h"
 #include "dac_hal.h"
 
-#define RANGE_IN_MIN 10 // min value of torque
-#define RANGE_IN_MAX 10 // max value of torque
+#define RANGE_IN_MIN 12529// min value of torque
+#define RANGE_IN_MAX 12529// max value of torque
 #define RANGE_OUT_MIN 0
 #define RANGE_OUT_MAX 4095
 

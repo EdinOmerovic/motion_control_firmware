@@ -7,7 +7,7 @@
 // NOTE: Given trajectory always has to be positive and in within the range of the actual manipulator workspace (ENDSTOP1, ENDSTOP2)
 
 #define FIXED_VALUE 0
-#define ANALOG_READ_MAX_VALUE 65535
+#define ANALOG_READ_MAX_VALUE 4095
 #define MAX_BUFFER_VALUE 3
 
 static source_e src_config;
@@ -93,5 +93,5 @@ Uint32 getTrajectory(void)
 signed long getTrajectory2od(void)
 {
     signed long finite_diff = previous_trajectory_value_buffer[0] - 2*previous_trajectory_value_buffer[1] + previous_trajectory_value_buffer[2];
-    return finite_diff/(TIME_STEP*TIME_STEP);
+    return (finite_diff*1000) / ((TIME_STEP*TIME_STEP)/100); // in um/s^2
 }

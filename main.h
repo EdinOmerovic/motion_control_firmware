@@ -19,10 +19,11 @@
 // Control parameters
 #define KP_val 1
 #define KI_val 1
-#define KD_val 1
+#define KD_val 10
 
 #define AN 1    // Manipulator inertia, mass
-#define G_val 1 // filter parameters
+#define G_val 1
+// filter parameters 0 - 1000
 
 // Absolute value of the possition when touching endstop 2
 #define ENDSTOP1_VALUE 0

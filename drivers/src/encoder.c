@@ -50,7 +50,7 @@ void saturated_add(Uint32 *a, signed long *b)
 Uint32 _getValue(Encoder *enc)
 {
     // read the counter value from the quadratic encode module and calculate difference:
-    signed long difference = enc->module->read(enc->module) - (enc->module->previous_value / enc->enc_confg->scalingFactor);
+    signed long difference = enc->module->read(enc->module) - (enc->module->previous_value / enc->module->scaling_factor);
     
     // Overflow and underflow protection
     // Passing by reference.

@@ -20,18 +20,18 @@ POSSPEED qep_module = POSSPEED_DEFAULTS;
 
 // **** INSTATATION ****
 // Encoder
-Encoder enc;
+        Encoder enc;
 
 // Motor
-Motor motor;
+        Motor motor;
 
 // Local function definitions
 //__interrupt void prdTick(void);
- //__interrupt void controlLoop(void); // Called every N us
+//__interrupt void controlLoop(void); // Called every N us
 void initSystem(void);
 void controlLoop(void);
-__interrupt void ISR_pb1(void); // Triggered by end-stop 1
-__interrupt void ISR_pb2(void); // Triggered by end-stop 2
+__interrupt void ISR_pb1(void);// Triggered by end-stop 1
+__interrupt void ISR_pb2(void);// Triggered by end-stop 2
 
 // TODO
 // Provjeri na kojem tacno izlazu ti je DACA
@@ -47,15 +47,21 @@ void main(void)
     encoder_init(&enc);
     // scaling factor = 100 to get micrometers
     // starting value should be determined by auto-homing: ENDSTOP1_VALUE
-    EncoderConf enc_conf = { .scalingFactor = 100, .startingValue = 0 };
+    EncoderConf enc_conf =
+    {
+        .scalingFactor = 100,
+        .startingValue = 5000
+    };
+
     enc.configure(&enc, &enc_conf, &qep_module);
 
     // *** Controller ***
-    ControlerConf controler_conf = { .An = AN,
-                                     .G = G_val,
-                                     .KP = KP_val,
-                                     .KI = KI_val,
-                                     .KD = KD_val,
+    ControlerConf controler_conf =
+    {   .An = AN,
+        .G = G_val,
+        .KP = KP_val,
+        .KI = KI_val,
+        .KD = KD_val,
     };
 
     control_init(&controler_conf);
@@ -67,12 +73,10 @@ void main(void)
     // Ovdje je takoder potrebno specificirati koje su dimenzije sistema
     trajectory_init(ANALOG_READ);
 
-
     // *** Motor ***
-    MotorConf motor_conf = { .scaler = 1, .tau_offset = 0, .voltage_offset = 0 };
+    MotorConf motor_conf =
+    {   .scaler = 1, .tau_offset = 0, .voltage_offset = 0};
     motor_init(&motor, &motor_conf);
-
-
 
     // ******* END of initialization of high level components
 
@@ -89,11 +93,37 @@ void main(void)
     }
 }
 
+void saturated_add_3(signed long *result, signed long a, signed long b)
+{
+    if (a > 0 && b > 0)
+    {
+        Uint64 temp_res = (Uint32)a + (Uint32)b;
+        if (temp_res > 4200000 - 1)
+        {
+            *result = 4200000;
+        }
+        else
+        {
+            signed long res = (signed long)a + (signed long)b;
+            *result =  res;
+        }
+    }else
+    {
+        // Implement underflow protection
+        *result = a + b;
+    }
+}
 
 // Main control loop
 static Uint32 prev_pos = 0;
-static Uint32 q_ref, q_act;
-static signed long q2_ref, error, q2_des, vel, tau_dis, tau;
+static Uint32 q_ref = 0;
+static Uint32 q_act = 0;
+static signed long q2_ref = 0;
+static signed long error = 0;
+static signed long q2_des = 0;
+static signed long vel = 0;
+static signed long tau_dis = 0;
+static signed long tau = 0;
 void controlLoop(void)
 {
     // Diode used for debugging
@@ -103,7 +133,7 @@ void controlLoop(void)
     q_ref = getTrajectory();
 
     // Get the second derivative of the desired trajectory
-    q2_ref = getTrajectory2od();
+    q2_ref = getTrajectory2od(); // in [m/s^2
 
     // Get current absolute position from encoder (in micrometers)
     // The position is ranging form 0 to ENDSTOP2_VALUE
@@ -113,18 +143,19 @@ void controlLoop(void)
     error = q_ref - q_act;
 
     // Calculate second derivative of q desired
-    q2_des = q2_ref + pd_control(error);
+    q2_des = (q2_ref / 1000000) + pd_control(error);
 
     // Disturbance observer
     // Calculate velocity:
     // v = delta X / delta T
-    vel = (q_act - prev_pos) / TIME_STEP; // in m/s
+    vel = (q_act - prev_pos) / (TIME_STEP / 1000); // in um/s
     tau_dis = disturbance_observer1(vel);
 
     // Calculate tau
     // tau = tau_des + tau_dis
     // tau_des = an*q2_des;
-    tau = AN * q2_des + tau_dis;
+    // Saturation add logic
+    saturated_add_3(&tau, AN * q2_des, tau_dis/1000);
 
     // Update disturbance observer
     disturbance_observer2(tau);
@@ -171,17 +202,13 @@ void initSystem(void)
     // This is needed to write to EALLOW protected registers
     EALLOW;
 
-
     // **** Initialize bare-minimum embedded system ****
     InitSysCtrl();
-
-
 
     // *** Initialize peripheral vector interrupt table
     // Initialize the PIE control registers to their default state.
     // The default state is all PIE __interrupts disabled and flags are cleared.
     InitPieCtrl();
-
 
     // Initialize the PIE vector table with pointers to the shell Interrupt
     // Service Routines (ISR).
@@ -190,7 +217,6 @@ void initSystem(void)
     // The shell ISR routines are found in F2837xD_DefaultIsr.c.
     // This function is found in F2837xD_PieVect.c.
     InitPieVectTable();
-
 
     // **** Initialize HAL components ****
 
@@ -224,7 +250,6 @@ void initSystem(void)
     XintRegs.XINT1CR.bit.ENABLE = 1;            // Enable XINT1
     XintRegs.XINT2CR.bit.ENABLE = 1;            // Enable XINT2
 
-
     // TODO provjeri da li je ovome mjesto ovdje
     PieCtrlRegs.PIEIER1.bit.INTx4 = 1;          // Enable PIE Group 1 INT4
     PieCtrlRegs.PIEIER1.bit.INTx5 = 1;          // Enable PIE Group 1 INT5
@@ -232,19 +257,19 @@ void initSystem(void)
     // **** Initialize other CPU components ****
 
     // *** Timers ***
-     //InitCpuTimers();
+    //InitCpuTimers();
     // Configure CPU-Timer 0 to __interrupt
-     //ConfigCpuTimer(&CpuTimer0, 200, TIME_STEP);
+    //ConfigCpuTimer(&CpuTimer0, 200, TIME_STEP);
 
     // To ensure precise timing, use write-only instructions to write to the entire
     // register. Therefore, if any of the configuration bits are changed in
     // ConfigCpuTimer and InitCpuTimers (in F2837xD_cputimervars.h), the below
     // settings must also be updated.
-     //CpuTimer0Regs.TCR.all = 0x4001;
+    //CpuTimer0Regs.TCR.all = 0x4001;
     // Enable TINT0 in the PIE: Group 1 __interrupt 7
-     //PieCtrlRegs.PIEIER1.bit.INTx7 = 1;
+    //PieCtrlRegs.PIEIER1.bit.INTx7 = 1;
     // Enable CPU INT1 which is connected to CPU-Timer 0:
-     //IER |= M_INT1;
+    //IER |= M_INT1;
 
     // *** DAC ***
     configureDAC(DAC_NUM);

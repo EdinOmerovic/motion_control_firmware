@@ -16,7 +16,7 @@ void control_init(ControlerConf *conf)
     global_conf.G = conf->G;
     global_conf.An = conf->An;
     // *** Filter ***
-    filter_init(&lp_filter, conf->G, 0);
+    filter_init(&lp_filter, 5, 0);
 }
 
 signed long pd_control(signed long error)
