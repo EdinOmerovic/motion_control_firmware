@@ -1,9 +1,10 @@
 // NOTE: all values are represented in the following units:
-// * lenght = micrometers [us]
+// * length = micrometers [um]
 // * time  = microseconds [us]
-// * mass = grams
+// * mass = grams [g]
 
 // Code Composer Project related stuff
+#include "helpers.h"
 #include "F28x_Project.h"
 
 // Contains project level configuration
@@ -15,44 +16,34 @@
 #include "trajectory.h"
 #include "control.h"
 
-// Global static values
-POSSPEED qep_module = POSSPEED_DEFAULTS;
 
 // **** INSTATATION ****
-// Encoder
-        Encoder enc;
-
-// Motor
-        Motor motor;
+Encoder enc;
+Motor motor;
+POSSPEED qep_module = POSSPEED_DEFAULTS;
 
 // Local function definitions
-//__interrupt void prdTick(void);
-//__interrupt void controlLoop(void); // Called every N us
 void initSystem(void);
 void controlLoop(void);
 __interrupt void ISR_pb1(void);// Triggered by end-stop 1
 __interrupt void ISR_pb2(void);// Triggered by end-stop 2
 
-// TODO
-// Provjeri na kojem tacno izlazu ti je DACA
-// Podesi da sve jedinice budu odgovarajuce
 
 void main(void)
 {
-    // Initialize system and low-level components
+    // ***** Initialize system and low-level components *****
     initSystem();
 
-    // Initialization of high level components
+    // ----- Initialization of high level components -----
+
     // *** Encoder ***
-    encoder_init(&enc);
-    // scaling factor = 100 to get micrometers
-    // starting value should be determined by auto-homing: ENDSTOP1_VALUE
     EncoderConf enc_conf =
     {
-        .scalingFactor = 100,
-        .startingValue = 5000
+        .scalingFactor = 100, // 100 to get micrometers
+        .startingValue = ENCODER_STARTING_POSITION // starting value should be determined by auto-homing: ENDSTOP1_VALUE
     };
 
+    encoder_init(&enc);
     enc.configure(&enc, &enc_conf, &qep_module);
 
     // *** Controller ***
@@ -67,18 +58,18 @@ void main(void)
     control_init(&controler_conf);
 
     // *** Trajectory ***
-    // *Hardcoded: supplied using lookup table
-    // *Analog: obtained using analog read
-    // *Fixed: fixed value of the trajectory
-    // Ovdje je takoder potrebno specificirati koje su dimenzije sistema
-    trajectory_init(ANALOG_READ);
+    trajectory_init(TRAJECTORY_SELECT);
 
     // *** Motor ***
     MotorConf motor_conf =
-    {   .scaler = 1, .tau_offset = 0, .voltage_offset = 0};
+    {
+         .scaler = 1,
+         .tau_offset = 0,
+         .voltage_offset = 0
+    };
     motor_init(&motor, &motor_conf);
 
-    // ******* END of initialization of high level components
+    // ----- END of initialization of high level components -----
 
     // Start the TIMER0 - controlToop trigger
     //CpuTimer0Regs.TCR.bit.TSS = 0;
@@ -93,29 +84,9 @@ void main(void)
     }
 }
 
-void saturated_add_3(signed long *result, signed long a, signed long b)
-{
-    if (a > 0 && b > 0)
-    {
-        Uint64 temp_res = (Uint32)a + (Uint32)b;
-        if (temp_res > 4200000 - 1)
-        {
-            *result = 4200000;
-        }
-        else
-        {
-            signed long res = (signed long)a + (signed long)b;
-            *result =  res;
-        }
-    }else
-    {
-        // Implement underflow protection
-        *result = a + b;
-    }
-}
 
-// Main control loop
-static Uint32 prev_pos = 0;
+// Static variables used in the control loop
+static Uint32 q_previous = ENCODER_STARTING_POSITION;
 static Uint32 q_ref = 0;
 static Uint32 q_act = 0;
 static signed long q2_ref = 0;
@@ -124,6 +95,7 @@ static signed long q2_des = 0;
 static signed long vel = 0;
 static signed long tau_dis = 0;
 static signed long tau = 0;
+// Main control loop
 void controlLoop(void)
 {
     // Diode used for debugging
@@ -148,7 +120,7 @@ void controlLoop(void)
     // Disturbance observer
     // Calculate velocity:
     // v = delta X / delta T
-    vel = (q_act - prev_pos) / (TIME_STEP / 1000); // in um/s
+    vel = (q_act - q_previous) / (TIME_STEP / 1000); // in um/s
     tau_dis = disturbance_observer1(vel);
 
     // Calculate tau
@@ -160,9 +132,9 @@ void controlLoop(void)
     // Update disturbance observer
     disturbance_observer2(tau);
 
-    motor.setTorque(&motor, tau);
+    motor.setTorque(&motor, saturate(tau, MIN_MOTOR_TAU, MAX_MOTOR_TAU));
 
-    prev_pos = q_act;
+    q_previous = q_act;
 
     // Acknowledge this __interrupt to receive more __interrupts from group 1
     //CpuTimer0.InterruptCount++;
@@ -174,6 +146,7 @@ void controlLoop(void)
 
 }
 
+
 __interrupt void ISR_pb1(void)
 {
     enc.setValue(&enc, 0);
@@ -184,7 +157,6 @@ __interrupt void ISR_pb1(void)
 }
 __interrupt void ISR_pb2(void)
 {
-
     enc.setValue(&enc, ENDSTOP2_VALUE);
 
     // Acknowledge this interrupt to get more from group 1
@@ -228,15 +200,19 @@ void initSystem(void)
     GPIO_SetupPinMux(LOOP_CLOCK_GPIO, GPIO_MUX_CPU1, 0);
     GPIO_SetupPinOptions(LOOP_CLOCK_GPIO, GPIO_OUTPUT, GPIO_PUSHPULL);
 
-    // * (ENDSTOP1 and ENSTOP2) GPIO0 and GPIO1 are inputs, triggering interrupt routine
     // FIXME: create a function for setting up the inputs like this
-    GpioCtrlRegs.GPAMUX1.bit.GPIO0 = 0;         // GPIO
-    GpioCtrlRegs.GPADIR.bit.GPIO0 = 0;          // input
-    GpioCtrlRegs.GPAQSEL1.bit.GPIO0 = 0;        // XINT1 Synch to SYSCLKOUT only
+    // * (ENDSTOP1 and ENSTOP2) GPIO0 and GPIO1 are inputs, triggering interrupt routine
+    GpioCtrlRegs.GPAMUX1.bit.GPIO0 = 0;
+    GpioCtrlRegs.GPADIR.bit.GPIO0 = 0;
+    GpioCtrlRegs.GPAQSEL1.bit.GPIO0 = 0;
 
-    GpioCtrlRegs.GPAMUX1.bit.GPIO1 = 0;         // GPIO
-    GpioCtrlRegs.GPADIR.bit.GPIO1 = 0;          // input
-    GpioCtrlRegs.GPAQSEL1.bit.GPIO1 = 0;        // XINT2 Qual using 6 samples
+    GpioCtrlRegs.GPAMUX1.bit.GPIO1 = 0;
+    GpioCtrlRegs.GPADIR.bit.GPIO1 = 0;
+    GpioCtrlRegs.GPAQSEL1.bit.GPIO1 = 0;
+
+    // TODO: Enable pin pull-up
+    // GPAPUD
+    //GpioCtrlRegs.
 
     // GPIO0 is XINT1, GPIO1 is XINT2
     GPIO_SetupXINT1Gpio(0);
@@ -269,7 +245,7 @@ void initSystem(void)
     // Enable TINT0 in the PIE: Group 1 __interrupt 7
     //PieCtrlRegs.PIEIER1.bit.INTx7 = 1;
     // Enable CPU INT1 which is connected to CPU-Timer 0:
-    //IER |= M_INT1;
+
 
     // *** DAC ***
     configureDAC(DAC_NUM);
@@ -285,6 +261,7 @@ void initSystem(void)
 
     // Set peripheral interrupt enable
     PieCtrlRegs.PIECTRL.bit.ENPIE = 1;
+    IER |= M_INT1; // Enable CPU INT1
 
     // *** Postconfiguration ***
     // Disable write protection

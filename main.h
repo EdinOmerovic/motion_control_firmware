@@ -24,11 +24,21 @@
 #define AN 1    // Manipulator inertia, mass
 #define G_val 1
 // filter parameters 0 - 1000
+#define FILTER_ALPHA 995
 
 // Absolute value of the possition when touching endstop 2
 #define ENDSTOP1_VALUE 0
 #define ENDSTOP2_VALUE 83500// 8.35cm
 
+#define ENCODER_STARTING_POSITION 5000
+
+#define MAX_MOTOR_TAU 40000
+#define MIN_MOTOR_TAU -40000
+
+// *Hardcoded: supplied using lookup table
+// *Analog: obtained using analog read
+// *Fixed: fixed value of the trajectory
+#define TRAJECTORY_SELECT ANALOG_READ
 
 
 #endif /* MAIN_H_ */

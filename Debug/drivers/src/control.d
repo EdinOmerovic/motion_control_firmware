@@ -75,6 +75,7 @@ drivers/src/control.obj: C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd
 drivers/src/control.obj: C:/Users/Master/Desktop/ccs_extraction/!qepm_e/hal/inc/dac_hal.h
 drivers/src/control.obj: C:/Users/Master/Desktop/ccs_extraction/!qepm_e/drivers/inc/control.h
 drivers/src/control.obj: C:/Users/Master/Desktop/ccs_extraction/!qepm_e/drivers/inc/lp_filter.h
+drivers/src/control.obj: C:/Users/Master/Desktop/ccs_extraction/!qepm_e/main.h
 
 ../drivers/src/control.c:
 
@@ -225,4 +226,6 @@ C:/Users/Master/Desktop/ccs_extraction/!qepm_e/hal/inc/dac_hal.h:
 C:/Users/Master/Desktop/ccs_extraction/!qepm_e/drivers/inc/control.h:
 
 C:/Users/Master/Desktop/ccs_extraction/!qepm_e/drivers/inc/lp_filter.h:
+
+C:/Users/Master/Desktop/ccs_extraction/!qepm_e/main.h:
 

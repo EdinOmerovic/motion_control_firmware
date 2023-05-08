@@ -73,7 +73,9 @@ drivers/src/motor.obj: C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/h
 drivers/src/motor.obj: C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/headers/include/F2837xD_xint.h
 drivers/src/motor.obj: C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/headers/include/F2837xD_can.h
 drivers/src/motor.obj: C:/Users/Master/Desktop/ccs_extraction/!qepm_e/hal/inc/dac_hal.h
+drivers/src/motor.obj: C:/Users/Master/Desktop/ccs_extraction/!qepm_e/main.h
 drivers/src/motor.obj: C:/Users/Master/Desktop/ccs_extraction/!qepm_e/drivers/inc/motor.h
+drivers/src/motor.obj: C:/Users/Master/Desktop/ccs_extraction/!qepm_e/helpers.h
 
 ../drivers/src/motor.c:
 
@@ -221,5 +223,9 @@ C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/headers/include/F2837xD_
 
 C:/Users/Master/Desktop/ccs_extraction/!qepm_e/hal/inc/dac_hal.h:
 
+C:/Users/Master/Desktop/ccs_extraction/!qepm_e/main.h:
+
 C:/Users/Master/Desktop/ccs_extraction/!qepm_e/drivers/inc/motor.h:
+
+C:/Users/Master/Desktop/ccs_extraction/!qepm_e/helpers.h:
 

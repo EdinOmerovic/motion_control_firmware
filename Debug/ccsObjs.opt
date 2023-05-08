@@ -1,3 +1,4 @@
+"./helpers.obj"
 "./main.obj"
 "./bsp/F2837xD_Adc.obj"
 "./bsp/F2837xD_CodeStartBranch.obj"

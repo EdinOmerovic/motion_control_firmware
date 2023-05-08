@@ -3,7 +3,7 @@
  * 
  * 
  * The responsibilities of this library are:
- *  * Provide signals necessary for tourque control of the linear motor using the motor controller.
+ *  * Provide signals necessary for torque control of the linear motor using the motor controller.
  * 
  * Linear motor: FAULHABER LM2070-080-11C
  * Motor controller: FAULHABER MCLM3006 

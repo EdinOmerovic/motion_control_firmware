@@ -1,5 +1,6 @@
 #include "control.h"
 #include "lp_filter.h"
+#include "main.h"
 
 static signed long prev_tau = 0;
 static signed long prev_error = 0;
@@ -16,7 +17,7 @@ void control_init(ControlerConf *conf)
     global_conf.G = conf->G;
     global_conf.An = conf->An;
     // *** Filter ***
-    filter_init(&lp_filter, 5, 0);
+    filter_init(&lp_filter, FILTER_ALPHA, 0);
 }
 
 signed long pd_control(signed long error)
