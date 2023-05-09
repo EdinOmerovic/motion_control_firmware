@@ -24,7 +24,7 @@ void _configure(Encoder *enc, EncoderConf *confg, POSSPEED *module)
 
 void saturated_add(Uint32 *a, signed long *b)
 {
-    if (b >= 0)
+    if (*b >= 0)
     {
         // Overflow
         Uint32 res = *a + *b;
@@ -50,11 +50,12 @@ void saturated_add(Uint32 *a, signed long *b)
 Uint32 _getValue(Encoder *enc)
 {
     // read the counter value from the quadratic encode module and calculate difference:
-    signed long difference = enc->module->read(enc->module) - (enc->module->previous_value / enc->module->scaling_factor);
+    signed long difference = enc->module->read(enc->module) - enc->module->previous_value;
     
     // Overflow and underflow protection
     // Passing by reference.
     // Same as: enc->current_absolute_position += difference;
+    difference = difference / (signed long )enc->enc_confg->scalingFactor;
     saturated_add(&enc->current_absolute_position, &difference);
     
     return enc->current_absolute_position;

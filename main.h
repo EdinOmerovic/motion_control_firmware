@@ -28,9 +28,9 @@
 
 // Absolute value of the possition when touching endstop 2
 #define ENDSTOP1_VALUE 0
-#define ENDSTOP2_VALUE 83500// 8.35cm
+#define ENDSTOP2_VALUE 42500// 8.35cm
 
-#define ENCODER_STARTING_POSITION 5000
+#define ENCODER_STARTING_POSITION 0
 
 #define MAX_MOTOR_TAU 40000
 #define MIN_MOTOR_TAU -40000

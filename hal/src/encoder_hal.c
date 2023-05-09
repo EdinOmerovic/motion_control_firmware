@@ -14,8 +14,9 @@
 // POSSPEED_Init - Initialize EQEP1 configuration
 void POSSPEED_Init(void)
 {
+    EALLOW;
     // TODO: speed calculation can be done using encoder data
-     //EQep1Regs.QUPRD = 2000000;            // Unit Timer for 100Hz at 200 MHz
+    //EQep1Regs.QUPRD = 2000000;            // Unit Timer for 100Hz at 200 MHz
 
     // QEP quadrature count mode
     EQep1Regs.QDECCTL.bit.QSRC = 00;
@@ -33,10 +34,10 @@ void POSSPEED_Init(void)
 
     EQep1Regs.QEPCTL.bit.QPEN = 1;        // QEP enable
    // Used for velocity calculation
-     //EQep1Regs.QCAPCTL.bit.UPPS = 5;       // 1/32 for unit position
-     //EQep1Regs.QCAPCTL.bit.CCPS = 6;       // 1/64 for CAP clock
-     //EQep1Regs.QCAPCTL.bit.CEN = 1;        // QEP Capture Enable
-
+    //EQep1Regs.QCAPCTL.bit.UPPS = 5;       // 1/32 for unit position
+    // EQep1Regs.QCAPCTL.bit.CCPS = 6;       // 1/64 for CAP clock
+    // EQep1Regs.QCAPCTL.bit.CEN = 1;        // QEP Capture Enable
+    EDIS;
 }
 
 Uint32 POSSPEED_Read(POSSPEED *p)

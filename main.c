@@ -39,7 +39,7 @@ void main(void)
     // *** Encoder ***
     EncoderConf enc_conf =
     {
-        .scalingFactor = 100, // 100 to get micrometers
+        .scalingFactor = 50, // 100 to get micrometers
         .startingValue = ENCODER_STARTING_POSITION // starting value should be determined by auto-homing: ENDSTOP1_VALUE
     };
 
@@ -98,6 +98,13 @@ static signed long tau = 0;
 // Main control loop
 void controlLoop(void)
 {
+    // Check endstop values
+    if (GPIO_ReadPin(0) == 0){
+        enc.setValue(&enc, 0);
+    }else if (GPIO_ReadPin(1) == 0){
+        enc.setValue(&enc, ENDSTOP2_VALUE);
+    }
+
     // Diode used for debugging
     GPIO_WritePin(LOOP_CLOCK_GPIO, 1);
 
@@ -132,7 +139,7 @@ void controlLoop(void)
     // Update disturbance observer
     disturbance_observer2(tau);
 
-    motor.setTorque(&motor, saturate(tau, MIN_MOTOR_TAU, MAX_MOTOR_TAU));
+    motor.setTorque(&motor, saturate(-1*tau, MIN_MOTOR_TAU, MAX_MOTOR_TAU));
 
     q_previous = q_act;
 
@@ -149,16 +156,14 @@ void controlLoop(void)
 
 __interrupt void ISR_pb1(void)
 {
-    enc.setValue(&enc, 0);
+    //enc.setValue(&enc, 0);
     // Additionally cut all power to the motor driver
-
     // Acknowledge this interrupt to get more from group 1
     PieCtrlRegs.PIEACK.all = PIEACK_GROUP1;
 }
 __interrupt void ISR_pb2(void)
 {
-    enc.setValue(&enc, ENDSTOP2_VALUE);
-
+    //enc.setValue(&enc, ENDSTOP2_VALUE);
     // Acknowledge this interrupt to get more from group 1
     PieCtrlRegs.PIEACK.all = PIEACK_GROUP1;
 }
