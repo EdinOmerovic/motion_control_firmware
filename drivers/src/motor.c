@@ -1,16 +1,20 @@
+#include "main.h"
 #include "motor.h"
+#include "dac_hal.h"
+#include "helpers.h"
 
-int map(int x, int in_min, int in_max, int out_min, int out_max)
-{
-    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
-}
+#define RANGE_IN_MIN MIN_MOTOR_TAU// min value of torque
+#define RANGE_IN_MAX MAX_MOTOR_TAU// max value of torque
+#define RANGE_OUT_MIN 0
+#define RANGE_OUT_MAX 4095
 
-void _setTorque(Motor *motor, int torque)
+
+
+void _setTorque(Motor *motor, signed long torque)
 {
-    // Na osnovu to
-    // motor->cfg;
-    // Analog write to the analogout.
-    int voltage = map(torque, -10, 10, 0, 33);
+    Uint32 voltage = map(torque, RANGE_IN_MIN, RANGE_IN_MAX, RANGE_OUT_MIN, RANGE_OUT_MAX);
+    // Push to DAC
+    DAC_PTR[DAC_NUM]->DACVALS.all = voltage / motor->cfg->scaler;
 }
 
 void motor_init(Motor *motor, MotorConf *motor_confg)

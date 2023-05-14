@@ -7,43 +7,37 @@
  *
  *
  */
-
-/**
- * Kako bi izgledalo korištenje:
- * Encoder* encoder = null;
- * encoder_init(&encoder)
- *
- * (encoder.configure)(encoder, struct EncoderConfig) // postavi sve parametre neophodne za
- * encoder->_read // Očitaj sve potebne vrijednosti sa sistema kako bi omogućio da se odredi povratna vrijednosti
- * encoder->getValue(void) // daj apsolutnu vrijednost enkodera u centimetrima od početne pozicije.
- * encoder->setValue(int) // ovo će se koristiti za nuliranje enkodera ukoliko dođe do zakucavanja.
- */
+#ifndef ENCODER_H
+#define ENCODER_H
+#include "encoder_hal.h"
 
 typedef struct
 {
-    // dummy
-    int scalingFactor;
-    int absoluteDimentsions;
-    int startingValue;
+    const Uint32 scalingFactor;
+    const Uint32 startingValue;
 } EncoderConf;
 
 typedef struct Encoder
 {
     EncoderConf *enc_confg;
     // Function pointer table
-    void (*configure)(struct Encoder *enc, EncoderConf *confg);
-    int (*getValue)(struct Encoder *enc);
-    void (*setValue)(struct Encoder *enc, int value);
+    void (*configure)(struct Encoder *enc, EncoderConf *confg, POSSPEED *module);
+    Uint32 (*getValue)(struct Encoder *enc);
+    void (*setValue)(struct Encoder *enc, Uint32 value);
     // Dynamic variables
-    int previous_encoder_value;
-    int current_absolute_position;
+    Uint32 current_absolute_position;
+    // QEP module
+    POSSPEED_handle module;
 
 } Encoder;
 
 void encoder_init(Encoder *enc);
 
-void _configure(Encoder *enc, EncoderConf *confg);
+void _configure(Encoder *enc, EncoderConf *confg, POSSPEED *module);
 
-int _getValue(Encoder *enc);
 
-void _setValue(Encoder *enc, int value);
+// Obtain value in absolute values in nanometers
+Uint32 _getValue(Encoder *enc);
+
+void _setValue(Encoder *enc, Uint32 value);
+#endif

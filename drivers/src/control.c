@@ -1,9 +1,12 @@
 #include "control.h"
+#include "lp_filter.h"
+#include "main.h"
 
-
-int prev_tau = 0;
-int prev_error = 0;
-ControlerConf global_conf; 
+static signed long prev_tau = 0;
+static signed long prev_error = 0;
+ControlerConf global_conf;
+// LP filter
+static LowPassFilter lp_filter;
 
 
 void control_init(ControlerConf *conf)
@@ -13,12 +16,14 @@ void control_init(ControlerConf *conf)
     global_conf.KD = conf->KD;
     global_conf.G = conf->G;
     global_conf.An = conf->An;
+    // *** Filter ***
+    filter_init(&lp_filter, FILTER_ALPHA, 0);
 }
 
-int pd_control(int error)
+signed long pd_control(signed long error)
 {
     // Calculate control output
-    int output = global_conf.KP * error + global_conf.KD * (error - prev_error);
+    signed long output = global_conf.KP * error + global_conf.KD * (error - prev_error);
 
     // Update previous error
     prev_error = error;
@@ -26,13 +31,13 @@ int pd_control(int error)
 }
 
 
-int disturbance_observer1(LowPassFilter *filter, int vel)
+signed long disturbance_observer1(signed long vel)
 {
-    int value = prev_tau + global_conf.G*global_conf.An*vel;
-    return apply_filter(filter, value) - global_conf.G*global_conf.An*vel;
+    signed long value = prev_tau + global_conf.G*global_conf.An*vel;
+    return apply_filter(&lp_filter, value) - global_conf.G*global_conf.An*vel;
 }
 
-int disturbance_observer2(int tau)
+void disturbance_observer2(signed long tau)
 {
     prev_tau = tau;
 

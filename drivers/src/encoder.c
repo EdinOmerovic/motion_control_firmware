@@ -1,45 +1,67 @@
 #include "encoder.h"
 
-
+// Encoder object setup (function pointer mapping)
 void encoder_init(Encoder *enc)
 {
     enc->configure = _configure;
     enc->getValue = _getValue;
     enc->setValue = _setValue;
+    // Quadratic encoder pulse hardware module init
+    InitEQep1Gpio();
 }
 
-void _configure(Encoder *enc, EncoderConf *confg)
+void _configure(Encoder *enc, EncoderConf *confg, POSSPEED *module)
 {
+    // Config mapping
     enc->enc_confg = confg;    
-    enc->previous_encoder_value = 0;
+    // QEP module mapping
+    enc->module = module;
+    enc->module->init(enc->module);
+    // Initial value
     enc->current_absolute_position = confg->startingValue;
 }
 
 
-
-int _getValue(Encoder *enc)
+void saturated_add(Uint32 *a, signed long *b)
 {
-    // Očitati vrijednost iz GLOBAL_POS_REGISTRA. Vjerovatno trebaš negdje imati pohranjenu prethodnu vrijednost
-    // Esimiraš novu vrijednost na osnovu ove 
+    if (*b >= 0)
+    {
+        // Overflow
+        Uint32 res = *a + *b;
+        if (res < *a) // This can only happen if overflow
+        {
+            *a = 0xffffffff;
+            return;
+        }
 
-    // read ENC_POS
-    int new_encoder_value; // ret raw ecoder value 
+    }else{
+        // Under-flow
+        if( (*b)*(-1) >= *a )
+        {
+            *a = 0;
+            return;
+        }
+    }
+
+    *a += *b;
+}
+
+// Get absolute position in micrometers
+Uint32 _getValue(Encoder *enc)
+{
+    // read the counter value from the quadratic encode module and calculate difference:
+    signed long difference = enc->module->read(enc->module) - enc->module->previous_value;
     
     // Overflow and underflow protection
-    if (new_encoder_value >= enc->previous_encoder_value){
-        enc->current_absolute_position += (new_encoder_value - enc->previous_encoder_value) / enc->enc_confg->scalingFactor;
-    }else{
-        enc->current_absolute_position -= (enc->previous_encoder_value - new_encoder_value) / enc->enc_confg->scalingFactor;
-    }
+    // Passing by reference.
+    // Same as: enc->current_absolute_position += difference;
+    difference = difference / (signed long )enc->enc_confg->scalingFactor;
+    saturated_add(&enc->current_absolute_position, &difference);
     
-    // TODO: check if the estimated position is within ranges. Did we hit overflow?
-    
-    enc->previous_encoder_value = new_encoder_value;
-
     return enc->current_absolute_position;
 }
 
-void _setValue(Encoder *enc, int value)
+void _setValue(Encoder *enc, Uint32 value)
 {
     enc->current_absolute_position = value;
 }
