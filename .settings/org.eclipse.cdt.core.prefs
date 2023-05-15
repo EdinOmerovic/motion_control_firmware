@@ -9,3 +9,8 @@ environment/project/com.ti.ccstudio.buildDefinitions.C2000.Debug.884053973/C2000
 environment/project/com.ti.ccstudio.buildDefinitions.C2000.Debug.884053973/C2000_SDK_DIR/value=C\:\\ti\\c2000\\C2000Ware_4_03_00_00
 environment/project/com.ti.ccstudio.buildDefinitions.C2000.Debug.884053973/append=true
 environment/project/com.ti.ccstudio.buildDefinitions.C2000.Debug.884053973/appendContributed=true
+environment/project/com.ti.ccstudio.buildDefinitions.C2000.Release.1801034142/C2000_SDK_DIR/delimiter=;
+environment/project/com.ti.ccstudio.buildDefinitions.C2000.Release.1801034142/C2000_SDK_DIR/operation=append
+environment/project/com.ti.ccstudio.buildDefinitions.C2000.Release.1801034142/C2000_SDK_DIR/value=C\:\\ti\\c2000\\C2000Ware_4_03_00_00
+environment/project/com.ti.ccstudio.buildDefinitions.C2000.Release.1801034142/append=true
+environment/project/com.ti.ccstudio.buildDefinitions.C2000.Release.1801034142/appendContributed=true

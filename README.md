@@ -46,4 +46,7 @@ After that, just import this project and start playing with it.
 
 TODOs:
 
--  
+-  Pomenuti koje sve stvari je neophodno dodati unutar projekta kako bi se projekat mogao buildovati
+-  Pomenuti da su jedinice referentne pozicije u unsigned int formatu
+   -  Dotaći se drugih jedinica i kako su one formatirane
+-  Dodati Environment varijablu C2000_SDK_DIR da bude C:\ti\c2000\C2000Ware_4_03_00_00

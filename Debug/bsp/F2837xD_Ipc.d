@@ -1,7 +1,6 @@
 # FIXED
 
-bsp/F2837xD_Ipc.obj: C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/common/source/F2837xD_Ipc.c
-bsp/F2837xD_Ipc.obj: C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/common/include/F2837xD_defaultisr.h
+bsp/F2837xD_Ipc.obj: ../bsp/F2837xD_Ipc.c
 bsp/F2837xD_Ipc.obj: C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/headers/include/F2837xD_dac.h
 bsp/F2837xD_Ipc.obj: C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/headers/include/F2837xD_device.h
 bsp/F2837xD_Ipc.obj: C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-c2000_22.6.0.LTS/include/assert.h
@@ -65,6 +64,7 @@ bsp/F2837xD_Ipc.obj: C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/com
 bsp/F2837xD_Ipc.obj: C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/common/include/F2837xD_Dma_defines.h
 bsp/F2837xD_Ipc.obj: C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/common/include/F2837xD_SysCtrl_defines.h
 bsp/F2837xD_Ipc.obj: C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/common/include/F2837xD_Upp_defines.h
+bsp/F2837xD_Ipc.obj: C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/common/include/F2837xD_defaultisr.h
 bsp/F2837xD_Ipc.obj: C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/headers/include/F2837xD_upp.h
 bsp/F2837xD_Ipc.obj: C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/headers/include/F2837xD_xbar.h
 bsp/F2837xD_Ipc.obj: C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/headers/include/F2837xD_xint.h
@@ -74,9 +74,7 @@ bsp/F2837xD_Ipc.obj: C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-c2000_22.6.0.LTS/in
 bsp/F2837xD_Ipc.obj: C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-c2000_22.6.0.LTS/include/string.h
 bsp/F2837xD_Ipc.obj: C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-c2000_22.6.0.LTS/include/xlocale/_string.h
 
-C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/common/source/F2837xD_Ipc.c:
-
-C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/common/include/F2837xD_defaultisr.h:
+../bsp/F2837xD_Ipc.c:
 
 C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/headers/include/F2837xD_dac.h:
 
@@ -203,6 +201,8 @@ C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/common/include/F2837xD_D
 C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/common/include/F2837xD_SysCtrl_defines.h:
 
 C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/common/include/F2837xD_Upp_defines.h:
+
+C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/common/include/F2837xD_defaultisr.h:
 
 C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/headers/include/F2837xD_upp.h:
 

@@ -6,21 +6,21 @@ SHELL = cmd.exe
 
 # Add inputs and outputs from these tool invocations to the build variables 
 ASM_SRCS += \
-C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/common/source/F2837xD_CodeStartBranch.asm \
-C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/common/source/F2837xD_usDelay.asm 
+../bsp/F2837xD_CodeStartBranch.asm \
+../bsp/F2837xD_usDelay.asm 
 
 C_SRCS += \
-C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/common/source/F2837xD_Adc.c \
-C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/common/source/F2837xD_CpuTimers.c \
-C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/common/source/F2837xD_DefaultISR.c \
-C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/common/source/F2837xD_EPwm.c \
-C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/common/source/F2837xD_EQep.c \
-C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/headers/source/F2837xD_GlobalVariableDefs.c \
-C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/common/source/F2837xD_Gpio.c \
-C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/common/source/F2837xD_Ipc.c \
-C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/common/source/F2837xD_PieCtrl.c \
-C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/common/source/F2837xD_PieVect.c \
-C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/common/source/F2837xD_SysCtrl.c 
+../bsp/F2837xD_Adc.c \
+../bsp/F2837xD_CpuTimers.c \
+../bsp/F2837xD_DefaultISR.c \
+../bsp/F2837xD_EPwm.c \
+../bsp/F2837xD_EQep.c \
+../bsp/F2837xD_GlobalVariableDefs.c \
+../bsp/F2837xD_Gpio.c \
+../bsp/F2837xD_Ipc.c \
+../bsp/F2837xD_PieCtrl.c \
+../bsp/F2837xD_PieVect.c \
+../bsp/F2837xD_SysCtrl.c 
 
 C_DEPS += \
 ./bsp/F2837xD_Adc.d \
@@ -87,20 +87,20 @@ ASM_DEPS__QUOTED += \
 "bsp\F2837xD_usDelay.d" 
 
 C_SRCS__QUOTED += \
-"C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/common/source/F2837xD_Adc.c" \
-"C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/common/source/F2837xD_CpuTimers.c" \
-"C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/common/source/F2837xD_DefaultISR.c" \
-"C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/common/source/F2837xD_EPwm.c" \
-"C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/common/source/F2837xD_EQep.c" \
-"C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/headers/source/F2837xD_GlobalVariableDefs.c" \
-"C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/common/source/F2837xD_Gpio.c" \
-"C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/common/source/F2837xD_Ipc.c" \
-"C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/common/source/F2837xD_PieCtrl.c" \
-"C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/common/source/F2837xD_PieVect.c" \
-"C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/common/source/F2837xD_SysCtrl.c" 
+"../bsp/F2837xD_Adc.c" \
+"../bsp/F2837xD_CpuTimers.c" \
+"../bsp/F2837xD_DefaultISR.c" \
+"../bsp/F2837xD_EPwm.c" \
+"../bsp/F2837xD_EQep.c" \
+"../bsp/F2837xD_GlobalVariableDefs.c" \
+"../bsp/F2837xD_Gpio.c" \
+"../bsp/F2837xD_Ipc.c" \
+"../bsp/F2837xD_PieCtrl.c" \
+"../bsp/F2837xD_PieVect.c" \
+"../bsp/F2837xD_SysCtrl.c" 
 
 ASM_SRCS__QUOTED += \
-"C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/common/source/F2837xD_CodeStartBranch.asm" \
-"C:/ti/c2000/C2000Ware_4_03_00_00/device_support/f2837xd/common/source/F2837xD_usDelay.asm" 
+"../bsp/F2837xD_CodeStartBranch.asm" \
+"../bsp/F2837xD_usDelay.asm" 
 
 
