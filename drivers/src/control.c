@@ -12,12 +12,11 @@ static LowPassFilter lp_filter;
 void control_init(ControlerConf *conf)
 {
     global_conf.KP = conf->KP;
-    global_conf.KI = conf->KI;
     global_conf.KD = conf->KD;
     global_conf.G = conf->G;
     global_conf.An = conf->An;
     // *** Filter ***
-    filter_init(&lp_filter, FILTER_ALPHA, 0);
+    filter_init(&lp_filter, conf->filter_alpha, 0);
 }
 
 signed long pd_control(signed long error)

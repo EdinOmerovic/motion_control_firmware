@@ -4,10 +4,10 @@
 typedef struct
 {
     Uint32 KP;
-    Uint32 KI;
     Uint32 KD;
     Uint32 G;
     Uint32 An;
+    Uint32 filter_alpha;
 } ControlerConf;
 
 void control_init(ControlerConf *);

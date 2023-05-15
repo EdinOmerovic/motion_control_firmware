@@ -18,7 +18,6 @@
 
 // Control parameters
 #define KP_val 1
-#define KI_val 1
 #define KD_val 10
 
 #define AN 1    // Manipulator inertia, mass
@@ -26,16 +25,16 @@
 // filter parameters 0 - 1000
 #define FILTER_ALPHA 995
 
-// Absolute value of the possition when touching endstop 2
+// Absolute value of the position when touching end-stop 2
 #define ENDSTOP1_VALUE 0
-#define ENDSTOP2_VALUE 42500// 8.35cm
+#define ENDSTOP2_VALUE 42500
 
 #define ENCODER_STARTING_POSITION 0
 
 #define MAX_MOTOR_TAU 40000
 #define MIN_MOTOR_TAU -40000
 
-// *Hardcoded: supplied using lookup table
+// *Hard-coded: supplied using lookup table
 // *Analog: obtained using analog read
 // *Fixed: fixed value of the trajectory
 #define TRAJECTORY_SELECT ANALOG_READ
