@@ -101,6 +101,7 @@ static signed long tau_dis = 0;
 static signed long tau = 0;
 // Main control loop
 // FIXME: check actual values of the position
+// TODO: provjeri da li je frekvencija stvarno 200MHz ili 100MHz
 void controlLoop(void)
 {
     // Check end-stop values
@@ -176,6 +177,15 @@ void initSystem(void)
     DINT;
     // This is needed to write to EALLOW protected registers
     EALLOW;
+
+
+
+    // FIXME: paljenje ovoga PRAVI PROBLEM U DEBUGIRANJU
+    // Set the clocking to run from the PLL at 50MHz
+    //
+    //SysCtl_setClock(SYSCTL_OSCSRC_OSC2 | SYSCTL_PLL_ENABLE | SYSCTL_IMULT(10) | SYSCTL_SYSDIV(2));
+    //SysCtl_setAuxClock(SYSCTL_OSCSRC_OSC2 | SYSCTL_PLL_ENABLE | SYSCTL_IMULT(12) | SYSCTL_SYSDIV(2));        //60 MHz
+
 
 
     // **** Initialize bare-minimum embedded system ****
