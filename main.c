@@ -4,12 +4,16 @@
 // * time  = microseconds [us]
 // * mass = grams [g]
 
+// Contains project level configuration
+#include "main.h"
+
 // Code Composer Project related stuff
 #include "helpers.h"
 #include "F28x_Project.h"
 
-// Contains project level configuration
-#include "main.h"
+
+#include "serial.h"
+#include "sysctl.h"
 
 // Drivers
 #include "encoder.h"
@@ -73,7 +77,7 @@ void main(void)
 
     // Enable protection for writing to protected registers
     EDIS;
-
+    SCIprintf("Initialization complete \n");
     while(1)
     {
         // Diode used for timing performance
@@ -173,6 +177,7 @@ void initSystem(void)
     // This is needed to write to EALLOW protected registers
     EALLOW;
 
+
     // **** Initialize bare-minimum embedded system ****
     InitSysCtrl();
 
@@ -246,6 +251,10 @@ void initSystem(void)
 
     // *** ADC ***
     ConfigureADC();
+
+
+    // *** Serial ***
+    ConfigureUART();
 
     // Remap ISR functions to user interrupts.
     EALLOW;

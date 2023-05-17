@@ -15,7 +15,7 @@ void ConfigADC()
     // Set the desired ADC clock devider in the PRESCALE field of ADCCTL2
     AdcaRegs.ADCCTL2.bit.PRESCALE = 6; //set ADCCLK divider to /4
 
-    AdcSetMode(ADC_ADCA, ADC_RESOLUTION_12BIT, ADC_SIGNALMODE_SINGLE);
+    AdcSetMode(ADC_ADCA, ADC_BITRESOLUTION_12BIT, ADC_SIGNALMODE_SINGLE);
 
     //Set pulse positions to late
     AdcaRegs.ADCCTL1.bit.INTPULSEPOS = 1;
@@ -30,7 +30,7 @@ void ConfigADC()
     Uint16 acqps;
 
     // Determine minimum acquisition window (in SYSCLKS) based on resolution
-    if(ADC_RESOLUTION_12BIT == AdcaRegs.ADCCTL2.bit.RESOLUTION)
+    if(ADC_BITRESOLUTION_12BIT == AdcaRegs.ADCCTL2.bit.RESOLUTION)
     {
         acqps = 14; //75ns
     }
