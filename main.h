@@ -10,7 +10,7 @@
 
 // Should be bigger than 1000 for now
 #define TIME_STEP 1000 // [us]
-#define PROCESSING_TIME 6 // [us]
+#define FIXED_TIME_OFFSET 20 // [us]
 
 
 #define LOOP_CLOCK_GPIO 32
@@ -40,6 +40,8 @@
 #define TRAJECTORY_SELECT ANALOG_READ
 
 
+// Used in measuring the execution time:
+#define TIMER0_PERIOD_US 1
 
 
 #endif /* MAIN_H_ */

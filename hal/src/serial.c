@@ -52,5 +52,5 @@ void ConfigureUART(void)
     //
     // Initialize the UART for console I/O.
     //
-    SCIStdioConfig(SCIA_BASE, 115200, SysCtl_getLowSpeedClock(10000000));
+    SCIStdioConfig(SCIA_BASE, 256000, SysCtl_getLowSpeedClock(10000000));
 }
