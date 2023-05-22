@@ -20,7 +20,10 @@ C_SRCS += \
 ../bsp/F2837xD_Ipc.c \
 ../bsp/F2837xD_PieCtrl.c \
 ../bsp/F2837xD_PieVect.c \
-../bsp/F2837xD_SysCtrl.c 
+../bsp/F2837xD_SysCtrl.c \
+../bsp/sci.c \
+../bsp/scistdio.c \
+../bsp/sysctl.c 
 
 C_DEPS += \
 ./bsp/F2837xD_Adc.d \
@@ -33,7 +36,10 @@ C_DEPS += \
 ./bsp/F2837xD_Ipc.d \
 ./bsp/F2837xD_PieCtrl.d \
 ./bsp/F2837xD_PieVect.d \
-./bsp/F2837xD_SysCtrl.d 
+./bsp/F2837xD_SysCtrl.d \
+./bsp/sci.d \
+./bsp/scistdio.d \
+./bsp/sysctl.d 
 
 OBJS += \
 ./bsp/F2837xD_Adc.obj \
@@ -48,7 +54,10 @@ OBJS += \
 ./bsp/F2837xD_PieCtrl.obj \
 ./bsp/F2837xD_PieVect.obj \
 ./bsp/F2837xD_SysCtrl.obj \
-./bsp/F2837xD_usDelay.obj 
+./bsp/F2837xD_usDelay.obj \
+./bsp/sci.obj \
+./bsp/scistdio.obj \
+./bsp/sysctl.obj 
 
 ASM_DEPS += \
 ./bsp/F2837xD_CodeStartBranch.d \
@@ -67,7 +76,10 @@ OBJS__QUOTED += \
 "bsp\F2837xD_PieCtrl.obj" \
 "bsp\F2837xD_PieVect.obj" \
 "bsp\F2837xD_SysCtrl.obj" \
-"bsp\F2837xD_usDelay.obj" 
+"bsp\F2837xD_usDelay.obj" \
+"bsp\sci.obj" \
+"bsp\scistdio.obj" \
+"bsp\sysctl.obj" 
 
 C_DEPS__QUOTED += \
 "bsp\F2837xD_Adc.d" \
@@ -80,7 +92,10 @@ C_DEPS__QUOTED += \
 "bsp\F2837xD_Ipc.d" \
 "bsp\F2837xD_PieCtrl.d" \
 "bsp\F2837xD_PieVect.d" \
-"bsp\F2837xD_SysCtrl.d" 
+"bsp\F2837xD_SysCtrl.d" \
+"bsp\sci.d" \
+"bsp\scistdio.d" \
+"bsp\sysctl.d" 
 
 ASM_DEPS__QUOTED += \
 "bsp\F2837xD_CodeStartBranch.d" \
@@ -97,7 +112,10 @@ C_SRCS__QUOTED += \
 "../bsp/F2837xD_Ipc.c" \
 "../bsp/F2837xD_PieCtrl.c" \
 "../bsp/F2837xD_PieVect.c" \
-"../bsp/F2837xD_SysCtrl.c" 
+"../bsp/F2837xD_SysCtrl.c" \
+"../bsp/sci.c" \
+"../bsp/scistdio.c" \
+"../bsp/sysctl.c" 
 
 ASM_SRCS__QUOTED += \
 "../bsp/F2837xD_CodeStartBranch.asm" \

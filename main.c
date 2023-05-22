@@ -4,12 +4,15 @@
 // * time  = microseconds [us]
 // * mass = grams [g]
 
+// Contains project level configuration
+#include "main.h"
+
 // Code Composer Project related stuff
 #include "helpers.h"
 #include "F28x_Project.h"
 
-// Contains project level configuration
-#include "main.h"
+#include "serial.h"
+#include "sysctl.h"
 
 // Drivers
 #include "encoder.h"
@@ -29,6 +32,29 @@ void controlLoop(void);
 __interrupt void ISR_pb1(void);// Triggered by end-stop 1
 __interrupt void ISR_pb2(void);// Triggered by end-stop 2
 
+
+// ***** Static variables used in the control loop *****
+static Uint32 start_time;
+/* Current sample number */
+static Uint32 sample_nr = 0;
+/* Previous position value */
+static Uint32 q_previous = ENCODER_STARTING_POSITION;
+/* Target position value */
+static Uint32 q_ref = 0;
+/* Second derivative of target position */
+static signed long q2_ref = 0;
+/* Actual (measured) position value */
+static Uint32 q_act = 0;
+/* Difference between actual and target*/
+static signed long error = 0;
+/* Desired acceleration */
+static signed long q2_des = 0;
+/* Actual actuator velocity */
+static signed long vel = 0;
+/* Disturbance torque value */
+static signed long tau_dis = 0;
+/* Output torque value */
+static signed long tau = 0;
 
 void main(void)
 {
@@ -73,30 +99,29 @@ void main(void)
 
     // Enable protection for writing to protected registers
     EDIS;
-
+    SCIprintf("INIT-COMPLETE\n");
+    StartCpuTimer0();
+    DELAY_US(100); // Timer stabilisation delay
     while(1)
     {
+        start_time = CpuTimer0Regs.TIM.all;
         // Diode used for timing performance
         GPIO_WritePin(LOOP_CLOCK_GPIO, 1);
         controlLoop();
+        SCIprintf("%u;%u;%u;%d;%d\n", sample_nr, q_ref, q_act, tau_dis, tau);
+        sample_nr++;
         GPIO_WritePin(LOOP_CLOCK_GPIO, 0);
-        DELAY_US((TIME_STEP - PROCESSING_TIME));
+
+        // Get timer value
+        ReloadCpuTimer0();
+        DELAY_US((TIME_STEP - (start_time - CpuTimer0Regs.TIM.all + FIXED_TIME_OFFSET)));
+
     }
 }
 
-
-// Static variables used in the control loop
-static Uint32 q_previous = ENCODER_STARTING_POSITION;
-static Uint32 q_ref = 0;
-static Uint32 q_act = 0;
-static signed long q2_ref = 0;
-static signed long error = 0;
-static signed long q2_des = 0;
-static signed long vel = 0;
-static signed long tau_dis = 0;
-static signed long tau = 0;
 // Main control loop
 // FIXME: check actual values of the position
+// TODO: provjeri da li je frekvencija stvarno 200MHz ili 100MHz
 void controlLoop(void)
 {
     // Check end-stop values
@@ -173,6 +198,13 @@ void initSystem(void)
     // This is needed to write to EALLOW protected registers
     EALLOW;
 
+    // FIXME: paljenje ovoga PRAVI PROBLEM U DEBUGIRANJU
+    // Set the clocking to run from the PLL at 50MHz
+    //
+    //SysCtl_setClock(SYSCTL_OSCSRC_OSC2 | SYSCTL_PLL_ENABLE | SYSCTL_IMULT(10) | SYSCTL_SYSDIV(2));
+    //SysCtl_setAuxClock(SYSCTL_OSCSRC_OSC2 | SYSCTL_PLL_ENABLE | SYSCTL_IMULT(12) | SYSCTL_SYSDIV(2));        //60 MHz
+
+
     // **** Initialize bare-minimum embedded system ****
     InitSysCtrl();
 
@@ -181,10 +213,8 @@ void initSystem(void)
     // The default state is all PIE __interrupts disabled and flags are cleared.
     InitPieCtrl();
 
-    // Initialize the PIE vector table with pointers to the shell Interrupt
-    // Service Routines (ISR).
-    // This will populate the entire table, even if the __interrupt
-    // is not used in this example.  This is useful for debug purposes.
+    // Initialize the PIE vector table with pointers to the shell Interrupt Service Routines (ISR).
+    // This will populate the entire table
     // The shell ISR routines are found in F2837xD_DefaultIsr.c.
     // This function is found in F2837xD_PieVect.c.
     InitPieVectTable();
@@ -227,19 +257,12 @@ void initSystem(void)
     // **** Initialize other CPU components ****
 
     // *** Timers ***
-    //InitCpuTimers();
-    // Configure CPU-Timer 0 to __interrupt
-    //ConfigCpuTimer(&CpuTimer0, 200, TIME_STEP);
+    InitCpuTimers();
 
-    // To ensure precise timing, use write-only instructions to write to the entire
-    // register. Therefore, if any of the configuration bits are changed in
-    // ConfigCpuTimer and InitCpuTimers (in F2837xD_cputimervars.h), the below
-    // settings must also be updated.
-    //CpuTimer0Regs.TCR.all = 0x4001;
-    // Enable TINT0 in the PIE: Group 1 __interrupt 7
-    //PieCtrlRegs.PIEIER1.bit.INTx7 = 1;
-    // Enable CPU INT1 which is connected to CPU-Timer 0:
-
+    // Timer is used for measuring time
+    // This determines the timer overflow time.
+    ConfigCpuTimer(&CpuTimer0, 200, TIME_STEP);
+    CpuTimer0Regs.TPR.all = 0xC7; // 200 prescaler to get time difference in us
 
     // *** DAC ***
     configureDAC(DAC_NUM);
@@ -247,8 +270,13 @@ void initSystem(void)
     // *** ADC ***
     ConfigureADC();
 
+
+    // *** Serial ***
+    ConfigureUART();
+
     // Remap ISR functions to user interrupts.
     EALLOW;
+
     //PieVectTable.TIMER0_INT = &controlLoop;
     PieVectTable.XINT1_INT = &ISR_pb1;
     PieVectTable.XINT2_INT = &ISR_pb2;
