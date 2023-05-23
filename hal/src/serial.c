@@ -31,7 +31,7 @@ void ConfigureUART(void)
     GpioCtrlRegs.GPBQSEL1.bit.GPIO43 = 3;
     GpioCtrlRegs.GPBDIR.bit.GPIO43 = 0;
 
-/*    GpioCtrlRegs.GPAGMUX2.bit.GPIO23 = 0;
+    /*GpioCtrlRegs.GPAGMUX2.bit.GPIO23 = 0;
     GpioCtrlRegs.GPAMUX2.bit.GPIO23 = 3;
     GpioCtrlRegs.GPAPUD.bit.GPIO23 = 0;
     GpioCtrlRegs.GPAQSEL2.bit.GPIO23 = 3;
@@ -52,5 +52,5 @@ void ConfigureUART(void)
     //
     // Initialize the UART for console I/O.
     //
-    SCIStdioConfig(SCIA_BASE, 256000, SysCtl_getLowSpeedClock(10000000));
+    SCIStdioConfig(SCIA_BASE, 460800, SysCtl_getLowSpeedClock(10000000));
 }

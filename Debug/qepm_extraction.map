@@ -1,7 +1,7 @@
 ******************************************************************************
              TMS320C2000 Linker PC v22.6.0                     
 ******************************************************************************
->> Linked Mon May 22 14:46:31 2023
+>> Linked Tue May 23 12:33:42 2023
 
 OUTPUT FILE NAME:   <qepm_extraction.out>
 ENTRY POINT SYMBOL: "_c_int00"  address: 00083d9b
@@ -804,7 +804,7 @@ MODULE SUMMARY
 
 LINKER GENERATED MEMRANGE CRC TABLES
 
-_ccs_flash_checksum @ 00000000 records: 16, size/record: 6, table size: 102, algorithm=C28_CHECKSUM_16(ID=13), CRC: 00009ba2
+_ccs_flash_checksum @ 00000000 records: 16, size/record: 6, table size: 102, algorithm=C28_CHECKSUM_16(ID=13), CRC: 0000bba6
 	BEGIN: page=0, load addr=00080000, size=00000002
 	FLASHA: page=0, load addr=00080002, size=00001ffe
 	FLASHB: page=0, load addr=00082000, size=00002000
