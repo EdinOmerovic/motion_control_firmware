@@ -133,7 +133,7 @@ void controlLoop(void)
 
 
     // Get the desired trajectory:
-    q_ref = getTrajectory();
+    q_ref = getTrajectory(sample_nr);
 
     // Get the second derivative of the desired trajectory
     q2_ref = getTrajectory2od(); // in [m/s^2

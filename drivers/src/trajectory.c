@@ -18,11 +18,11 @@ static Uint32 previous_trajectory_value_buffer[MAX_BUFFER_VALUE];
 
 // Used for the lookup table
 static Uint32 counter = 0;
-
+static Uint32 fixed_step_value = STEPS_VALUE_1;
 
 void trajectory_init(source_e src_conf)
 {
-    src_conf = src_conf;
+    src_config = src_conf;
     switch (src_conf)
     {
     case ANALOG_READ:
@@ -42,13 +42,15 @@ void trajectory_init(source_e src_conf)
         // Make it possible to feed in the data.
         // How to synchronise the fed in data with the execution and reading of it?
         break;
+    case STEPS:
+        break;
 
     default:
         break;
     }
 }
 
-Uint32 _obtainTrajectoryValue(void)
+Uint32 _obtainTrajectoryValue(Uint32 sample_nr)
 {
     switch (src_config)
     {
@@ -60,9 +62,15 @@ Uint32 _obtainTrajectoryValue(void)
         return trajectory_values[counter++ % NR_ELEMENTS];
     case FIXED:
         return FIXED_VALUE;
+    case STEPS:
+        if (sample_nr % STEP_TIME_DURATION == 0){
+            // Switch to different position
+            fixed_step_value = (STEPS_VALUE_1 + STEPS_VALUE_2) - fixed_step_value;
+        }
+        return fixed_step_value;
     default:
         // If everything else fails, go to starting position.
-        return 0;
+        return ENDSTOP1_VALUE;
     }
 }
 
@@ -74,10 +82,10 @@ void push_back_fixed_size_array(Uint32 *arr, Uint32 size, Uint32 new_element) {
     arr[0] = new_element;   // Place the new element at the front of the array
 }
 
-Uint32 getTrajectory(void)
+Uint32 getTrajectory(Uint32 sample_nr)
 {
     // Obtain the newest position value
-    Uint32 new_pos = _obtainTrajectoryValue();
+    Uint32 new_pos = _obtainTrajectoryValue(sample_nr);
 
     // Update the position buffer so that the new position is the fist element.
     push_back_fixed_size_array(previous_trajectory_value_buffer, MAX_BUFFER_VALUE, new_pos);

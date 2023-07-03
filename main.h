@@ -17,8 +17,8 @@
 #define BLINKY_LED_GPIO 31
 
 // Control parameters
-#define KP_val 1
-#define KD_val 10
+#define KP_val 2
+#define KD_val 1
 
 #define AN 1    // Manipulator inertia, mass
 #define G_val 1
@@ -37,11 +37,14 @@
 // *Hard-coded: supplied using lookup table
 // *Analog: obtained using analog read
 // *Fixed: fixed value of the trajectory
-#define TRAJECTORY_SELECT ANALOG_READ
+#define TRAJECTORY_SELECT STEPS
 
 
 // Used in measuring the execution time:
 #define TIMER0_PERIOD_US 1
 
+#define STEP_TIME_DURATION 5000 // 5s
+#define STEPS_VALUE_1 100
+#define STEPS_VALUE_2 5000
 
 #endif /* MAIN_H_ */
