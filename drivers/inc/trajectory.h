@@ -13,12 +13,13 @@
 typedef enum {
     ANALOG_READ,
     HARDCODED,
-    FIXED
+    FIXED,
+    STEPS
 } source_e;
 
 void trajectory_init(source_e);
 
-Uint32 getTrajectory(void);
+Uint32 getTrajectory(Uint32 sample_nr);
 
 signed long getTrajectory2od(void);
 
