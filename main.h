@@ -17,7 +17,7 @@
 #define BLINKY_LED_GPIO 31
 
 // Control parameters
-#define KP_val 2
+#define KP_val 20
 #define KD_val 1
 
 #define AN 1    // Manipulator inertia, mass
@@ -34,17 +34,29 @@
 #define MAX_MOTOR_TAU 40000
 #define MIN_MOTOR_TAU -40000
 
-// *Hard-coded: supplied using lookup table
-// *Analog: obtained using analog read
-// *Fixed: fixed value of the trajectory
-#define TRAJECTORY_SELECT STEPS
+// *** SELECT THE TRAJECTORY INPUT ***
+// *HARDCODED: supplied using lookup table
+// *ANALOG_READ: obtained using analog read
+// *STEPS: alternating step of specified amplitude (start: STEPS_VALUE_1, stop: STEPS_VALUE_2)
+// *SINE: sine wave of controllable frequency, using the analog input (potentiometer)
+// *FIXED: fixed value of the trajectory
+#define TRAJECTORY_SELECT HARDCODED
 
 
 // Used in measuring the execution time:
 #define TIMER0_PERIOD_US 1
 
+
+// Step trajectory parameters
 #define STEP_TIME_DURATION 5000 // 5s
 #define STEPS_VALUE_1 100
 #define STEPS_VALUE_2 5000
+
+// Sine trajectory parameters
+#define SINE_AMPLITUDE 50
+#define SINE_BIAS 1000
+#define SINE_MAX_FREQ 100
+
+
 
 #endif /* MAIN_H_ */

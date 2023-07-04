@@ -101,12 +101,13 @@ void main(void)
     EDIS;
     SCIprintf("INIT-COMPLETE\n");
     StartCpuTimer0();
-    DELAY_US(100); // Timer stabilisation delay
+    DELAY_US(100); // Timer stabilization delay
     while(1)
     {
         start_time = CpuTimer0Regs.TIM.all;
         // Diode used for timing performance
         GPIO_WritePin(LOOP_CLOCK_GPIO, 1);
+        // All the control magic happens here.
         controlLoop();
         SCIprintf("%u;%u;%u;%d;%d\n", sample_nr, q_ref, q_act, tau_dis, tau);
         sample_nr++;
@@ -187,7 +188,7 @@ __interrupt void ISR_pb2(void)
     PieCtrlRegs.PIEACK.all = PIEACK_GROUP1;
 }
 
-// Setup the GPIO interrupt
+// General initialization of system level components
 void initSystem(void)
 {
     // *** Pre-configuration ***
