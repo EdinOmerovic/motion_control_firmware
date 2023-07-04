@@ -17,7 +17,7 @@ static Uint32 previous_trajectory_value_buffer[MAX_BUFFER_VALUE];
 
 
 // Used for the lookup table
-//static Uint32 counter = 0;
+static Uint32 freq_scaler = 1;
 static Uint32 fixed_step_value = STEPS_VALUE_1;
 
 signed long unit_sine(Uint32 sample_nr, Uint32 freq_scale);
@@ -75,7 +75,10 @@ Uint32 _obtainTrajectoryValue(Uint32 sample_nr)
 
     case SINE:
         // Read the analog pot and determine the sine frequency
-        return SINE_AMPLITUDE*sineLookupTable[(sample_nr/map(readAnalog(), 0,  ANALOG_READ_MAX_VALUE, 0, SINE_MAX_FREQ)) % NR_ELEMENTS] + SINE_BIAS;
+        if (sample_nr % NR_ELEMENTS == 0){
+            freq_scaler = map(readAnalog(), 0,  ANALOG_READ_MAX_VALUE, 1, SINE_MAX_FREQ);
+        }
+        return SINE_AMPLITUDE*sineLookupTable[(freq_scaler*sample_nr) % NR_ELEMENTS] + SINE_BIAS;
 
     default:
         // If everything else fails, go to starting position.

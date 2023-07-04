@@ -31,8 +31,8 @@
 
 #define ENCODER_STARTING_POSITION 0
 
-#define MAX_MOTOR_TAU 40000
-#define MIN_MOTOR_TAU -40000
+#define MAX_MOTOR_TAU 30000
+#define MIN_MOTOR_TAU -30000
 
 // *** SELECT THE TRAJECTORY INPUT ***
 // *HARDCODED: supplied using lookup table
@@ -40,7 +40,7 @@
 // *STEPS: alternating step of specified amplitude (start: STEPS_VALUE_1, stop: STEPS_VALUE_2)
 // *SINE: sine wave of controllable frequency, using the analog input (potentiometer)
 // *FIXED: fixed value of the trajectory
-#define TRAJECTORY_SELECT HARDCODED
+#define TRAJECTORY_SELECT SINE
 
 
 // Used in measuring the execution time:
@@ -53,9 +53,9 @@
 #define STEPS_VALUE_2 5000
 
 // Sine trajectory parameters
-#define SINE_AMPLITUDE 50
+#define SINE_AMPLITUDE 20
 #define SINE_BIAS 1000
-#define SINE_MAX_FREQ 100
+#define SINE_MAX_FREQ 20
 
 
 
