@@ -39,7 +39,7 @@ def main():
                 data = read_from_serial_port(ser)
                 
                 if data is not None:
-                    #print(data)
+                    print(data)
                     write_to_csv(data, csv_writer)
 
 if __name__ == "__main__":

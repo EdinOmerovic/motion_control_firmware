@@ -1,4 +1,3 @@
-// TODO: double-check values
 // NOTE: all values are represented in the following units:
 // * length = micrometers [um]
 // * time  = microseconds [us]

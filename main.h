@@ -40,7 +40,7 @@
 // *STEPS: alternating step of specified amplitude (start: STEPS_VALUE_1, stop: STEPS_VALUE_2)
 // *SINE: sine wave of controllable frequency, using the analog input (potentiometer)
 // *FIXED: fixed value of the trajectory
-#define TRAJECTORY_SELECT SINE
+#define TRAJECTORY_SELECT ANALOG_READ
 
 
 // Used in measuring the execution time:
