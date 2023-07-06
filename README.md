@@ -66,7 +66,7 @@ Current values of **trajectory**, **actual position**, **estimated disturbance**
 
 > *Response of 2Hz sine wave of amplitude of 10mm and bias of 11mm. Orange actual value, blue set point, red control force value. **Maximum absolute error: 308[um] (1,5%); Average absolute error: 135[um] (0.675%)***
 
-![](C:\Users\Master\Desktop\ccs_extraction\!qepm_e\docs\images\step_response.jpg)
+![](./docs/images/step_response.jpg)
 
 > *Step response with untuned parameters. Orange actual value, blue set point, red control force value.* 
 
