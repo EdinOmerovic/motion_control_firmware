@@ -17,8 +17,10 @@ static Uint32 previous_trajectory_value_buffer[MAX_BUFFER_VALUE];
 
 
 // Used for the lookup table
-static Uint32 counter = 0;
+static Uint32 freq_scaler = 1;
 static Uint32 fixed_step_value = STEPS_VALUE_1;
+
+signed long unit_sine(Uint32 sample_nr, Uint32 freq_scale);
 
 void trajectory_init(source_e src_conf)
 {
@@ -40,9 +42,12 @@ void trajectory_init(source_e src_conf)
 
     case FIXED:
         // Make it possible to feed in the data.
-        // How to synchronise the fed in data with the execution and reading of it?
+        // How to synchronize the fed in data with the execution and reading of it?
         break;
     case STEPS:
+        break;
+
+    case SINE:
         break;
 
     default:
@@ -58,16 +63,23 @@ Uint32 _obtainTrajectoryValue(Uint32 sample_nr)
         return map(readAnalog(), 0,  ANALOG_READ_MAX_VALUE, 0, ENDSTOP2_VALUE);
     case HARDCODED:
         // Get the next sample in the array
-        // For now just do the loopback, don't worry about the control
-        return trajectory_values[counter++ % NR_ELEMENTS];
+        return 20*sineLookupTable[(sample_nr) % NR_ELEMENTS];
     case FIXED:
         return FIXED_VALUE;
     case STEPS:
         if (sample_nr % STEP_TIME_DURATION == 0){
-            // Switch to different position
+            // Switch to different set position
             fixed_step_value = (STEPS_VALUE_1 + STEPS_VALUE_2) - fixed_step_value;
         }
         return fixed_step_value;
+
+    case SINE:
+        // Read the analog pot and determine the sine frequency
+        if (sample_nr % NR_ELEMENTS == 0){
+            freq_scaler = map(readAnalog(), 0,  ANALOG_READ_MAX_VALUE, 1, SINE_MAX_FREQ);
+        }
+        return SINE_AMPLITUDE*sineLookupTable[(freq_scaler*sample_nr) % NR_ELEMENTS] + SINE_BIAS;
+
     default:
         // If everything else fails, go to starting position.
         return ENDSTOP1_VALUE;
@@ -101,5 +113,5 @@ Uint32 getTrajectory(Uint32 sample_nr)
 signed long getTrajectory2od(void)
 {
     signed long finite_diff = previous_trajectory_value_buffer[0] - 2*previous_trajectory_value_buffer[1] + previous_trajectory_value_buffer[2];
-    return (finite_diff*1000) / ((TIME_STEP*TIME_STEP)/100); // in um/s^2
+    return (finite_diff / (TIME_STEP*TIME_STEP)); // in um/s^2
 }

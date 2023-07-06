@@ -19,9 +19,12 @@ plt.plot(df['A'], df['E'])
 df['F'] = abs(df['B'] - df['C'])
 
 # Compute the average of column 'F'
-print(df['F'].mean())
+mean_error = df['F'].mean()
+max_error = df['F'].max()
+print(f"Srednja vrijednost apsolutne greske: {mean_error}")
+print(f"Maksimalna vrijednost apsolutne greske: {max_error}")
 # Customize plot
-plt.title('My Plot')
+plt.title(f'Evaluacija odziva: Srednja aps. greška {format(mean_error,".3f")} [um], maks. abs. greška {format(max_error,".3f")}[um]')
 plt.xlabel('Samples')
 plt.ylabel('Values')
 

@@ -14,7 +14,8 @@ typedef enum {
     ANALOG_READ,
     HARDCODED,
     FIXED,
-    STEPS
+    STEPS,
+    SINE
 } source_e;
 
 void trajectory_init(source_e);
